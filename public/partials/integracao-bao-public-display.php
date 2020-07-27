@@ -41,7 +41,7 @@
     </div>
 
     <div class="form-group">
-        <button type="button" id="buttonCotacao">Buscar cotação</button>
+        <button type="button" id="buttonCotacao" onclick="request_cotacao()">Buscar cotação</button>
     </div>
 
     
@@ -57,9 +57,49 @@
         </dl>
 
         <?php if ( is_user_logged_in() ) : ?>
-            <button id="buttonPedido">Finalizar frete</button>
+            <button type="button" class="">Finalizar frete</button>
         <?php else : ?>
             <button>Cadastre-se para continuar</button>
         <?php endif; ?>
     </div>
 </form>
+
+<script type="text/javascript">
+function request_cotacao()
+{
+    var protocol = window.location.protocol,
+        hostname = window.location.hostname
+        wpAjaxUrl = protocol + '//' + hostname + '/wp-admin/admin-ajax.php';
+
+    jQuery.ajax({
+    	url: wpAjaxUrl,
+    	type: 'POST',
+    	data: {
+    		'action': 'send_cotacao_data',
+    		'cepremetente': jQuery('#cotacao-cepremetente').val(),
+    		'cepdestinatario': jQuery('#cotacao-cepdestinatario').val(),
+    		'volumes': jQuery('#cotacao-volumes').val(),
+    		'peso':   jQuery('#cotacao-peso').val(),
+    		'valor': jQuery('#cotacao-valor').val()
+    	},
+    	dataType: 'JSON',
+    	success: function (response) {
+    		if(response.status == 1){
+    			console.log('Valor Frete: '+response.servicos.item.valorFrete);
+    			console.log('Prazo de entraga: '+response.servicos.item.prazoEntrega);
+    			console.log('Código cidade: '+response.servicos.item.codigoCidade);
+    			jQuery('#price').text(response.servicos.item.valorFrete);
+    			jQuery('#deliveryTime').text(response.servicos.item.prazoEntrega);
+    			jQuery('#bao-cotacao-result').show();
+
+    			jQuery('#delivery_price').val(response.servicos.item.valorFrete);
+    			jQuery('#delivery_time').val(response.servicos.item.prazoEntrega);
+    			jQuery('#zip_code').val(response.servicos.item.codigoCidade);
+    		}else{
+
+    		}
+            
+    	}
+    });
+}
+</script>

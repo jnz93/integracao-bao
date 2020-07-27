@@ -55,6 +55,10 @@ class Integracao_Bao_Public {
 
 		// Shortcodes
 		add_shortcode('bao_cotacao', array($this, 'form_bao_cotacao'));
+
+		// Ajax Actions
+		add_action('wp_ajax_send_cotacao_data', array($this, 'send_cotacao_data'));
+		add_action('wp_ajax_nopriv_send_cotacao_data', array($this, 'send_cotacao_data'));
 	}
 
 	/**
@@ -111,5 +115,63 @@ class Integracao_Bao_Public {
 	public function form_bao_cotacao()
 	{
 		require( plugin_dir_path(__FILE__) . 'partials/integracao-bao-public-display.php');
+	}
+
+	/**
+	 * Function for send data from form and sanitize
+	 * 
+	 * @since 1.0.0
+	 */
+	public function send_cotacao_data()
+	{
+		$data_from_form = array(
+			'cepremetente'      =>  trim($_POST['cepremetente']), 
+			'cepdestinatario'   =>  trim($_POST['cepdestinatario']),
+			'cepdestinatario'   =>  trim($_POST['cepdestinatario']), 
+			'cepdestinatario'   =>  trim($_POST['cepdestinatario']),
+			'volumes'           =>  trim($_POST['volumes']), 
+			'peso'              =>  trim($_POST['peso']), 
+			'valor'             =>  trim($_POST['valor']), 
+		);   
+		  $response = $this->soap_request($data_from_form);
+		  die($response);
+	}
+
+	/**
+	 * Soap request from brix cotacao
+	 * 
+	 * @since 1.0.0
+	 */
+	public function soap_request($args)
+	{
+		if(!is_array($args) 
+			|| !isset($args['cepremetente'])
+			|| !isset($args['cepdestinatario'])
+			|| !isset($args['volumes']) 
+			|| !isset($args['valor'])         
+		){
+			$result = array(
+				'status'=>0,
+				'erro'=> 'Requisição não realizada, revise entrada de dados.'
+			);
+			return json_encode($result);
+		}
+
+		$args = array(
+			'cepremetente'      =>  isset($args['cepremetente'])       ?   $args['cepremetente']      : NULL, 
+			'cepdestinatario'   =>  isset($args['cepdestinatario'])    ?   $args['cepdestinatario']   : NULL, 
+			'volumes'           =>  isset($args['volumes'])            ?   $args['volumes']           : NULL, 
+			'peso'              =>  isset($args['peso'])               ?   $args['peso']              : NULL, 
+			'valor'             =>  isset($args['valor'])              ?   $args['valor']             : NULL, 
+		);
+
+		$client = new SoapClient("https://brix.ws.brudam.com.br/cotacao/frete?wsdl"); 
+		
+		
+		$args['chave']     =   strval(get_option('brix_token'));
+		$args['cliente']   =   strval(get_option('brix_cliente'));
+		$args['servico']   =   intval(get_option('brix-cotacao-servico'));
+		$result = $client->CalculoFrete($args);
+		return json_encode($result);
 	}
 }
