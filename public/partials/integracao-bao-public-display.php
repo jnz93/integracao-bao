@@ -11,6 +11,8 @@
  * @package    Integracao_Bao
  * @subpackage Integracao_Bao/public/partials
  */
+
+ $page_cart = wc_get_cart_url();
 ?>
 
 <p id="teste">CEP TESTE: 90030140 - 31340350</p>
