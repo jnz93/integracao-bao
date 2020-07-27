@@ -52,6 +52,9 @@ class Integracao_Bao_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+
+		// Shortcodes
+		add_shortcode('bao_cotacao', array($this, 'form_bao_cotacao'));
 	}
 
 	/**
@@ -100,4 +103,13 @@ class Integracao_Bao_Public {
 
 	}
 
+	/**
+	 * Function for the form of cotação
+	 * 
+	 * @since 1.0.0
+	 */
+	public function form_bao_cotacao()
+	{
+		require( plugin_dir_path(__FILE__) . 'partials/integracao-bao-public-display.php');
+	}
 }
