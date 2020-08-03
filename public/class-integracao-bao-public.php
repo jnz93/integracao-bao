@@ -55,6 +55,7 @@ class Integracao_Bao_Public {
 
 		// Shortcodes
 		add_shortcode('bao_cotacao', array($this, 'form_bao_cotacao'));
+		add_shortcode('handle_data_form', array($this, 'handle_data_form'));
 
 		// Ajax Actions
 		add_action('wp_ajax_send_cotacao_data', array($this, 'send_cotacao_data'));
@@ -175,4 +176,100 @@ class Integracao_Bao_Public {
 		return json_encode($result);
 		die();
 	}
+
+
+	/**
+	 * Shortcode de tratamento dos dados de cotação e criação do produto
+	 * 
+	 * @since 1.0.0
+	 */
+	public function handle_data_form() 
+	{
+		if (!empty($_POST)) :
+			$zip_from             	= $_POST['cotacao-cepremetente'];
+			$zip_to          		= $_POST['cotacao-cepdestinatario'];
+			$n_volumes            	= $_POST['cotacao-volumes'];
+			$weight              	= $_POST['cotacao-peso'];
+			$price         			= $_POST['delivery_price'];
+			$delivery_days       	= $_POST['delivery_time'];
+			$value               	= $_POST['cotacao-valor'];
+			// $value               	= "25.00";
+			
+			setlocale(LC_MONETARY, 'pt_BR');
+			return $this->ideiadig_create_order_by_freight($price, $delivery_days, $zip_from, $zip_to, $n_volumes, $weight, $value);
+		endif;
+		
+	}
+
+	/**
+	 * Create product with rest api
+	 * @param $price, $delivery_days, $zip_from, $zip_to, $n_volumes, $weight, $value
+	 * 
+	 * @since 1.0.0
+	 */
+	public function ideiadig_create_order_by_freight($price, $delivery_days, $zip_from, $zip_to, $n_volumes, $weight, $value)
+	{
+
+		// $wc_public_key 	= get_option('brix-woocomerce-public-key');
+		// $wc_secret_key 	= get_option('brix-woocomerce-secret-key');
+		$wc_public_key 	= 'ck_215461795ee6e77d32701a5ddce6a21c8035e6cf';
+		$wc_secret_key 	= 'cs_ff11f522bc9207f20651dc762372c86e9357fab9';
+		
+		// echo $wc_public_key . ' : ' . $wc_secret_key . '</br>';
+
+		// echo 'Preço: ' . $price . ' - Delivery days: ' . $delivery_days . ' - Zip From: ' . $zip_from . ' - Zip to: ' . $zip_to . ' - N Vol: ' . $n_volumes . ' - Weight: ' . $weight . ' - Value: ' . $value . '</br>';
+		if (empty($wc_public_key) || empty($wc_secret_key)) :
+			echo 'Erro ao conectar com a API rest do Woocomerce. Por favor, configure as chaves publica e privada no plugin BRIX.';
+		endif;
+
+		# SETUP PRODUCT
+		$title_propduct 		= 'FRETE: Origem ' . $zip_from . ' - Destino ' . $zip_to;
+		$description_product  	= 'Cep origem: ' . $zip_from . '; <br> Cep destino: ' . $zip_to . '; <br> Volumes: ' . $n_volumes . '; <br> Peso: ' . $weight . '; <br> Valor: ' . $value . ';';
+		$api_response = wp_remote_post(
+			'https://unitycode.tech/bao/wp-json/wc/v2/products',
+			array(
+				'headers' 	=> array(
+					'Authorization' => 'Basic ' . base64_encode($wc_public_key . ':' . $wc_secret_key)
+				),
+				'body' 		=> array(
+					'name'			=> $title_propduct,
+					'price'			=> $price,
+					'regular_price'	=> $price,
+					'weight'		=> $weight,
+					'description'	=> $description_product,
+					'status'		=> 'publish',					
+				),
+			)
+		);
+
+		$body = json_decode($api_response['body']);
+		// print_r($body);
+
+		if ( wp_remote_retrieve_response_message($api_response) === 'Created' ) :
+
+			// echo $body->name . ' cadastrada com sucesso!';
+			$this->add_product_to_cart($body->id);
+    
+		else :
+			// echo $body->name;
+			echo wp_remote_retrieve_response_message($api_response);
+
+		endif;
+
+	}
+
+	/**
+	 * Add produto criado ao carrinho
+	 * @param $product_id do produto
+	 * @return void
+	*/
+	public function add_product_to_cart($product_id)
+	{
+		if ( $product_id != '') :
+
+			WC()->cart->add_to_cart( $product_id );
+
+		endif;
+	}
+
 }
