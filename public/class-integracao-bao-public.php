@@ -133,8 +133,8 @@ class Integracao_Bao_Public {
 			'peso'              =>  trim($_POST['peso']), 
 			'valor'             =>  trim($_POST['valor']), 
 		);   
-		  $response = $this->soap_request($data_from_form);
-		  die($response);
+		$response = $this->soap_request($data_from_form);
+		die($response);
 	}
 
 	/**
@@ -173,5 +173,6 @@ class Integracao_Bao_Public {
 		$args['servico']   =   intval(get_option('brix-cotacao-servico'));
 		$result = $client->CalculoFrete($args);
 		return json_encode($result);
+		die();
 	}
 }

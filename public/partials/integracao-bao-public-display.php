@@ -68,8 +68,10 @@
 function request_cotacao()
 {
     var protocol = window.location.protocol,
-        hostname = window.location.hostname
-        wpAjaxUrl = protocol + '//' + hostname + '/wp-admin/admin-ajax.php';
+        hostname = window.location.hostname,
+        // wpAjaxUrl = protocol + '//' + hostname + '/bao/wp-admin/admin-ajax.php';
+        wpAjaxUrl = protocol + '//' + hostname + '/bao/wp-admin/admin-ajax.php';
+        console.log(wpAjaxUrl);
 
     jQuery.ajax({
     	url: wpAjaxUrl,
@@ -96,7 +98,7 @@ function request_cotacao()
     			jQuery('#delivery_time').val(response.servicos.item.prazoEntrega);
     			jQuery('#zip_code').val(response.servicos.item.codigoCidade);
     		}else{
-
+                console.log(response);
     		}
             
     	}
