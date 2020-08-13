@@ -130,4 +130,40 @@ class Integracao_Bao_Admin {
 		require( plugin_dir_path(__FILE__) . 'partials/integracao-bao-admin-display.php');
 	}
 
+	/**
+	 * Aunthentication login in brix brudam api rest
+	 * 
+	 * @return access_token
+	 */
+	public function login_brudam_api()
+	{
+		# SETTINGS API REST
+		$brudam_api_url = 'https://brix.brudam.com.br/api/v1/acesso/auth/login';
+		$brix_user 		= '94a708524b9c35be089b3069280ef1ed';
+		$brix_pass 		= '420caa5cc5931a4126d4120f67a0a22464eeb8052b9c9f62f15fd70905dd5fdc';
+		
+		if (empty($brix_user) || empty($brix_pass)) :
+			echo 'Usuário ou senha não configurados.';
+			return;		
+		endif;
+
+		# REQUEST
+		$api_response = wp_remote_post(
+			$brudam_api_url,
+			array(
+				'body'		=> array(
+					'usuario'	=> $brix_user,
+					'senha'		=> $brix_pass
+				),
+			)
+		);
+		$response = json_decode($api_response['body']);
+
+		if (wp_remote_retrieve_response_message($api_response) === 'OK') :
+			return $response->data->access_key;
+		else :
+			return 'error';
+		endif;
+	}
+
 }
