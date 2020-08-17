@@ -14,16 +14,30 @@
 
  $page_cart = wc_get_cart_url();
 ?>
-
-<p id="teste">CEP TESTE: 90030140 - 31340350</p>
 <form method="post" action="<?php echo $page_cart; ?>" style="margin-bottom: 150px;">
     <div class="form-group">
-        <label for="cotacao-cepremetente">CEP Origem</label>
-        <input type="text" class="form-control" name="cotacao-cepremetente" id="cotacao-cepremetente" required>
+        <label for="cotacao-cepremetente">Cidade Origem</label>
+        <!-- <input type="text" class="form-control" name="cotacao-cepremetente" id="cotacao-cepremetente" required> -->
+        <select id="cotacao-cepremetente" name="select-origin" class="form-control">
+            <option value="" selected>Selecione a origem</option>
+            <option value="04348-070">São Paulo - SP</option>
+        </select>
     </div>
     <div class="form-group">
-        <label for="cotacao-cepdestinatario">CEP Destino</label>
-        <input type="text" class="form-control" name="cotacao-cepdestinatario" id="cotacao-cepdestinatario" required>
+        <label for="cotacao-cepdestinatario">Cidade destino</label>
+        <!-- <input type="text" class="form-control" name="cotacao-cepdestinatario" id="cotacao-cepdestinatario" required> -->
+        <select id="cotacao-cepdestinatario" name="select-destiny" class="form-control">
+            <option value="" selected>Selecione o Destino</option>
+            <option value="31270-700">Belo Horizonte - MG</option>
+            <option value="71608-900">Brasília - DF</option>
+            <option value="13051-154">Campinas - SP</option>
+            <option value="83040-540">Curitiba - PR</option>
+            <option value="88015-902">Florianópolis - SC</option>
+            <option value="75133-320">Goiânia - GO</option>
+            <option value="69028-140">Manaus - AM</option>
+            <option value="91350-240">Porto Alegre - RS</option>
+            <option value="21020-190">Rio de Janeiro - RJ</option>
+        </select>
     </div>
     <div class="form-group">
         <label for="cotacao-volumes">Número de volumes</label>
@@ -64,7 +78,7 @@
     </div>
 </form>
 <?php #echo 'login: ' . Integracao_Bao_Admin::login_brudam_api(); ?>
-<?php echo 'Brix record: '; Integracao_Bao_Admin::send_order_to_brix_brudam(); ?>
+<?php #echo 'Brix record: '; Integracao_Bao_Admin::send_order_to_brix_brudam(); ?>
 <script type="text/javascript">
 function request_cotacao()
 {
