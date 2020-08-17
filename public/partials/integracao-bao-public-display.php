@@ -63,7 +63,8 @@
         <?php endif; ?>
     </div>
 </form>
-
+<?php #echo 'login: ' . Integracao_Bao_Admin::login_brudam_api(); ?>
+<?php echo 'Brix record: '; Integracao_Bao_Admin::send_order_to_brix_brudam(); ?>
 <script type="text/javascript">
 function request_cotacao()
 {

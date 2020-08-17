@@ -166,4 +166,223 @@ class Integracao_Bao_Admin {
 		endif;
 	}
 
+	/**
+	 * Add minuta from brudam api rest
+	 * 
+	 * @return void
+	 */
+	public function send_order_to_brix_brudam()
+	{
+		$access_token 	= Integracao_Bao_Admin::login_brudam_api();
+		$brudam_api_url = 'https://brix.brudam.com.br/api/v1/operacional/emissao/cte';
+		
+		if (empty($access_token)) :
+			return;
+		endif;
+		$today = date("Y-m-d");
+		?>
+		<script>
+		jQuery.ajax({
+			method: "POST",
+			headers: {
+				'Authorization': '<?php echo 'Bearer ' . $access_token; ?>'
+			},
+			url: '<?php echo $brudam_api_url ?>',
+			data: {
+				"documentos" : [
+					{
+						"minuta" : {
+							"CFOP" : "6353",
+							"tpCTe" : "0",
+							"toma" : "0",
+							"nDocEmit" : "94001641000104",
+							"dEmi" : "2020-06-08",
+							"rSeg" : 0,
+							"cSeg" : "61383493000180",
+							"nAver" : "06238022000233065000",
+							"cServ" : "38",
+							"cTab" : "395",
+							"tpEmi" : "1",
+							"cAut" : "999999999999",
+							"carga" : {
+								"pBru" : "14.33",
+								"pCub" : ".03",
+								"qVol" : 1,
+								"vTot" : "000000013300.52"
+							}
+						},
+						"compl" : {
+							"entrega" : {
+								"dPrev" : "2020-06-08",
+								"hPrev" : "00:00:00"
+							},
+							"cOrigCalc" : "3536505",
+							"cDestCalc" : "2611606",
+							"xObs" : "n/"
+						},
+						"toma" : {
+							"nDoc" : "10918425000308",
+							"IE" : "513048395113",
+							"xNome" : "VOLVO CAR BRASIL IMPORTACAO E COMERCIO D",
+							"xFant" : "VOLVO CAR BRASIL IMPORTACAO E COMERCIO D",
+							"xLgr" : "Avenida Viena",
+							"nro" : "419",
+							"xCpl" : "GALPÃO 3.2 SALA 1",
+							"xBairro" : "cascata",
+							"cMun" : "3536505",
+							"CEP" : "13146055",
+							"cPais" : "1058",
+							"email" : "joao@hotmail.com"
+						},
+						"rem" : {
+							"nDoc" : "10918425000308",
+							"IE" : "513048395113",
+							"xNome" : "VOLVO CAR BRASIL IMPORTACAO E COMERCIO D",
+							"xFant" : "VOLVO CAR BRASIL IMPORTACAO E COMERCIO D",
+							"xLgr" : "Avenida Viena",
+							"nro" : "419",
+							"xBairro" : "cascata",
+							"xCpl" : "GALPÃO 3.2 SALA 1",
+							"cMun" : "3536505",
+							"CEP" : "13146055",
+							"cPais" : "1058",
+							"email" : "joao2@hotmail.com"
+						},
+						"dest" : {
+							"nDoc" : "18592005000116",
+							"IE" : "20353243",
+							"xNome" : "BRUDAM DESENVOLVIMENTOS WEB",
+							"xFant" : "BRUDAM DESENVOLVIMENTOS WEB",
+							"xLgr" : "Itajuba",
+							"nro" : "311",
+							"xBairro" : "Residencial",
+							"cMun" : "4306767",
+							"CEP" : "92990000",
+							"cPais" : "1058",
+							"email" : "joao3@hotmail.com"
+						},
+						"valores" : {
+							"vFrete" : "000000000119.45",
+							"comp" : [
+							{
+								"xItem" : "peso",
+								"vItem" : "000000000091.14"
+							},
+							{
+								"xItem" : "adv",
+								"vItem" : "000000000013.30"
+							},
+							{
+								"xItem" : "entrega",
+								"vItem" : "000000000000.00"
+							},
+							{
+								"xItem" : "pedagio",
+								"vItem" : "000000000000.00"
+							},
+							{
+								"xItem" : "outros",
+								"vItem" : "000000000008.36"
+							}
+							],
+							"imp" : {
+								"ICMS" : {
+									"CST" : "00",
+									"vBC" : "000000000119.45",
+									"pRedBC" : "000000000000.00",
+									"pICMS" : "000000000007.00",
+									"vICMS" : "000000000119.45"
+								}
+							}
+						},
+						"documentos" : [
+						{
+							"serie" : "1",
+							"nDoc" : "000122893",
+							"dEmi" : "2019-12-17",
+							"vBC" : "00000",
+							"vICMS" : "00000",
+							"vBCST" : "00000",
+							"vST" : "00000",
+							"vProd" : "000000000112.88",
+							"vNF" : "000000000112.88",
+							"pBru" : "00014.330000",
+							"qVol" : 1,
+							"chave" : "35191210918425000308550010001228931001141643",
+							"tpDoc" : "55",
+							"xEsp" : "Diversos",
+							"xNat" : "Diversos"
+						},
+						{
+							"serie" : "1",
+							"nDoc" : "000122894",
+							"dEmi" : "2019-12-17",
+							"vBC" : "00000",
+							"vICMS" : "00000",
+							"vBCST" : "00000",
+							"vST" : "00000",
+							"vProd" : "000000000190.76",
+							"vNF" : "000000000190.76",
+							"pBru" : "00000.000000",
+							"qVol": 1 ,
+							"chave" : "35191210918425000308550010001228941001141659",
+							"tpDoc" : "55",
+							"xEsp" : "Diversos",
+							"xNat" : "Diversos"
+						},
+						{
+							"serie" : "1",
+							"nDoc" : "000122895",
+							"dEmi" : "2019-12-17",
+							"vBC" : "00000",
+							"vICMS" : "00000",
+							"vBCST" : "00000",
+							"vST" : "00000",
+							"vProd" : "000000000113.05",
+							"vNF" : "000000000113.05",
+							"pBru" : "00000.000000",
+							"qVol": 1 ,
+							"chave" : "35191210918425000308550010001228951001141664",
+							"tpDoc" : "55",
+							"xEsp" : "Diversos",
+							"xNat" : "Diversos"
+						},
+						{
+							"serie" : "1",
+							"nDoc" : "000122896",
+							"dEmi" : "2019-12-17",
+							"vBC" : "00000",
+							"vICMS" : "00000",
+							"vBCST" : "00000",
+							"vST" : "00000",
+							"vProd" : "000000012883.83",
+							"vNF" : "000000012883.83",
+							"pBru" : "00000.000000",
+							"qVol": 1 ,
+							"chave" : "35191210918425000308550010001228961001141670",
+							"tpDoc" : "55",
+							"xEsp" : "Diversos",
+							"xNat" : "Diversos"
+						}
+						]
+					}
+				]
+			},
+			success: function(data)
+			{
+				// jQuery('footer').append(data);
+				console.log('Sucesso!')
+				console.log(data);
+			},
+			error: function(data)
+			{
+				console.log('Erro:')
+				console.log(data);
+			}
+		})
+		</script>
+		<?php
+
+	}
+
 }
