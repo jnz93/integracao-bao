@@ -10,50 +10,7 @@
  *
  * @package    Integracao_Bao
  * @subpackage Integracao_Bao/admin/partials
- */
-
- 
-if(isset($_POST['brix_token'])){
-    if(get_option('brix_token')){
-      update_option('brix_token', trim($_POST['brix_token']));
-    }else{
-      add_option('brix_token', trim($_POST['brix_token']));
-    }      
-  }
-
-  
-  if(isset($_POST['brix-cotacao-servico'])){
-    if(get_option('brix_cotacao_servico')){
-      update_option('brix_cotacao_servico', trim($_POST['brix-cotacao-servico']));
-    }else{
-      add_option('brix_cotacao_servico', trim($_POST['brix-cotacao-servico']));
-    }  
-  }
-
-  if(isset($_POST['brix_cliente'])){
-    if(get_option('brix_cliente')){
-      update_option('brix_cliente', trim($_POST['brix_cliente']));
-    }else{
-      add_option('brix_cliente', trim($_POST['brix_cliente']));
-    }    
-  }
-
-  if(isset($_POST['brix-woocomerce-public-key'])){
-    if(get_option('brix-woocomerce-public-key')){
-      update_option('brix-woocomerce-public-key', trim($_POST['brix-woocomerce-public-key']));
-    }else{
-      add_option('brix-woocomerce-public-key', trim($_POST['brix-woocomerce-public-key']));
-    }    
-  }
-  
-  if(isset($_POST['brix-woocomerce-secret-key'])){
-    if(get_option('brix-woocomerce-secret-key')){
-      update_option('brix-woocomerce-secret-key', trim($_POST['brix-woocomerce-secret-key']));
-    }else{
-      add_option('brix-woocomerce-secret-key', trim($_POST['brix-woocomerce-secret-key']));
-    }    
-  }
-  
+ */  
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -68,7 +25,9 @@ if(isset($_POST['brix_token'])){
 
     ShortCode Formulario Cotacao: [formCotacao]<br>
     </blockquote>
-    <form action="" method="post">    
+    <form action="" method="post">
+      <?php settings_fields('bao_settings_plugin'); ?>
+      <?php do_settings_sections('bao_settings_plugin'); ?>
       <table class="form-table" role="presentation">
         <tbody>
           <tr>
