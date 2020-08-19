@@ -60,7 +60,9 @@ class Integracao_Bao_Admin {
 		if ( ! wp_next_scheduled( 'bao_task_hourly' ) ) {
 			wp_schedule_event( time(), 'hourly', 'bao_task_hourly' );
 		}
-		add_action( 'bao_task_hourly', array($this, 'send_alert_virified_orders')); // 'wpdocs_task_hook` is registered when the event is scheduled
+		add_action( 'bao_task_hourly', array($this, 'send_alert_virified_orders')); // 'bao_task_hourly` is registered when the event is scheduled
+
+		add_shortcode('test_all_orders', array($this, 'bao_verify_order_paid'));
 		 
 	}
 
@@ -466,5 +468,38 @@ class Integracao_Bao_Admin {
 		$message = 'Teste de rotina - ' . time() . ' .';
 		wp_mail($to, $subject, $message);
 	}
+
+	/**
+	 * Function verify_orders_paid
+	 * 
+	 * Seleciona pedidos pagos e retorna um array com os ids
+	 * 
+	 * @return array
+	 * 
+	 * @since 1.0.0 
+	 */
+
+	public function bao_verify_order_paid()
+	{
+		$args = array(
+			'status' => 'completed',
+		);
+		$orders_data = wc_get_orders( $args );
+
+		$orders = array();
+		if(!empty($orders_data)) :
+			foreach ($orders_data as $order) :
+				$orders[] = array(
+					'ID' 			=> $order->id,
+					'date_created' 	=> $order->date_created,
+					'total' 		=> $order->total,
+					'billing' 		=> $order->billing,
+					'shipping' 		=> $order->shipping
+				);
+			endforeach;
+		endif;
+		return $orders;
+	}
+
 
 }
