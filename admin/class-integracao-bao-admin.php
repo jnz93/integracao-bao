@@ -56,6 +56,12 @@ class Integracao_Bao_Admin {
 		add_action('admin_menu', array($this, 'create_settings_menu'));
 		// add_action('update_option', array($this, 'save_plugin_options'));
 		add_action('admin_init', array($this, 'register_options_settings'));
+
+		if ( ! wp_next_scheduled( 'bao_task_hourly' ) ) {
+			wp_schedule_event( time(), 'hourly', 'bao_task_hourly' );
+		}
+		add_action( 'bao_task_hourly', array($this, 'send_alert_virified_orders')); // 'wpdocs_task_hook` is registered when the event is scheduled
+		 
 	}
 
 	/**
@@ -444,6 +450,21 @@ class Integracao_Bao_Admin {
 		</script>
 		<?php
 
+	}
+
+	/**
+	 * Function send_alert_verified_orders
+	 * 
+	 * Envia um email quando executa a rotina de verificar pedidos para enviar ao sistema brix
+	 * 
+	 * @since 1.0.0
+	 */
+	public function send_alert_virified_orders()
+	{
+		$to = 'logs@unitycode.tech';
+		$subject = 'Rotina - Pedidos bao/brix';
+		$message = 'Teste de rotina - ' . time() . ' .';
+		wp_mail($to, $subject, $message);
 	}
 
 }
