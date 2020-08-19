@@ -493,8 +493,8 @@ class Integracao_Bao_Admin {
 					'ID' 			=> $order->id,
 					'date_created' 	=> $order->date_created,
 					'total' 		=> $order->total,
-					'billing' 		=> $order->billing,
-					'shipping' 		=> $order->shipping
+					'billing' 		=> $order->data['billing'],
+					'shipping' 		=> $order->data['shipping']
 				);
 			endforeach;
 		endif;
