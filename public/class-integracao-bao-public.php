@@ -186,6 +186,8 @@ class Integracao_Bao_Public {
 	public function handle_data_form() 
 	{
 		if (!empty($_POST)) :
+			setlocale(LC_MONETARY, 'pt_BR');
+			
 			$zip_from             	= $_POST['cotacao-cepremetente'];
 			$zip_to          		= $_POST['cotacao-cepdestinatario'];
 			$n_volumes            	= $_POST['cotacao-volumes'];
@@ -195,8 +197,7 @@ class Integracao_Bao_Public {
 			$value               	= $_POST['cotacao-valor'];
 			// $value               	= "25.00";
 			
-			setlocale(LC_MONETARY, 'pt_BR');
-			return $this->ideiadig_create_order_by_freight($price, $delivery_days, $zip_from, $zip_to, $n_volumes, $weight, $value);
+			return $this->bao_create_order_from_form($price, $delivery_days, $zip_from, $zip_to, $n_volumes, $weight, $value);
 		endif;
 		
 	}
@@ -207,7 +208,7 @@ class Integracao_Bao_Public {
 	 * 
 	 * @since 1.0.0
 	 */
-	public function ideiadig_create_order_by_freight($price, $delivery_days, $zip_from, $zip_to, $n_volumes, $weight, $value)
+	public function bao_create_order_from_form($price, $delivery_days, $zip_from, $zip_to, $n_volumes, $weight, $value)
 	{
 
 		// $wc_public_key 	= get_option('brix-woocomerce-public-key');
