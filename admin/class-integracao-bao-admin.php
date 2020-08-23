@@ -321,6 +321,7 @@ class Integracao_Bao_Admin {
 					$s_postcode 	= $shipping['postcode'];
 					$s_country		= $shipping['country'];
 
+					$today 			= date("Y-m-d");
 					?>
 					<script>
 					jQuery.ajax({
@@ -337,7 +338,7 @@ class Integracao_Bao_Admin {
 										"tpCTe" : "0",
 										"toma" : "0",
 										"nDocEmit" : "94001641000104",
-										"dEmi" : "<?php echo $date; ?>",
+										"dEmi" : "<?php echo $today; ?>",
 										"rSeg" : 0,
 										"cSeg" : "61383493000180",
 										"nAver" : "06238022000233065000",
@@ -440,7 +441,7 @@ class Integracao_Bao_Admin {
 									{
 										"serie" : "1",
 										"nDoc" : "000122893",
-										"dEmi" : "<?php echo $date; ?>",
+										"dEmi" : "<?php echo $today; ?>",
 										"vBC" : "00000",
 										"vICMS" : "00000",
 										"vBCST" : "00000",
@@ -457,7 +458,7 @@ class Integracao_Bao_Admin {
 									{
 										"serie" : "1",
 										"nDoc" : "000122894",
-										"dEmi" : "<?php echo $date; ?>",
+										"dEmi" : "<?php echo $today; ?>",
 										"vBC" : "00000",
 										"vICMS" : "00000",
 										"vBCST" : "00000",
@@ -474,7 +475,7 @@ class Integracao_Bao_Admin {
 									{
 										"serie" : "1",
 										"nDoc" : "000122895",
-										"dEmi" : "<?php echo $date; ?>",
+										"dEmi" : "<?php echo $today; ?>",
 										"vBC" : "00000",
 										"vICMS" : "00000",
 										"vBCST" : "00000",
@@ -491,7 +492,7 @@ class Integracao_Bao_Admin {
 									{
 										"serie" : "1",
 										"nDoc" : "000122896",
-										"dEmi" : "<?php echo $date; ?>",
+										"dEmi" : "<?php echo $today; ?>",
 										"vBC" : "00000",
 										"vICMS" : "00000",
 										"vBCST" : "00000",
