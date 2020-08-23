@@ -55,7 +55,7 @@
     </div>
 
     <div class="form-group">
-        <button type="button" id="buttonCotacao" onclick="request_cotacao()">Buscar cotação</button>
+        <button type="button" id="buttonCotacao" onclick="request_cotacao()">Faça sua carga</button>
     </div>
 
     
@@ -78,7 +78,7 @@
     </div>
 </form>
 <?php #echo 'login: ' . Integracao_Bao_Admin::login_brudam_api(); ?>
-<?php #echo 'Brix record: '; Integracao_Bao_Admin::send_order_to_brix_brudam(); ?>
+<?php #Integracao_Bao_Admin::send_order_to_brix_brudam(); ?>
 <script type="text/javascript">
 function request_cotacao()
 {
