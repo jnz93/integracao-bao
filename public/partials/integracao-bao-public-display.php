@@ -76,6 +76,7 @@
             <button>Cadastre-se para continuar</button>
         <?php endif; ?>
     </div>
+    <p id="error-message" class="d-none"></p>
 </form>
 <?php #echo 'login: ' . Integracao_Bao_Admin::login_brudam_api(); ?>
 <?php #Integracao_Bao_Admin::send_order_to_brix_brudam(); ?>
@@ -107,13 +108,17 @@ function request_cotacao()
     			console.log('Código cidade: '+response.servicos.item.codigoCidade);
     			jQuery('#price').text(response.servicos.item.valorFrete);
     			jQuery('#deliveryTime').text(response.servicos.item.prazoEntrega);
-    			jQuery('#bao-cotacao-result').show();
 
     			jQuery('#delivery_price').val(response.servicos.item.valorFrete);
     			jQuery('#delivery_time').val(response.servicos.item.prazoEntrega);
     			jQuery('#zip_code').val(response.servicos.item.codigoCidade);
+
+    			jQuery('#bao-cotacao-result').show();
+                jQuery('#error-message').hide();
     		}else{
-                console.log(response);
+                console.log(response.erro);
+                jQuery('#error-message').text('Destino não disponível. Selecione outra cidade.').show();
+                jQuery('#bao-cotacao-result').hide();
     		}
             
     	}
