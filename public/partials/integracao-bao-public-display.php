@@ -86,8 +86,8 @@ function request_cotacao()
         hostname = window.location.hostname,
         // wpAjaxUrl = protocol + '//' + hostname + '/bao/wp-admin/admin-ajax.php';
         wpAjaxUrl = protocol + '//' + hostname + '/bao/wp-admin/admin-ajax.php';
-        console.log(wpAjaxUrl);
-
+        // console.log(wpAjaxUrl);
+        
     jQuery.ajax({
     	url: wpAjaxUrl,
     	type: 'POST',

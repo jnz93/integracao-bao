@@ -128,8 +128,6 @@ class Integracao_Bao_Public {
 		$data_from_form = array(
 			'cepremetente'      =>  trim($_POST['cepremetente']), 
 			'cepdestinatario'   =>  trim($_POST['cepdestinatario']),
-			'cepdestinatario'   =>  trim($_POST['cepdestinatario']), 
-			'cepdestinatario'   =>  trim($_POST['cepdestinatario']),
 			'volumes'           =>  trim($_POST['volumes']), 
 			'peso'              =>  trim($_POST['peso']), 
 			'valor'             =>  trim($_POST['valor']), 
@@ -188,16 +186,37 @@ class Integracao_Bao_Public {
 		if (!empty($_POST)) :
 			setlocale(LC_MONETARY, 'pt_BR');
 			
-			$zip_from             	= $_POST['cotacao-cepremetente'];
-			$zip_to          		= $_POST['cotacao-cepdestinatario'];
+			$zip_from             	= $_POST['select-origin'];
+			$zip_to          		= $_POST['select-destiny'];
 			$n_volumes            	= $_POST['cotacao-volumes'];
 			$weight              	= $_POST['cotacao-peso'];
 			$price         			= $_POST['delivery_price'];
 			$delivery_days       	= $_POST['delivery_time'];
 			$value               	= $_POST['cotacao-valor'];
-			// $value               	= "25.00";
 			
-			return $this->bao_create_order_from_form($price, $delivery_days, $zip_from, $zip_to, $n_volumes, $weight, $value);
+			$list_of_cities = array(
+				'31270-700' => 'Belo Horizonte - MG',
+				'71608-900' => 'Brasília - DF',
+				'13051-154' => 'Campinas - SP',
+				'83040-540' => 'Curitiba - PR',
+				'88015-902' => 'Florianópolis - SC',
+				'75133-320' => 'Goiânia - GO',
+				'69028-140' => 'Manaus - AM',
+				'91350-240' => 'Porto Alegre - RS',
+				'21020-190' => 'Rio de Janeiro - RJ',
+				'04348-070' => 'São Paulo - SP',
+			);
+
+			foreach ($list_of_cities as $city => $value) :
+				echo $city . ' / ' . $value . '</br>';
+				if ($city == $zip_from) :
+					$city_origin = $value;
+				elseif ($city == $zip_to) :
+					$city_destiny = $value;
+				endif;
+			endforeach;
+
+			return $this->bao_create_order_from_form($price, $delivery_days, $city_origin, $city_destiny, $zip_from, $zip_to, $n_volumes, $weight, $value);
 		endif;
 		
 	}
@@ -208,7 +227,7 @@ class Integracao_Bao_Public {
 	 * 
 	 * @since 1.0.0
 	 */
-	public function bao_create_order_from_form($price, $delivery_days, $zip_from, $zip_to, $n_volumes, $weight, $value)
+	public function bao_create_order_from_form($price, $delivery_days, $city_origin, $city_destiny, $zip_from, $zip_to, $n_volumes, $weight, $value)
 	{
 
 		// $wc_public_key 	= get_option('brix-woocomerce-public-key');
@@ -226,7 +245,7 @@ class Integracao_Bao_Public {
 		endif;
 
 		# SETUP PRODUCT
-		$title_propduct 		= 'FRETE: Origem ' . $zip_from . ' - Destino ' . $zip_to;
+		$title_propduct 		= 'FRETE: Origem ' . $city_origin . ' - Destino ' . $city_destiny;
 		$description_product  	= 'Cep origem: ' . $zip_from . '; <br> Cep destino: ' . $zip_to . '; <br> Volumes: ' . $n_volumes . '; <br> Peso: ' . $weight . '; <br> Valor: ' . $value . ';';
 		$api_response = wp_remote_post(
 			'https://unitycode.tech/bao/wp-json/wc/v2/products',
