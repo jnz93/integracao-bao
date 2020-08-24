@@ -90,7 +90,7 @@ function request_cotacao()
         // console.log(wpAjaxUrl);
         
     jQuery.ajax({
-    	url: wpAjaxUrl,
+    	url: '<?php echo admin_url('admin-ajax.php'); ?>',
     	type: 'POST',
     	data: {
     		'action': 'send_cotacao_data',
