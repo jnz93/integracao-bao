@@ -77,51 +77,82 @@
         <?php endif; ?>
     </div>
     <p id="error-message" class="d-none"></p>
+    <div id="bao-loader" class="lds-grid">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
 </form>
-<?php #echo 'login: ' . Integracao_Bao_Admin::login_brudam_api(); ?>
 <?php #Integracao_Bao_Admin::send_order_to_brix_brudam(); ?>
 <script type="text/javascript">
 function request_cotacao()
 {
-    var protocol = window.location.protocol,
-        hostname = window.location.hostname,
-        // wpAjaxUrl = protocol + '//' + hostname + '/bao/wp-admin/admin-ajax.php';
-        wpAjaxUrl = protocol + '//' + hostname + '/bao/wp-admin/admin-ajax.php';
-        // console.log(wpAjaxUrl);
-        
+    jQuery('#bao-cotacao-result').hide();
+    jQuery('#error-message').hide();
+
+    // DATA
+    var cepOrigem = jQuery('#cotacao-cepremetente').val(),
+        cepDestino = jQuery('#cotacao-cepdestinatario').val(),
+        volumes = jQuery('#cotacao-volumes').val(),
+        peso = jQuery('#cotacao-peso').val(),
+        valor = jQuery('#cotacao-valor').val(),
+        action_wp = 'send_cotacao_data';
+
+    // Elements
+    var inputPrice = jQuery('#price'),
+        inputDeliveryTime = jQuery('#deliveryTime'),
+        inputDeliveryPrice = jQuery('#delivery_price'),
+        inputDeliveryTime2 = jQuery('#delivery_time'),
+        inputZipCode = jQuery('#zip_code'),
+        elBaoResult = jQuery('#bao-cotacao-result'),
+        elMessage = jQuery('#error-message'),
+        loader = jQuery('#bao-loader');
+
+    // Request
     jQuery.ajax({
     	url: '<?php echo admin_url('admin-ajax.php'); ?>',
     	type: 'POST',
     	data: {
-    		'action': 'send_cotacao_data',
-    		'cepremetente': jQuery('#cotacao-cepremetente').val(),
-    		'cepdestinatario': jQuery('#cotacao-cepdestinatario').val(),
-    		'volumes': jQuery('#cotacao-volumes').val(),
-    		'peso':   jQuery('#cotacao-peso').val(),
-    		'valor': jQuery('#cotacao-valor').val()
+    		'action': action_wp,
+    		'cepremetente': cepOrigem,
+    		'cepdestinatario': cepDestino,
+    		'volumes': volumes,
+    		'peso':   peso,
+    		'valor': valor
     	},
     	dataType: 'JSON',
+        beforeSend: function()
+        {
+            loader.show().fadeIn();
+        },
     	success: function (response) {
     		if(response.status == 1){
-    			console.log('Valor Frete: '+response.servicos.item.valorFrete);
-    			console.log('Prazo de entraga: '+response.servicos.item.prazoEntrega);
-    			console.log('Código cidade: '+response.servicos.item.codigoCidade);
-    			jQuery('#price').text(response.servicos.item.valorFrete);
-    			jQuery('#deliveryTime').text(response.servicos.item.prazoEntrega);
+    			inputPrice.text(response.servicos.item.valorFrete);
+    			inputDeliveryTime.text(response.servicos.item.prazoEntrega);
 
-    			jQuery('#delivery_price').val(response.servicos.item.valorFrete);
-    			jQuery('#delivery_time').val(response.servicos.item.prazoEntrega);
-    			jQuery('#zip_code').val(response.servicos.item.codigoCidade);
+    			inputDeliveryPrice.val(response.servicos.item.valorFrete);
+    			inputDeliveryTime2.val(response.servicos.item.prazoEntrega);
+    			inputZipCode.val(response.servicos.item.codigoCidade);
 
-    			jQuery('#bao-cotacao-result').show();
-                jQuery('#error-message').hide();
+    			elBaoResult.show();
+                elMessage.hide();
     		}else{
                 console.log(response.erro);
-                jQuery('#error-message').text('Destino não disponível. Selecione outra cidade.').show();
-                jQuery('#bao-cotacao-result').hide();
+                elMessage.text('Destino não disponível. Selecione outra cidade.').show();
+                elBaoResult.hide();
     		}
             
-    	}
+    	},
+        complete: function()
+        {
+            loader.fadeOut().hide();
+        }
     });
 }
 </script>
