@@ -210,7 +210,6 @@ class Integracao_Bao_Public {
 			);
 
 			foreach ($list_of_cities as $city => $value) :
-				echo $city . ' / ' . $value . '</br>';
 				if ($city == $zip_from) :
 					$city_origin = $value;
 				elseif ($city == $zip_to) :
@@ -234,8 +233,7 @@ class Integracao_Bao_Public {
 
 		// $wc_public_key 	= get_option('brix-woocomerce-public-key');
 		// $wc_secret_key 	= get_option('brix-woocomerce-secret-key');
-		// $wc_public_key 	= 'ck_215461795ee6e77d32701a5ddce6a21c8035e6cf'; OLD BD
-		// $wc_secret_key 	= 'cs_ff11f522bc9207f20651dc762372c86e9357fab9'; OLD BD
+		
 		$wc_public_key 	= 'ck_9fb5a8f1e1643f764dc8068b1f8c643a38434a9d';
 		$wc_secret_key 	= 'cs_3d38eb415627a1357cfd834d11a7c34c7557a6c9';
 		
@@ -267,15 +265,23 @@ class Integracao_Bao_Public {
 		);
 
 		$body = json_decode($api_response['body']);
-		// print_r($body);
 
 		if ( wp_remote_retrieve_response_message($api_response) === 'Created' ) :
+			
+			// Prevent duplicated item on cart
+			$curr_cart = WC()->cart->get_cart();
+			if ( !empty($curr_cart) ) :	
+				foreach ($curr_cart as $item) :
+					if ($item['line_total'] == $body->regular_price) :
+						return;
+					endif;
+				endforeach;
+			endif;
 
-			// echo $body->name . ' cadastrada com sucesso!';
 			$this->add_product_to_cart($body->id);
     
 		else :
-			// echo $body->name;
+
 			echo wp_remote_retrieve_response_message($api_response);
 
 		endif;
