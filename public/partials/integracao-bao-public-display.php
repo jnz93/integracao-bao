@@ -25,6 +25,7 @@
         <select id="cotacao-cepremetente" name="select-origin" class="form-control">
             <option value="" selected>Selecione a origem</option>
             <option value="04348-070">São Paulo - SP</option>
+            <option value="91350-240">Porto Alegre - RS</option>
         </select>
     </div>
     <div class="form-group cotacao-cepdestinatario">
