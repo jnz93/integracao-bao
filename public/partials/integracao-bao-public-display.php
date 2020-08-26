@@ -15,6 +15,10 @@
  $page_cart = wc_get_cart_url();
 ?>
 <form method="post" action="<?php echo $page_cart; ?>" style="margin-bottom: 150px;">
+    <div class="notice-box" style="position: relative; display: flex; justify-content: flex-end; cursor: pointer" onclick="showNotice(jQuery(this))">
+        <span id="" class="notice-msg" style="display: none; font-size: 11px; text-align: right; background: #EFEFEF; padding: 4px; border-radius: 4px; position: absolute; width: 315px; left: 0px; top: -40px;">Caso a origem ou destino desejados não constem nas opções, aguarde e em breve a BAO estará disponível em sua cidade!</span>
+        <i class="icon-info-circled"></i>
+    </div>
     <div class="form-group cotacao-cepremetente">
         <label for="cotacao-cepremetente">Cidade Origem</label>
         <!-- <input type="text" class="form-control" name="cotacao-cepremetente" id="cotacao-cepremetente" required> -->
@@ -155,4 +159,9 @@ function request_cotacao()
         }
     });
 }
+
+function showNotice(el)
+{
+    el.children('.notice-msg').toggle().fade();
+};
 </script>
