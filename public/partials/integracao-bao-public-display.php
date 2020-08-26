@@ -49,12 +49,12 @@
     </div>
     
     <div class="form-group cotacao-peso">
-        <label for="cotacao-peso">Peso</label>
+        <label for="cotacao-peso">Peso (KG)</label>
         <input type="number" class="form-control" name="cotacao-peso" id="cotacao-peso" required>
     </div>
     
     <div class="form-group cotacao-valor">
-        <label for="cotacao-valor">Valor</label>
+        <label for="cotacao-valor">Valor (R$)</label>
         <input type="number" class="form-control" name="cotacao-valor" id="cotacao-valor" required>
     </div>
 
@@ -63,16 +63,23 @@
     </div>
 
     
-	<div id="bao-cotacao-result" style="display: none;">
-		<dl>
-		  <dt>Valor do Frete: </dt>
-		  <dd id="price"></dd>
-		  <dt>Prazo de entrega: </dt>
-		  <dd id="deliveryTime"></dd>
-          <input type="hidden" name="delivery_price" id="delivery_price" value="">
-          <input type="hidden" name="delivery_time" id="delivery_time" value="">
-          <input type="hidden" name="zip_code" id="zip_code" value="">
-        </dl>
+	<div id="bao-cotacao-result" style="display: none; margin-top: 25px;">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th scope="row">Valor Frete R$</th>
+                    <td id="price"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Prazo de entrega (dias úteis)</th>
+                    <td id="deliveryTime"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <input type="hidden" name="delivery_price" id="delivery_price" value="">
+        <input type="hidden" name="delivery_time" id="delivery_time" value="">
+        <input type="hidden" name="zip_code" id="zip_code" value="">
 
         <?php if ( is_user_logged_in() ) : ?>
             <button type="submit" class="">Finalizar frete</button>
@@ -81,7 +88,7 @@
         <?php endif; ?>
     </div>
     <p id="error-message" class="d-none"></p>
-    <div id="bao-loader" class="lds-grid">
+    <div id="bao-loader" class="lds-grid" style="margin-top: 35px;">
         <div></div>
         <div></div>
         <div></div>
@@ -91,6 +98,7 @@
         <div></div>
         <div></div>
         <div></div>
+        <span style="position: absolute; top: -25px;">Calculando...</span>
     </div>
 </form>
 <?php #Integracao_Bao_Admin::send_order_to_brix_brudam(); ?>
