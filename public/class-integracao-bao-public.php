@@ -209,11 +209,11 @@ class Integracao_Bao_Public {
 				'04348-070' => 'São Paulo - SP',
 			);
 
-			foreach ($list_of_cities as $city => $value) :
-				if ($city == $zip_from) :
-					$city_origin = $value;
-				elseif ($city == $zip_to) :
-					$city_destiny = $value;
+			foreach ($list_of_cities as $zip => $city) :
+				if ($zip == $zip_from) :
+					$city_origin = $city;
+				elseif ($zip == $zip_to) :
+					$city_destiny = $city;
 				endif;
 			endforeach;
 
@@ -237,9 +237,6 @@ class Integracao_Bao_Public {
 		$wc_public_key 	= 'ck_9fb5a8f1e1643f764dc8068b1f8c643a38434a9d';
 		$wc_secret_key 	= 'cs_3d38eb415627a1357cfd834d11a7c34c7557a6c9';
 		
-		// echo $wc_public_key . ' : ' . $wc_secret_key . '</br>';
-
-		// echo 'Preço: ' . $price . ' - Delivery days: ' . $delivery_days . ' - Zip From: ' . $zip_from . ' - Zip to: ' . $zip_to . ' - N Vol: ' . $n_volumes . ' - Weight: ' . $weight . ' - Value: ' . $value . '</br>';
 		if (empty($wc_public_key) || empty($wc_secret_key)) :
 			echo 'Erro ao conectar com a API rest do Woocomerce. Por favor, configure as chaves publica e privada no plugin BRIX.';
 		endif;
@@ -267,7 +264,16 @@ class Integracao_Bao_Public {
 		$body = json_decode($api_response['body']);
 
 		if ( wp_remote_retrieve_response_message($api_response) === 'Created' ) :
-			
+			$post_id = $body->id;
+
+			// Updates post meta
+			update_post_meta($post_id, 'bao_product_zip_origin', $zip_from);
+			update_post_meta($post_id, 'bao_product_zip_destiny', $zip_to);
+			update_post_meta($post_id, 'bao_product_volumes', $n_volumes);
+			update_post_meta($post_id, 'bao_product_weight', $weight);
+			update_post_meta($post_id, 'bao_product_value', $value);
+			update_post_meta($post_id, 'bao_product_delivery_days', $delivery_days);
+
 			// Prevent duplicated item on cart
 			$curr_cart = WC()->cart->get_cart();
 			if ( !empty($curr_cart) ) :	
