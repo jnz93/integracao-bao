@@ -56,10 +56,14 @@ class Integracao_Bao_Public {
 		// Shortcodes
 		add_shortcode('bao_cotacao', array($this, 'form_bao_cotacao'));
 		add_shortcode('handle_data_form', array($this, 'handle_data_form'));
-
+		add_shortcode('coll_data_for_each_item', array($this, 'collect_data_delivery_each_item_on_cart'));
+		
 		// Ajax Actions
 		add_action('wp_ajax_send_cotacao_data', array($this, 'send_cotacao_data'));
 		add_action('wp_ajax_nopriv_send_cotacao_data', array($this, 'send_cotacao_data'));
+
+		add_action('wp_ajax_bao_update_product_freight', array($this, 'bao_update_product_freight'));
+		add_action('wp_ajax_nopriv_bao_update_product_freight', array($this, 'bao_update_product_freight'));
 	}
 
 	/**
@@ -108,7 +112,13 @@ class Integracao_Bao_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/integracao-bao-public.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( 'uikit', plugin_dir_url( __FILE__ ) . 'js/uikit.min.js', array(), $this->version, false );
 
+		// Insert styles on head
 		add_action('wp_head', array($this, 'insert_style_loader'));
+
+		// insert scripts on footer
+		if (is_checkout() || is_cart()) :
+			add_action('wp_footer', array($this, 'bao_ajax_requests'));
+		endif;
 
 	}
 
@@ -117,7 +127,7 @@ class Integracao_Bao_Public {
 	 * 
 	 * @since 1.0.0
 	 */
-	public function form_bao_cotacao()
+	public function form_bao_cotacao($atts)
 	{
 		require( plugin_dir_path(__FILE__) . 'partials/integracao-bao-public-display.php');
 	}
@@ -185,7 +195,7 @@ class Integracao_Bao_Public {
 	 * 
 	 * @since 1.0.0
 	 */
-	public function handle_data_form() 
+	public function handle_data_form($atts) 
 	{
 		if (!empty($_POST)) :
 			setlocale(LC_MONETARY, 'pt_BR');
@@ -268,7 +278,7 @@ class Integracao_Bao_Public {
 		if ( wp_remote_retrieve_response_message($api_response) === 'Created' ) :
 			$post_id = $body->id;
 
-			// Updates post meta
+			// Updates post meta itens cotaçao
 			update_post_meta($post_id, 'bao_product_zip_origin', $zip_from);
 			update_post_meta($post_id, 'bao_product_zip_destiny', $zip_to);
 			update_post_meta($post_id, 'bao_product_volumes', $n_volumes);
@@ -392,4 +402,288 @@ class Integracao_Bao_Public {
 		<?php
 	}
 
+	/**
+	 * Insert forms of origin x destiny address for each item on cart
+	 * mostrar um form de coleta e entrega para cada item no carrinho
+	 */
+	public function collect_data_delivery_each_item_on_cart($atts)
+	{
+		// Campos coleta e entrega no form
+		$curr_cart = WC()->cart->get_cart_contents();
+
+		if ( !empty($curr_cart) ) :
+			echo '<div class="">';
+			echo '<h3>Coleta e entrega por item</h3><table class="table"><tbody>';
+			foreach ($curr_cart as $product) :
+				$post_id 	= $product['product_id'];
+				$button 	= '<!-- This is a button toggling the modal --><button uk-toggle="target: #modal-'. $post_id .'" type="button">Coleta e entrega #'. $post_id .'</button>';
+				
+				echo '<tr>
+						<th scope="row">'. get_the_title($post_id) .'</th>
+						<td>'. $button .'</td>
+					</tr>';
+				Integracao_Bao_Public::tpl_form_data_collect($product['product_id']);
+			endforeach;
+			echo '</tbody></table>';
+			echo '</div>';
+		endif;
+		return false;
+	}
+
+	/**
+	 * Template form for delivery data for each item on cart
+	 * 
+	 * @since 1.0.0
+	 */
+	public function tpl_form_data_collect($product_id)
+	{
+		?>
+		<!-- This is the modal -->
+		<div id="modal-<?php echo $product_id; ?>" class="" uk-modal>
+			<div class="uk-modal-dialog uk-modal-body">
+				<h3><?php echo "#" . $product_id; ?> - Preencha com dados de coleta e entrega</h3>
+				<div class="uk-column-1-1">
+					<!-- Form coleta -->
+					<div class="">
+						<h4>Dados coleta</h4>
+						<div class="uk-column-1-2">
+							<div class="form-group">
+								<label for="bao_collect_fullname">Nome completo</label>
+								<input type="text" class="form-control" id="bao_collect_fullname_<?php echo $product_id; ?>" aria-describedby="name_help">
+								<small id="name_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_tel">Telefone/Whatsapp</label>
+								<input type="tel" class="form-control" id="bao_collect_tel_<?php echo $product_id; ?>" aria-describedby="tel_help">
+								<small id="tel_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_city">Cidade</label>
+								<input type="tel" class="form-control" id="bao_collect_city_<?php echo $product_id; ?>" aria-describedby="city_help">
+								<small id="city_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_neighborhood">Bairro</label>
+								<input type="text" class="form-control" id="bao_collect_neighborhood_<?php echo $product_id; ?>" aria-describedby="neighborhood_help">
+								<small id="neighborhood_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_address">Endereço</label>
+								<input type="text" class="form-control" id="bao_collect_address_<?php echo $product_id; ?>" aria-describedby="address_help">
+								<small id="address_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_cep">CEP</label>
+								<input type="text" class="form-control" id="bao_collect_cep_<?php echo $product_id; ?>" aria-describedby="cep_help">
+								<small id="cep_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_number">Número</label>
+								<input type="number" class="form-control" id="bao_collect_number_<?php echo $product_id; ?>" aria-describedby="number_help">
+								<small id="number_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_complement">Complemento</label>
+								<input type="text" class="form-control" id="bao_collect_complement_<?php echo $product_id; ?>" aria-describedby="complement_help">
+								<small id="complement_help" class="form-text text-muted"></small>
+							</div>
+						</div>
+					</div>
+
+					<!-- Form Entrega -->
+					<div class="">
+						<h4>Dados entrega</h4>
+						<div class="uk-column-1-2">
+							<div class="form-group ">
+								<label for="bao_shipping_fullname">Nome completo</label>
+								<input type="text" class="form-control" id="bao_shipping_fullname_<?php echo $product_id; ?>" aria-describedby="name_help">
+								<small id="name_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group ">
+								<label for="bao_shipping_tel">Telefone/Whatsapp</label>
+								<input type="tel" class="form-control" id="bao_shipping_tel_<?php echo $product_id; ?>" aria-describedby="tel_help">
+								<small id="tel_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group ">
+								<label for="bao_shipping_city">Cidade</label>
+								<input type="tel" class="form-control" id="bao_shipping_city_<?php echo $product_id; ?>" aria-describedby="city_help">
+								<small id="city_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group ">
+								<label for="bao_shipping_neighborhood">Bairro</label>
+								<input type="text" class="form-control" id="bao_shipping_neighborhood_<?php echo $product_id; ?>" aria-describedby="neighborhood_help">
+								<small id="neighborhood_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group ">
+								<label for="bao_shipping_address">Endereço</label>
+								<input type="text" class="form-control" id="bao_shipping_address_<?php echo $product_id; ?>" aria-describedby="address_help">
+								<small id="address_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group ">
+								<label for="bao_shipping_cep">CEP</label>
+								<input type="text" class="form-control" id="bao_shipping_cep_<?php echo $product_id; ?>" aria-describedby="cep_help">
+								<small id="cep_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group col-2">
+								<label for="bao_shipping_number">Número</label>
+								<input type="number" class="form-control" id="bao_shipping_number_<?php echo $product_id; ?>" aria-describedby="number_help">
+								<small id="number_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group col-10">
+								<label for="bao_shipping_complement">Complemento</label>
+								<input type="text" class="form-control" id="bao_shipping_complement_<?php echo $product_id; ?>" aria-describedby="complement_help">
+								<small id="complement_help" class="form-text text-muted"></small>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				<button type="submit" class="btn btn-primary" onclick="send_form_data(<?php echo $product_id; ?>)">Salvar <?php echo '#' . $product_id; ?> </button>
+			</div>
+			<!-- <button class="uk-modal-close" type="button">Fechar</button> -->
+		</div>
+
+		<?php
+	}
+
+
+	/**
+	 * Insert ajax script on pages
+	 * 
+	 * @since 1.0.0
+	 */
+	public function bao_ajax_requests()
+	{
+		?>
+		<script>
+			function send_form_data(product_id)
+			{
+				// Dados coleta
+				var coll_full_name = jQuery('#bao_collect_fullname_' + product_id).val(),
+					coll_tel = jQuery('#bao_collect_tel_' + product_id).val(),
+					coll_city = jQuery('#bao_collect_city_' + product_id).val(),
+					coll_neighborhood = jQuery('#bao_collect_neighborhood_' + product_id).val(),
+					coll_address = jQuery('#bao_collect_address_' + product_id).val(),
+					coll_cep = jQuery('#bao_collect_cep_' + product_id).val(),
+					coll_number	= jQuery('#bao_collect_number_' + product_id).val(),
+					coll_complement = jQuery('#bao_collect_complement_' + product_id).val();
+
+				// Building string for collect data
+				var collectDataSend = coll_full_name + '-|-' + coll_tel + '-|-' + coll_city + '-|-' + coll_neighborhood + '-|-' + coll_address + '-|-' + coll_cep + '-|-' + coll_number + '-|-' + coll_complement;
+				var name = jQuery('#bao_collect_fullname_' + product_id).val();
+
+				// Dados entrega
+				var shipping_full_name = jQuery('#bao_shipping_fullname_' + product_id).val(),
+					shipping_tel = jQuery('#bao_shipping_tel_' + product_id).val(),
+					shipping_city = jQuery('#bao_shipping_city_' + product_id).val(),
+					shipping_neighborhood = jQuery('#bao_shipping_neighborhood_' + product_id).val(),
+					shipping_address = jQuery('#bao_shipping_address_' + product_id).val(),
+					shipping_cep = jQuery('#bao_shipping_cep_' + product_id).val(),
+					shipping_number = jQuery('#bao_shipping_number_' + product_id).val(),
+					shipping_complement = jQuery('#bao_shipping_complement_' + product_id).val();
+
+				// Build string for shipping data
+				var shippingDataSend = shipping_full_name + '-|-' + shipping_tel + '-|-' + shipping_city + '-|-' + shipping_neighborhood + '-|-' + shipping_address + '-|-' + shipping_cep + '-|-' + shipping_number + '-|-' + shipping_complement;
+				
+				// Another data
+				var action_name = 'bao_update_product_freight';
+
+				// Send to backend
+				jQuery.ajax({
+					url: '<?php echo admin_url('admin-ajax.php'); ?>',
+					type: 'POST',
+					data: {
+						'action': action_name,
+						'post_id': product_id,
+						'dataCollect': collectDataSend, // String
+						'dataShipping': shippingDataSend, // String
+					},
+					beforeSend: function(){
+						console.log('Enviando...');
+					},
+					success: function(data)
+					{
+						console.log('Sucesso! ' + data);
+					},
+					error: function(data)
+					{
+						console.log('Erro! ' + data.erro);
+					},
+					complete: function(data)
+					{
+						console.log('Requisição efeituada com sucesso!');
+					}
+				});
+			}
+		</script>
+		<?php
+	}
+
+
+
+	/**
+	 * Update product meta's for delivery
+	 * 
+	 * @since 1.0.0
+	 */
+	public function bao_update_product_freight()
+	{
+		if(!empty($_POST)) :
+			$post_id = $_POST['post_id'];
+			$data_collect = $_POST['dataCollect'];
+			$data_shipping = $_POST['dataShipping'];
+
+			$extract_collect_data = explode('-|-', $data_collect);
+			$extract_shipping_data = explode('-|-', $data_shipping);
+
+			$keys_collect_data = array(
+				'bao_product_collect_name',
+				'bao_product_collect_phone',
+				'bao_product_collect_city',
+				'bao_product_collect_neighborhood',
+				'bao_product_collect_address',
+				'bao_product_collect_zip',
+				'bao_product_collect_number',
+				'bao_product_collect_complement'
+			);
+
+			$keys_shipping_data = array(
+				'bao_product_shipping_name',
+				'bao_product_shipping_phone',
+				'bao_product_shipping_city',
+				'bao_product_shipping_neighborhood',
+				'bao_product_shipping_address',
+				'bao_product_shipping_zip',
+				'bao_product_shipping_number',
+				'bao_product_shipping_complement'
+			);
+
+			// Updating collect data
+			if (!empty($extract_collect_data)) :
+				$count = 0;
+				foreach ($extract_collect_data as $data) :
+					if (!empty($data)) :
+						update_post_meta($post_id, $keys_collect_data[$count], trim($data));
+						// echo ' - ' . get_post_meta($post_id, $keys_collect_data[$count], true);
+					endif;
+					$count++;
+				endforeach;
+			endif;
+
+			// Updating shipping data
+			if (!empty($extract_shipping_data)) :
+				$count = 0;
+				foreach ($extract_shipping_data as $data) :
+					if (!empty($data)) :
+						update_post_meta($post_id, $keys_shipping_data[$count], trim($data));
+						// echo ' - ' . get_post_meta($post_id, $keys_shipping_data[$count], true);
+					endif;
+					$count++;
+				endforeach;
+			endif;
+
+		endif;
+
+		die();
+	}
 }

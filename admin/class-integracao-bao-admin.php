@@ -267,6 +267,7 @@ class Integracao_Bao_Admin {
 		 */
 
 		// echo 'Option: ' . get_option('_bao_orders_already_sent_to_brix');
+		// Cotação[coleta dos dados] -> Carrinho[criação do produto - inserção dos dados(peso, qtd, valor)] -> Checkout[criação do pedido - inserção dos endereços] -> Pagamento -> Envio para o sistema -> Atualização do frete
 		if (empty($access_token)) :
 			return;
 		endif;
