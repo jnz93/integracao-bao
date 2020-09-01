@@ -56,7 +56,6 @@ class Integracao_Bao_Public {
 		// Shortcodes
 		add_shortcode('bao_cotacao', array($this, 'form_bao_cotacao'));
 		add_shortcode('handle_data_form', array($this, 'handle_data_form'));
-		add_shortcode('coll_data_for_each_item', array($this, 'collect_data_delivery_each_item_on_cart'));
 		
 		// Ajax Actions
 		add_action('wp_ajax_send_cotacao_data', array($this, 'send_cotacao_data'));
@@ -64,6 +63,9 @@ class Integracao_Bao_Public {
 
 		add_action('wp_ajax_bao_update_product_freight', array($this, 'bao_update_product_freight'));
 		add_action('wp_ajax_nopriv_bao_update_product_freight', array($this, 'bao_update_product_freight'));
+
+		// Popup delivery data		
+		add_action('bao_popups_delivery_data', array($this, 'popups_collect_delivery_data'));
 	}
 
 	/**
@@ -406,26 +408,16 @@ class Integracao_Bao_Public {
 	 * Insert forms of origin x destiny address for each item on cart
 	 * mostrar um form de coleta e entrega para cada item no carrinho
 	 */
-	public function collect_data_delivery_each_item_on_cart($atts)
+	public function popups_collect_delivery_data($atts)
 	{
 		// Campos coleta e entrega no form
 		$curr_cart = WC()->cart->get_cart_contents();
 
 		if ( !empty($curr_cart) ) :
-			echo '<div class="">';
-			echo '<h3>Coleta e entrega por item</h3><table class="table"><tbody>';
 			foreach ($curr_cart as $product) :
 				$post_id 	= $product['product_id'];
-				$button 	= '<!-- This is a button toggling the modal --><button uk-toggle="target: #modal-'. $post_id .'" type="button">Coleta e entrega #'. $post_id .'</button>';
-				
-				echo '<tr>
-						<th scope="row">'. get_the_title($post_id) .'</th>
-						<td>'. $button .'</td>
-					</tr>';
-				Integracao_Bao_Public::tpl_form_data_collect($product['product_id']);
+				Integracao_Bao_Public::tpl_address_form($post_id);
 			endforeach;
-			echo '</tbody></table>';
-			echo '</div>';
 		endif;
 		return false;
 	}
@@ -435,7 +427,7 @@ class Integracao_Bao_Public {
 	 * 
 	 * @since 1.0.0
 	 */
-	public function tpl_form_data_collect($product_id)
+	public function tpl_address_form($product_id)
 	{
 		?>
 		<!-- This is the modal -->
