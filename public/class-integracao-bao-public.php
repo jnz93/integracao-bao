@@ -113,6 +113,7 @@ class Integracao_Bao_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/integracao-bao-public.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( 'uikit', plugin_dir_url( __FILE__ ) . 'js/uikit.min.js', array(), $this->version, false );
+		wp_enqueue_script( 'jquery-mask', plugin_dir_url( __FILE__ ) . 'js/jquery.mask.js', array(), '1.14.16', true);
 
 		// Insert styles on head
 		add_action('wp_head', array($this, 'insert_style_loader'));

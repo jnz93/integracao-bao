@@ -29,7 +29,7 @@
         </select>
     </div>
     <div class="form-group cotacao-cepdestinatario">
-        <label for="cotacao-cepdestinatario">Cidade destino</label>
+        <label for="cotacao-cepdestinatario">Cidade Destino</label>
         <!-- <input type="text" class="form-control" name="cotacao-cepdestinatario" id="cotacao-cepdestinatario" required> -->
         <select id="cotacao-cepdestinatario" name="select-destiny" class="form-control">
             <option value="" selected>Selecione o Destino</option>
@@ -55,8 +55,8 @@
     </div>
     
     <div class="form-group cotacao-valor">
-        <label for="cotacao-valor">Valor (R$)</label>
-        <input type="number" class="form-control" name="cotacao-valor" id="cotacao-valor" required>
+        <label for="cotacao-valor">Valor da mercadoria (R$)</label>
+        <input type="text" class="form-control" name="cotacao-valor" id="cotacao-valor" required>
     </div>
 
     <div class="form-group">
@@ -173,4 +173,10 @@ function showNotice(el)
 {
     el.children('.notice-msg').toggle().fade();
 };
+
+jQuery('document').ready(function()
+{
+    // Masks
+    jQuery('#cotacao-valor').mask("#,##0.00", {reverse: true});
+})
 </script>
