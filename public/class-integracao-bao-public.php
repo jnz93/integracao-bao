@@ -531,17 +531,15 @@ class Integracao_Bao_Public {
 					</div>
 					
 				</div>
-				<button type="submit" class="btn btn-primary" onclick="send_form_data(<?php echo $product_id; ?>)">Salvar pedido</button>
+				<button type="submit" class="btn btn-primary" onclick="send_form_data(jQuery(this), <?php echo $product_id; ?>)">Salvar pedido</button>
 				
 				<!-- Messages -->
 				<div class="form-messages">
-					<div id="error-message" class="uk-alert-warning" style="display: none;" uk-alert>
-						<a class="uk-alert-close" uk-close></a>
+					<div id="error-message" class="uk-alert-warning" style="display: none;" uk-alert>	
 						<p>Por favor, preencha corretamente os campos em vermelho para salvar.</p>
 					</div>
 
 					<div id="success-message" class="uk-alert-success" style="display: none;" uk-alert>
-						<a class="uk-alert-close" uk-close></a>
 						<p>Os dados de coleta e entrega foram salvos com sucesso!</p>
 					</div>
 				</div>
@@ -562,8 +560,10 @@ class Integracao_Bao_Public {
 	{
 		?>
 		<script>
-			function send_form_data(product_id)
+			function send_form_data(el, product_id)
 			{
+				var self = el;
+
 				// Dados coleta
 				var coll_full_name = jQuery('#bao_collect_fullname_' + product_id).val(),
 					coll_tel = jQuery('#bao_collect_tel_' + product_id).val(),
@@ -647,9 +647,10 @@ class Integracao_Bao_Public {
 						},
 						success: function(data)
 						{
-							console.log('Sucesso! ' + data);
-							jQuery('#error-message').fadeOut();
-							jQuery('#success-message').fadeIn();
+							self.siblings('h3').fadeOut();4
+							self.siblings('.bao_wrapper_form').fadeOut();
+							self.siblings('.form-messages').find('#success-message').fadeIn();
+							self.fadeOut();
 						},
 						error: function(data)
 						{
@@ -669,11 +670,11 @@ class Integracao_Bao_Public {
 			function checkRequiredFields(val)
 			{
 				if (val.length > 1) {
-					console.log('Válido: ' + val);
+					// console.log('Válido: ' + val);
 				}
 				else
 				{
-					console.log('Invalido: ' + val);
+					// console.log('Invalido: ' + val);
 				}
 			}
 		</script>
