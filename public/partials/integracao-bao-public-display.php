@@ -83,8 +83,16 @@
         <input type="hidden" name="zip_code" id="zip_code" value="">
 
         <?php if ( is_user_logged_in() ) : ?>
+            <div class="uk-text-center">
+                <h4 class="uk-card-title uk-text-warning"><i class="icon-attention"></i></h4>
+                <span class="uk-text-warning">As informações prestadas são responsabilidade do usuário e qualquer informação divergente pode alterar o valor do frete"</span>
+            </div>
             <button type="submit" class="">Finalizar frete</button>
         <?php else : ?>
+            <div class="uk-text-center">
+                <h4 class="uk-card-title uk-text-warning"><i class="icon-attention"></i></h4>
+                <span class="uk-text-warning">As informações prestadas são responsabilidade do usuário e qualquer informação divergente pode alterar o valor do frete"</span>
+            </div>
             <button>Cadastre-se para continuar</button>
         <?php endif; ?>
     </div>
