@@ -531,7 +531,7 @@ class Integracao_Bao_Public {
 					</div>
 					
 				</div>
-				<button type="submit" class="btn btn-primary" onclick="send_form_data(<?php echo $product_id; ?>)">Salvar <?php echo '#' . $product_id; ?> </button>
+				<button type="submit" class="btn btn-primary" onclick="send_form_data(<?php echo $product_id; ?>)">Salvar pedido</button>
 				
 				<!-- Messages -->
 				<div class="form-messages">
