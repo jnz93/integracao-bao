@@ -185,6 +185,6 @@ function showNotice(el)
 jQuery('document').ready(function()
 {
     // Masks
-    jQuery('#cotacao-valor').mask("#,##0.00", {reverse: true});
+    jQuery('#cotacao-valor').mask("#.##0,##", {reverse: true});
 })
 </script>
