@@ -89,6 +89,10 @@ class Integracao_Bao_Public {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/integracao-bao-public.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'uikit', plugin_dir_url( __FILE__ ) . 'css/uikit.min.css', array(), $this->version, 'all' );
+		
+		if(is_checkout()){
+			wp_enqueue_style('bao-checkout-custom', plugin_dir_url( __FILE__ ) . 'css/integracao-bao-checkout.css', array(), $this->version, 'all');
+		}
 
 	}
 
@@ -699,7 +703,6 @@ class Integracao_Bao_Public {
 		</script>
 		<?php
 	}
-
 
 
 	/**
