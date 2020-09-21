@@ -564,6 +564,7 @@ class Integracao_Bao_Public {
 				</div>
 			</div>
 			<!-- <button class="uk-modal-close" type="button">Fechar</button> -->
+			<input class="productId" type="hidden" name="" product_id="<?php echo $product_id; ?>">
 		</div>
 
 		<?php
@@ -686,16 +687,67 @@ class Integracao_Bao_Public {
 				}
 			}
 
-			function checkRequiredFields(val)
+			function checkRequiredFields(product_id)
 			{
-				if (val.length > 1) {
-					// console.log('Válido: ' + val);
-				}
-				else
+				// Teste validaçao dos inputs
+				var arrInputsA = [];
+				arrInputsA.push(jQuery('#bao_collect_fullname_' + product_id));
+				arrInputsA.push(jQuery('#bao_collect_tel_' + product_id));
+				arrInputsA.push(jQuery('#bao_collect_city_' + product_id));
+				arrInputsA.push(jQuery('#bao_collect_neighborhood_' + product_id));
+				arrInputsA.push(jQuery('#bao_collect_address_' + product_id));
+				arrInputsA.push(jQuery('#bao_collect_cep_' + product_id));
+				arrInputsA.push(jQuery('#bao_collect_number_' + product_id));
+				arrInputsA.push(jQuery('#bao_collect_complement_' + product_id));
+				arrInputsA.push(jQuery('#bao_shipping_fullname_' + product_id));
+				arrInputsA.push(jQuery('#bao_shipping_tel_' + product_id));
+				arrInputsA.push(jQuery('#bao_shipping_city_' + product_id));
+				arrInputsA.push(jQuery('#bao_shipping_neighborhood_' + product_id));
+				arrInputsA.push(jQuery('#bao_shipping_address_' + product_id));
+				arrInputsA.push(jQuery('#bao_shipping_cep_' + product_id));
+				arrInputsA.push(jQuery('#bao_shipping_number_' + product_id));
+				arrInputsA.push(jQuery('#bao_shipping_complement_' + product_id));
+
+				var invalidInputs = 0;
+				arrInputsA.forEach(function(el)
 				{
-					// console.log('Invalido: ' + val);
-				}
+					if (el.val().length < 3)
+					{
+						el.css({'border': '1px solid red'});
+						invalidInputs++;
+					}
+					else
+					{
+						console.log(el.attr('id') + " Válido!");
+						el.css({'border': '1px solid green'});
+					}
+				});
+
+				return invalidInputs;
 			}
+
+			// Bloquear/esconder botão "Concluir compra"
+			jQuery(document).ready(function()
+			{
+				var elIds = jQuery('.productId');
+				var btnConcluir = jQuery('a.checkout-button');
+				var showConcluirCompra = 0;
+
+				elIds.each(function(index, el)
+				{
+					// console.log(el.getAttribute('product_id'));
+					var id = el.getAttribute('product_id');
+					showConcluirCompra += checkRequiredFields(id);
+				});
+				console.log("Total: " + showConcluirCompra);
+
+				// console.log(product_id);
+				if(showConcluirCompra != 0 ) {
+					btnConcluir.hide();
+					console.log(btnConcluir);
+				}
+				// console.log(showConcluirCompra);
+			})
 		</script>
 		<?php
 	}
