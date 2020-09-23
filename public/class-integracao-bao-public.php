@@ -554,7 +554,6 @@ class Integracao_Bao_Public {
 					</div>
 					
 				</div>
-				<button type="submit" class="btn btn-primary" onclick="send_form_data(jQuery(this), <?php echo $product_id; ?>)">Salvar pedido</button>
 				
 				<!-- Messages -->
 				<div class="form-messages">
@@ -566,6 +565,9 @@ class Integracao_Bao_Public {
 						<p>Os dados de coleta e entrega foram salvos com sucesso!</p>
 					</div>
 				</div>
+
+				<button type="submit" class="btn btn-primary" onclick="send_form_data(jQuery(this), <?php echo $product_id; ?>)">Salvar pedido</button>
+				<button class="btn bnt-primary" onclick="show_form_data(jQuery(this), jQuery(this).siblings('.bao_wrapper_form'))" style="display: none;">Editar informações</button>
 			</div>
 			<!-- <button class="uk-modal-close" type="button">Fechar</button> -->
 		</div>
@@ -583,9 +585,10 @@ class Integracao_Bao_Public {
 	{
 		?>
 		<script>
-			function send_form_data(el, product_id)
+			/** Coleta e envio dos dados do form pro back end via ajax */
+			function send_form_data(self, product_id)
 			{
-				var self = el;
+				var self = self;
 
 				// Dados coleta
 				var coll_full_name = jQuery('#bao_collect_fullname_' + product_id).val(),
@@ -672,12 +675,18 @@ class Integracao_Bao_Public {
 						{
 							self.siblings('h3').fadeOut();4
 							self.siblings('.bao_wrapper_form').fadeOut();
+							self.siblings('button').fadeIn();
 							self.siblings('.form-messages').find('#success-message').fadeIn();
 							self.fadeOut();
 						},
 						error: function(data)
 						{
 							console.log('Erro! ' + data.erro);
+							self.siblings('h3').fadeOut();4
+							self.siblings('.bao_wrapper_form').fadeOut();
+							self.siblings('button').fadeIn();
+							self.siblings('.form-messages').find('#error-message').fadeIn();
+							self.fadeOut();
 						},
 						complete: function(data)
 						{
@@ -688,6 +697,17 @@ class Integracao_Bao_Public {
 					console.log(invalidInputs + " Inválido(s)!");
 					jQuery('#error-message').fadeIn();
 				}
+			}
+
+			/** Mostrar form para edição de informações */
+			function show_form_data(self, el)
+			{
+				var self = self,
+					form = el;
+
+				self.fadeOut();
+				self.siblings('button').fadeIn();
+				form.fadeIn();
 			}
 
 			function checkRequiredFields(val)
