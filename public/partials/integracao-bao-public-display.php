@@ -13,8 +13,9 @@
  */
 
  $page_cart = wc_get_cart_url();
+ $page_login = get_permalink( wc_get_page_id( 'myaccount' ) );
 ?>
-<form method="post" action="<?php echo $page_cart; ?>" style="margin-bottom: 150px;">
+<form method="post" action="<?php echo is_user_logged_in() ? $page_cart : $page_login; ?>" style="margin-bottom: 150px;">
     <div class="notice-box" style="position: relative; display: flex; justify-content: flex-end; cursor: pointer" onclick="showNotice(jQuery(this))">
         <span id="" class="notice-msg" style="display: none; font-size: 11px; text-align: right; background: #EFEFEF; padding: 4px; border-radius: 4px; position: absolute; width: 315px; left: 0px; top: -40px;">Caso a origem ou destino desejados não constem nas opções, aguarde e em breve a BAO estará disponível em sua cidade!</span>
         <i class="icon-info-circled"></i>
