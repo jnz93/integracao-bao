@@ -63,6 +63,11 @@ class Integracao_Bao_Admin {
 		add_action( 'bao_task_hourly', array($this, 'send_alert_virified_orders')); // 'bao_task_hourly` is registered when the event is scheduled
 
 		// add_shortcode('test_all_orders', array($this, 'bao_verify_order_paid'));
+
+		// Register ajax actions
+		add_action('wp_ajax_save_minuta_id', array($this, 'save_minuta_id'));
+		add_action('wp_ajax_nopriv_save_minuta_id', array($this, 'save_minuta_id'));
+
 		 
 	}
 
@@ -496,24 +501,43 @@ class Integracao_Bao_Admin {
 								},
 								success: function(data)
 								{
-									// jQuery('footer').append(data);
-									console.log('Sucesso!')
-									var returnData = data.data[0];
+									var recordData = data.data[0],
+										minutaID = recordData.id;
 								
-									console.log(returnData.cAut);
-									console.log(returnData.status);
-									console.log(returnData.message);
-									console.log(returnData.id);
-
-									getMinutaByID(returnData.id);
+									var productID = '<?php echo $product_id; ?>';
+									sendIdsToBackEnd(minutaID, productID);
 								},
-								error: function(data)
+								error: function(err)
 								{
-									console.log('Erro:')
-									console.log(data);
+									console.log(err);
 								}
-							})
+							});
 
+
+							// Envia o id da minuta e do produto para uma função no backend
+							function sendIdsToBackEnd(minutaId, productId)
+							{
+								var action_name = 'save_minuta_id';
+
+								jQuery.ajax({
+									url: '<?php echo admin_url('admin-ajax.php'); ?>',
+									type: 'POST',
+									data: {
+										'action': action_name,
+										'minuta_id': minutaId,
+										'product_id': productId
+									},
+									success: function(data)
+									{
+										return data;
+									},
+									error: function(err){
+										return err;
+									}
+								});
+							}
+
+							// Retorna os dados da minuta por ID
 							function getMinutaByID(id)
 							{
 								jQuery.ajax({
@@ -523,11 +547,15 @@ class Integracao_Bao_Admin {
 									},
 									url: "<?php echo 'https://brix.brudam.com.br/api/v1/tracking/ocorrencias/minuta?codigo=' ?> " + id,
 									success: function(data)
+									{										
+										return data;
+									},
+									error: function(err)
 									{
-										console.log(data);
+										return err;
 									}
-								})
-							}
+								});
+							};
 						</script>
 						<?php
 						$str_orders_id = $str_orders_id . ',' . $order_id;
@@ -599,5 +627,24 @@ class Integracao_Bao_Admin {
 		return $orders;
 	}
 
+
+	/**
+	 * Function save_minuta_id
+	 * 
+	 * Recebe os ids necessários via ajax e salva no produto. 
+	 * 
+	 * @since 1.0.2
+	 */
+	public function save_minuta_id()
+	{
+		if (empty($_POST)) :
+			return;
+		endif;
+
+		$minuta_id 	= trim($_POST['minuta_id']);
+		$product_id = trim($_POST['product_id']);
+
+		update_post_meta($product_id, 'bao_minuta_id', $minuta_id);		
+	}
 
 }
