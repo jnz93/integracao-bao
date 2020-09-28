@@ -257,7 +257,6 @@ class Integracao_Bao_Admin {
 
 		if (!empty($orders_to_send)) :
 			$orders_already = get_option('_bao_orders_already_sent_to_brix');
-			echo $orders_already . '</br>';
 
 			$str_orders_id 	= '';
 			foreach ($orders_to_send as $order) :
