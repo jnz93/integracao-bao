@@ -602,4 +602,36 @@ class Integracao_Bao_Admin {
 		update_post_meta($post_id, 'bao_minuta_id', $minuta_id);
 		die();
 	}
+
+
+	/**
+	 * Function update_data_minuta_on_product()
+	 * Recebe dados via ajax e faz o update das informações relacionadas a minuta(status, etc...)
+	 * 
+	 * @since 1.0.2
+	 */
+	public function update_data_minuta_on_product()
+	{
+		if (empty($_POST)) :
+			echo 'Nenhum dado encontrado';
+			return;
+		endif;
+
+		$post_id 	= $_POST['post_id'];
+		$str_data 	= $_POST['data_minuta'];
+
+		$arr_data 	= explode('**', $str_data);
+
+		foreach ($arr_data as $data) :
+			$result = explode('_*', $data);
+			// print_r($result);
+			
+			$meta_key = trim($result[0]);
+			$meta_value = trim($result[1]);
+			// echo 'Post id: ' . $post_id . '</br>';
+			// echo 'Meta Value: ' . $meta_value . '</br>';
+			update_post_meta($post_id, $meta_key, $meta_value);
+		endforeach;
+		die();
+	}
 }
