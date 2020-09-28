@@ -582,5 +582,24 @@ class Integracao_Bao_Admin {
 		return $orders;
 	}
 
+	/**
+	 * Function save_minuta_id_on_product()
+	 * 
+	 * recebe dados via ajax e salva como metacampo no produto/post relacionado
+	 * 
+	 * @since 1.0.2
+	 */
+	public function save_minuta_id_on_product()
+	{
+		if (empty($_POST)) :
+			echo 'Nenhum dado encontrado';
+			return;
+		endif;
 
+		$minuta_id 	= $_POST['minuta_id'];
+		$post_id 	= $_POST['post_id'];
+
+		update_post_meta($post_id, 'bao_minuta_id', $minuta_id);
+		die();
+	}
 }
