@@ -790,4 +790,185 @@ class Integracao_Bao_Public {
 
 		die();
 	}
+
+		/**
+	 * Template view-order para mostrar informações de entrega 
+	 * e botão para ver os dados de coleta e entrega
+	 * 
+	 * @param $order(obj) = Wp object da ordem a ser exibida
+	 * 
+	 * @since 1.0.3
+	 */
+	public function bao_view_order( $order )
+	{
+		$products = $order->get_items();
+		?>
+
+		<h4>Detalhes do pedido</h4>
+		<table class="woocommerce-table shop_table">
+			<thead>
+				<tr>
+					<th style="text-align: left;">Produto(s)</th>
+					<th style="text-align: left;">Status Envio</th>
+					<th style="text-align: left;">Coleta/Entrega</th>
+					<th style="text-align: left;">Total</th>
+				</tr>
+			</thead>
+			<tbody>
+			<!-- Add loop dos items -->
+			<!-- Nas linhas deverá ter espaço para o botão dos dados e também uma coluna dedicada ao status -->
+			<?php
+			foreach($products as $product) :
+				$product_id 			= $product['product_id'];
+				$status_env = Integracao_Bao_Public::serialize_status_code($product_id);
+				$tr = '<tr><td class="product-name">'. $product['name'] .' x'. $product['quantity'] .'</td><td style="text-align:left;">'. $status_env .'</td><td><button uk-toggle="target: #product-'. $product_id .'" type="button">Ver</button></td><td>'. $product['total'] .'</td></tr>';
+
+				echo $tr;
+			endforeach;
+			?>
+			</tbody>
+			<tfoot>
+				<tr>
+					<th scope="row">Subtotal:</th>
+					<td></td>
+					<td></td>
+					<td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">R$</span><?php echo $order->total; ?></span></td>
+				</tr>
+				<tr>
+					<th scope="row">Método de pagamento:</th>
+					<td></td>
+					<td></td>
+					<td><?php echo $order->payment_method_title; ?></td>
+				</tr>
+				<tr>
+					<th scope="row">Total:</th>
+					<td></td>
+					<td></td>
+					<td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">R$</span><?php echo $order->total; ?></span></td>
+				</tr>
+			</tfoot>
+		</table>
+		
+		<?php
+			foreach($products as $product)
+			{
+				$product_id 			= $product['product_id'];
+			
+				// Get current data of collect
+				$collect_fullname 		= get_post_meta($product_id, 'bao_product_collect_name', true);
+				$collect_tel 			= get_post_meta($product_id, 'bao_product_collect_phone', true);
+				$collect_city 			= get_post_meta($product_id, 'bao_product_collect_city', true);
+				$collect_neighborhood 	= get_post_meta($product_id, 'bao_product_collect_neighborhood', true);
+				$collect_address 		= get_post_meta($product_id, 'bao_product_collect_address', true);
+				$collect_cep 			= get_post_meta($product_id, 'bao_product_collect_zip', true);
+				$collect_number 		= get_post_meta($product_id, 'bao_product_collect_number', true);
+				$collect_complement 	= get_post_meta($product_id, 'bao_product_collect_complement', true);
+			
+				// Get current data of shipping
+				$shipping_fullname 		= get_post_meta($product_id, 'bao_product_shipping_name', true);
+				$shipping_tel 			= get_post_meta($product_id, 'bao_product_shipping_phone', true);
+				$shipping_city 			= get_post_meta($product_id, 'bao_product_shipping_city', true);
+				$shipping_neighborhood 	= get_post_meta($product_id, 'bao_product_shipping_neighborhood', true);
+				$shipping_address 		= get_post_meta($product_id, 'bao_product_shipping_address', true);
+				$shipping_cep 			= get_post_meta($product_id, 'bao_product_shipping_zip', true);
+				$shipping_number 		= get_post_meta($product_id, 'bao_product_shipping_number', true);
+				$shipping_complement 	= get_post_meta($product_id, 'bao_product_shipping_complement', true);
+			
+				$minuta_id 				= get_post_meta($product_id, 'bao_minuta_id', true);
+				?>
+
+				<div id="<?php echo 'product-' . $product_id; ?>" class="uk-modal-container" uk-modal>
+					<div class="uk-modal-dialog uk-modal-body">
+						<div class="d-flex" style="display: flex;">
+							<!-- Coleta -->
+							<div class="" style="width:calc(50%-16px);margin:auto;">
+								<p>Dados coleta pacote #<?php echo $product_id; ?></p>
+								<table class="table table-bordered table-sm">
+									<tbody>
+										<tr>
+											<th>Nome</th>
+											<td><?php echo $collect_fullname; ?></td>
+										</tr>
+										<tr>
+											<th>Telefone</th>
+											<td><?php echo $collect_tel; ?></td>
+										</tr>
+										<tr>
+											<th>Cidade</th>
+											<td><?php echo $collect_city; ?></td>
+										</tr>
+										<tr>
+											<th>Bairro</th>
+											<td><?php echo $collect_neighborhood; ?></td>
+										</tr>
+										<tr>
+											<th>Endereço</th>
+											<td><?php echo $collect_address; ?></td>
+										</tr>
+										<tr>
+											<th>CEP</th>
+											<td><?php echo $collect_cep; ?></td>
+										</tr>
+										<tr>
+											<th>Número</th>
+											<td><?php echo $collect_number; ?></td>
+										</tr>
+										<tr>
+											<th>Complemento</th>
+											<td><?php echo $collect_complement; ?></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+					
+							<!-- entrega -->
+							<div class="" style="width:calc(50%-16px);margin:auto;">
+								<p>Dados entrega pacote #<?php echo $product_id; ?></p>
+								<table class="table table-bordered table-sm">
+									<tbody>
+										<tr>
+											<th>Nome</th>
+											<td><?php echo $shipping_fullname; ?></td>
+										</tr>
+										<tr>
+											<th>Telefone</th>
+											<td><?php echo $shipping_tel; ?></td>
+										</tr>
+										<tr>
+											<th>Cidade</th>
+											<td><?php echo $shipping_city; ?></td>
+										</tr>
+										<tr>
+											<th>Bairro</th>
+											<td><?php echo $shipping_neighborhood; ?></td>
+										</tr>
+										<tr>
+											<th>Endereço</th>
+											<td><?php echo $shipping_address; ?></td>
+										</tr>
+										<tr>
+											<th>CEP</th>
+											<td><?php echo $shipping_cep; ?></td>
+										</tr>
+										<tr>
+											<th>Número</th>
+											<td><?php echo $shipping_number; ?></td>
+										</tr>
+										<tr>
+											<th>Complemento</th>
+											<td><?php echo $shipping_complement; ?></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<button class="uk-modal-close" type="button">Fechar</button>
+					</div>
+				</div>
+				<?php
+			}
+			?>
+	<?php }
+
+	
 }
