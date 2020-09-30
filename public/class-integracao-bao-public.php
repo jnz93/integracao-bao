@@ -1014,5 +1014,41 @@ class Integracao_Bao_Public {
         return $status_desc;
     }
 
+	/**
+	 * Rendeniza uma tabela com os dados da minuta
+	 * 
+	 * @param $product_id(int) = Id do produto
+	 * @since 1.0.3
+	 */
+	public function render_table_of_data_minuta($product_id)
+	{
+	   if (empty($product_id)) :
+		   echo 'Id do produto não fornecido ou inválido';
+		   return;
+	   endif;
+
+	   $arr_keys = array(
+		   'cnpj_dest',
+		   'cnpj_rem',
+		   'cte_aut_data',
+		   'cte_num',
+		   'data_env',
+		   'desc',
+		   'nf_num',
+		   'minuta_id',
+		   'obs',
+		   'razao_dest',
+		   'razao_rem',
+		   'servico',
+		   'status_env',
+		   'tipo',
+		   'usuario'
+	   );
+
+	   foreach ($arr_keys as $key):
+		   $value = get_post_meta($product_id, $key, true);
+		   echo $key . ': ' . $value . '</br>';
+	   endforeach;
+	}
 	 
 }
