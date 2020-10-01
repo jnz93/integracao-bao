@@ -55,9 +55,9 @@
         <input type="number" class="form-control" name="cotacao-peso" id="cotacao-peso" required>
     </div>
     
-    <div class="form-group cotacao-valor">
-        <label for="cotacao-valor">Valor da mercadoria (R$)</label>
-        <input type="text" class="form-control" name="cotacao-valor" id="cotacao-valor" required>
+    <div class="form-group valor-carga">
+        <label for="valor-carga">Valor da Mercadoria (R$)</label>
+        <input type="text" class="form-control" name="valor-carga" id="valor-carga" required>
     </div>
 
     <div class="form-group">
@@ -88,14 +88,20 @@
                 <h4 class="uk-card-title uk-text-warning"><i class="icon-attention"></i></h4>
                 <span class="uk-text-warning">As informações prestadas são responsabilidade do usuário e qualquer informação divergente pode alterar o valor do frete</span>
             </div>
+            <button type="button" class="" onClick="sendCotacaoDataToBackEnd(jQuery('#valor-carga').val(), jQuery('#delivery_time').val(), jQuery('#cotacao-cepremetente').val(), jQuery('#cotacao-cepdestinatario').val(), jQuery('#cotacao-volumes').val(), jQuery('#delivery_price').val(), '<?php echo admin_url('admin-ajax.php'); ?>')">Adicionar ao carrinho</button>
             <button type="submit" class="">Finalizar frete</button>
         <?php else : ?>
             <div class="uk-text-center">
                 <h4 class="uk-card-title uk-text-warning"><i class="icon-attention"></i></h4>
                 <span class="uk-text-warning">As informações prestadas são responsabilidade do usuário e qualquer informação divergente pode alterar o valor do frete</span>
             </div>
+            <button type="button" class="" onClick="sendCotacaoDataToBackEnd(jQuery('#valor-carga').val(), jQuery('#delivery_time').val(), jQuery('#cotacao-cepremetente').val(), jQuery('#cotacao-cepdestinatario').val(), jQuery('#cotacao-volumes').val(), jQuery('#delivery_price').val(), '<?php echo admin_url('admin-ajax.php'); ?>')">Adicionar ao carrinho</button>
             <button>Cadastre-se para continuar</button>
         <?php endif; ?>
+    </div>
+    <div id="messages-cart" class="" style="margin-top: 20px;">
+        <span class="uk-alert-success" style="display: none;">Cotação adicionada ao carrinho com sucesso!</span>
+        <span class="uk-alert-danger" style="display: none;">Houve um problema ao adicionar a cotação no carrinho. Tente novamente.</span>
     </div>
     <p id="error-message" class="d-none"></p>
     <div id="bao-loader" class="lds-grid" style="margin-top: 35px;">
@@ -123,7 +129,7 @@ function request_cotacao()
         cepDestino = jQuery('#cotacao-cepdestinatario').val(),
         volumes = jQuery('#cotacao-volumes').val(),
         peso = jQuery('#cotacao-peso').val(),
-        valor = jQuery('#cotacao-valor').val(),
+        valor = jQuery('#valor-carga').val(),
         action_wp = 'send_cotacao_data';
 
     // Elements
@@ -186,6 +192,6 @@ function showNotice(el)
 jQuery('document').ready(function()
 {
     // Masks
-    jQuery('#cotacao-valor').mask("#.##0,##", {reverse: true});
+    jQuery('#valor-carga').mask("#.##0,##", {reverse: true});
 })
 </script>

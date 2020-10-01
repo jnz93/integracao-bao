@@ -202,43 +202,58 @@ class Integracao_Bao_Public {
 	 * 
 	 * @since 1.0.0
 	 */
-	public function handle_data_form($atts) 
+	public function handle_data_form() 
 	{
-		if (!empty($_POST)) :
-			setlocale(LC_MONETARY, 'pt_BR');
-			
-			$zip_from             	= $_POST['select-origin'];
-			$zip_to          		= $_POST['select-destiny'];
-			$n_volumes            	= $_POST['cotacao-volumes'];
-			$weight              	= $_POST['cotacao-peso'];
-			$price         			= $_POST['delivery_price'];
-			$delivery_days       	= $_POST['delivery_time'];
-			$value               	= $_POST['cotacao-valor'];
-			
-			$list_of_cities = array(
-				'31270-700' => 'Belo Horizonte - MG',
-				'71608-900' => 'Brasília - DF',
-				'13051-154' => 'Campinas - SP',
-				'83040-540' => 'Curitiba - PR',
-				'88015-902' => 'Florianópolis - SC',
-				'75133-320' => 'Goiânia - GO',
-				'69028-140' => 'Manaus - AM',
-				'91350-240' => 'Porto Alegre - RS',
-				'21020-190' => 'Rio de Janeiro - RJ',
-				'04348-070' => 'São Paulo - SP',
-			);
-
-			foreach ($list_of_cities as $zip => $city) :
-				if ($zip == $zip_from) :
-					$city_origin = $city;
-				elseif ($zip == $zip_to) :
-					$city_destiny = $city;
-				endif;
-			endforeach;
-
-			return $this->bao_create_order_from_form($price, $delivery_days, $city_origin, $city_destiny, $zip_from, $zip_to, $n_volumes, $weight, $value);
+		if (empty($_POST)) :
+			return;
 		endif;
+		setlocale(LC_MONETARY, 'pt_BR');
+
+
+
+		$data_form 					= $_POST['dataForm'];
+		$extract_data 				= explode('|', $data_form);
+
+		$price         			= $extract_data[0];
+		$delivery_days       	= $extract_data[1];
+		$zip_from             	= $extract_data[2];
+		$zip_to          		= $extract_data[3];
+		$n_volumes            	= $extract_data[4];
+		$weight              	= $extract_data[5];
+		$value               	= $extract_data[6];
+
+		echo 'Valor carga: ' .  $price . '</br>';
+		echo 'Tempo de entrega: ' .  $delivery_days . '</br>';
+		echo 'Zip from: ' .  $zip_from . '</br>';
+		echo 'Zip To: ' .  $zip_to . '</br>';
+		echo 'Volumes: ' .  $n_volumes . '</br>';
+		echo 'Peso: ' .  $weight . '</br>';
+		echo 'Valor frete: ' .  $value . '</br>';
 		
+		$list_of_cities = array(
+			'31270-700' => 'Belo Horizonte - MG',
+			'71608-900' => 'Brasília - DF',
+			'13051-154' => 'Campinas - SP',
+			'83040-540' => 'Curitiba - PR',
+			'88015-902' => 'Florianópolis - SC',
+			'75133-320' => 'Goiânia - GO',
+			'69028-140' => 'Manaus - AM',
+			'91350-240' => 'Porto Alegre - RS',
+			'21020-190' => 'Rio de Janeiro - RJ',
+			'04348-070' => 'São Paulo - SP',
+		);
+
+		foreach ($list_of_cities as $zip => $city) :
+			if ($zip == $zip_from) :
+				$city_origin = $city;
+			elseif ($zip == $zip_to) :
+				$city_destiny = $city;
+			endif;
+		endforeach;
+
+		$this->bao_create_order_from_form($price, $delivery_days, $city_origin, $city_destiny, $zip_from, $zip_to, $n_volumes, $weight, $value);
+		
+		die();
 	}
 
 	/**
@@ -271,8 +286,8 @@ class Integracao_Bao_Public {
 				),
 				'body' 		=> array(
 					'name'			=> $title_propduct,
-					'price'			=> $price,
-					'regular_price'	=> $price,
+					'price'			=> $value,
+					'regular_price'	=> $value,
 					'weight'		=> $weight,
 					'description'	=> $description_product,
 					'status'		=> 'publish',					
@@ -303,7 +318,7 @@ class Integracao_Bao_Public {
 				endforeach;
 			endif;
 
-			$this->add_product_to_cart($body->id);
+			$this->add_product_to_cart($post_id);
     
 		else :
 

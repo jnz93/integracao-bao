@@ -156,3 +156,50 @@ function sendMinutaDataToUpdate(minuta, postId, ajaxUrl)
 		}
 	});
 }
+
+
+/**
+ * Enviar os dados do form de cotação para o backend
+ * 
+ * @param price
+ * @param delivery_days
+ * @param zip_from
+ * @param zip_to
+ * @param n_volumes 
+ * @param weight 
+ * @param value
+ * @param ajaxUrl
+ * 
+ * @since 1.0.3
+ */
+function sendCotacaoDataToBackEnd(price, deliveryDays, zipFrom, zipTo, nVolumes, value, ajaxUrl)
+{
+	var dataToSend = price + '|' + deliveryDays + '|' + zipFrom + '|' + zipTo + '|' + nVolumes + '|' + '|' + value;
+	let actionWp = 'handle_cotacao_form';
+	
+	// console.log(dataToSend);
+	// console.log(ajaxUrl);
+	jQuery.ajax({
+		url: ajaxUrl,
+		type: 'POST',
+		data: {
+			'action': actionWp,
+			'dataForm': dataToSend
+		},
+		success: function(response)
+		{
+			console.log('Cotação adicionada ao carrinho com sucesso!');
+			// console.log(response);
+			jQuery('#messages-cart').children('.uk-alert-success').fadeIn();
+		},
+		error: function(err)
+		{
+			console.log(err);
+		},
+		complete: function(response)
+		{
+			jQuery(this).next('.uk-alert-success').fadeOut();
+			// add reset form
+		}
+	});
+}
