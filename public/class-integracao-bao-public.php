@@ -594,6 +594,93 @@ class Integracao_Bao_Public {
 		<?php
 	}
 
+	/**
+	 * Form endereço de coleta
+	 * 
+	 * @param $cotacao_id(int) = post_id, product_id..
+	 * 
+	 * @since 1.0.3
+	 */
+	public function form_data_collect($cotacao_id)
+	{
+		// Current data collect
+		$collect_fullname 		= get_post_meta($cotacao_id, 'bao_product_collect_name', true);
+		$collect_tel 			= get_post_meta($cotacao_id, 'bao_product_collect_phone', true);
+		$collect_city 			= get_post_meta($cotacao_id, 'bao_product_collect_city', true);
+		$collect_neighborhood 	= get_post_meta($cotacao_id, 'bao_product_collect_neighborhood', true);
+		$collect_address 		= get_post_meta($cotacao_id, 'bao_product_collect_address', true);
+		$collect_cep 			= get_post_meta($cotacao_id, 'bao_product_collect_zip', true);
+		$collect_number 		= get_post_meta($cotacao_id, 'bao_product_collect_number', true);
+		$collect_complement 	= get_post_meta($cotacao_id, 'bao_product_collect_complement', true);
+		?>
+		<div id="<?php echo 'modal-coleta-'.$cotacao_id; ?>" class="" uk-modal>
+			<div class="uk-modal-dialog uk-modal-body">
+				<h3>Fomulário de coleta</h3>
+				<p>Cotação/Frete: <?php echo get_the_title($cotacao_id); ?></p>
+				<button class="uk-modal-close-default" type="button" uk-close style="background: none !important; color: #666 !important;"></button>
+				
+				<div class="uk-column-1-1 bao_wrapper_form">
+					<!-- Form coleta -->
+					<div class="">
+						<div class="uk-column-1-2">
+							<div class="form-group">
+								<label for="bao_collect_fullname">Nome completo</label>
+								<input type="text" class="form-control" id="bao_collect_fullname_<?php echo $cotacao_id; ?>" aria-describedby="name_help" value="<?php echo !empty($collect_fullname) ? $collect_fullname : '' ?>" required>
+								<small id="name_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_tel">Telefone/Whatsapp</label>
+								<input type="tel" class="form-control" id="bao_collect_tel_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($collect_tel) ? $collect_tel : '' ?>" required>
+								<small id="tel_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_city">Cidade</label>
+								<input type="tel" class="form-control" id="bao_collect_city_<?php echo $cotacao_id; ?>" aria-describedby="city_help" value="<?php echo !empty($collect_city) ? $collect_city : '' ?>" required>
+								<small id="city_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_neighborhood">Bairro</label>
+								<input type="text" class="form-control" id="bao_collect_neighborhood_<?php echo $cotacao_id; ?>" aria-describedby="neighborhood_help" value="<?php echo !empty($collect_neighborhood) ? $collect_neighborhood : '' ?>" required>
+								<small id="neighborhood_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_address">Endereço</label>
+								<input type="text" class="form-control" id="bao_collect_address_<?php echo $cotacao_id; ?>" aria-describedby="address_help" value="<?php echo !empty($collect_address) ? $collect_address : '' ?>" required>
+								<small id="address_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_cep">CEP</label>
+								<input type="text" class="form-control" id="bao_collect_cep_<?php echo $cotacao_id; ?>" aria-describedby="cep_help" value="<?php echo !empty($collect_cep) ? $collect_cep : '' ?>" required>
+								<small id="cep_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_number">Número</label>
+								<input type="number" class="form-control" id="bao_collect_number_<?php echo $cotacao_id; ?>" aria-describedby="number_help" value="<?php echo !empty($collect_number) ? $collect_number : '' ?>" required>
+								<small id="number_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_complement">Complemento</label>
+								<input type="text" class="form-control" id="bao_collect_complement_<?php echo $cotacao_id; ?>" aria-describedby="complement_help" value="<?php echo !empty($collect_complement) ? $collect_complement : '' ?>">
+								<small id="complement_help" class="form-text text-muted"></small>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Messages -->
+				<div class="form-messages">
+					<div class="uk-alert-warning" uk-alert>
+						<p class="uk-text-italic" style="text-align: center;">ATENÇÃO! Preencha todos os dados corretamente.</p>
+					</div>
+				</div>	
+				<button class="" type="button" onClick="sendCollectFormDataToBackEnd(jQuery(this),'<?php echo $cotacao_id; ?>', '<?php echo admin_url('admin-ajax.php'); ?>')">Salvar informações</button>
+			</div>
+		</div>
+		<?php
+	}
+
+				<button class="btn bnt-primary" onclick="show_form_data(jQuery(this), jQuery(this).siblings('.bao_wrapper_form'))" style="display: none;">Editar informações</button>
+				
 
 	/**
 	 * Insert ajax script on pages

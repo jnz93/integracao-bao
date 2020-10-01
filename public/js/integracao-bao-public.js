@@ -203,3 +203,88 @@ function sendCotacaoDataToBackEnd(price, deliveryDays, zipFrom, zipTo, nVolumes,
 		}
 	});
 }
+
+
+/**
+ * Enviar dados do formulário de coleta pro backend
+ * 
+ * @param productId(int)
+ * @param ajaxUrl(url/string)
+ * 
+ * @since 1.0.3
+ */
+function sendCollectFormDataToBackEnd(btn, productId, ajaxUrl)
+{
+	var form 			= jQuery('#modal-coleta-'+productId);
+	// Dados form
+	var coll_full_name 	= jQuery('#bao_collect_fullname_' + productId).val(),
+	coll_tel 			= jQuery('#bao_collect_tel_' + productId).val(),
+	coll_city 			= jQuery('#bao_collect_city_' + productId).val(),
+	coll_neighborhood 	= jQuery('#bao_collect_neighborhood_' + productId).val(),
+	coll_address 		= jQuery('#bao_collect_address_' + productId).val(),
+	coll_cep 			= jQuery('#bao_collect_cep_' + productId).val(),
+	coll_number			= jQuery('#bao_collect_number_' + productId).val(),
+	coll_complement 	= jQuery('#bao_collect_complement_' + productId).val();
+
+	// Building string for collect data
+	var dataForm = coll_full_name + '-|-' + coll_tel + '-|-' + coll_city + '-|-' + coll_neighborhood + '-|-' + coll_address + '-|-' + coll_cep + '-|-' + coll_number + '-|-' + coll_complement;
+	
+	// Teste validaçao dos inputs
+	var arrInputsA = [];
+	arrInputsA.push(jQuery('#bao_collect_fullname_' + productId));
+	arrInputsA.push(jQuery('#bao_collect_tel_' + productId));
+	arrInputsA.push(jQuery('#bao_collect_city_' + productId));
+	arrInputsA.push(jQuery('#bao_collect_neighborhood_' + productId));
+	arrInputsA.push(jQuery('#bao_collect_address_' + productId));
+	arrInputsA.push(jQuery('#bao_collect_cep_' + productId));
+	arrInputsA.push(jQuery('#bao_collect_number_' + productId));
+	arrInputsA.push(jQuery('#bao_collect_complement_' + productId));
+
+
+	var invalidInputs = 0;
+	arrInputsA.forEach(function(el)
+	{
+		if (el.val().length < 3)
+		{
+			el.css({'border': '1px solid red'});
+			invalidInputs++;
+		}
+		else
+		{
+			console.log(el.attr('id') + " Válido!");
+			el.css({'border': '1px solid green'});
+		}
+	});
+
+	var action_name = 'save_coleta_data_form';
+	
+	// Send to backend
+	if (invalidInputs == 0 ) {
+		jQuery.ajax({
+			url: ajaxUrl,
+			type: 'POST',
+			data: {
+				'action': action_name,
+				'postId': productId,
+				'dataForm': dataForm,
+			},
+			beforeSend: function(){
+				UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Salvando...</span>", {pos: 'bottom-center', status: 'primary'});
+			},
+			success: function(response)
+			{
+				UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Sucesso!</span>", {pos: 'bottom-center', status: 'success'});
+				UIkit.modal(form).hide();
+			},
+			error: function(response)
+			{
+				UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Erro ao salvar.</span>", {pos: 'bottom-center', status: 'error'});
+				UIkit.notification("<span class='uk-box-shadow-small uk-padding'>"+ response.error +"</span>", {pos: 'bottom-center', status: 'error'});
+			}
+		});
+	} else {
+		console.log(invalidInputs + " Inválido(s)!");
+		jQuery('#error-message').fadeIn();
+	}
+
+}

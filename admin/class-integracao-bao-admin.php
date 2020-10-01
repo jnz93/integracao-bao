@@ -633,4 +633,53 @@ class Integracao_Bao_Admin {
 		endforeach;
 		die();
 	}
+
+	/**
+	 * Action: Salvar dados de coleta no produto
+	 * 
+	 * @since 1.0.3
+	 */
+	public function update_coleta()
+	{
+		if(empty($_POST)) :
+			die('Dados inválidos');
+		endif;
+		
+		if(empty($_POST['postId'])) :
+			die('Post id inválido');
+		endif;
+
+		if (empty($_POST['dataForm'])) :
+			die('Os dados do formulário são inválidos');
+		endif;
+		
+		$post_id					= $_POST['postId'];
+		$data_form 					= $_POST['dataForm'];
+		$extract_collect_data 		= explode('-|-', $data_form);
+
+		$keys_collect_data = array(
+			'bao_product_collect_name',
+			'bao_product_collect_phone',
+			'bao_product_collect_city',
+			'bao_product_collect_neighborhood',
+			'bao_product_collect_address',
+			'bao_product_collect_zip',
+			'bao_product_collect_number',
+			'bao_product_collect_complement'
+		);
+
+		// Updating collect data
+		if (!empty($extract_collect_data)) :
+			$count = 0;
+			foreach ($extract_collect_data as $data) :
+				if (!empty($data)) :
+					update_post_meta($post_id, $keys_collect_data[$count], trim($data));
+				endif;
+				$count++;
+			endforeach;
+		endif;
+		var_dump($post_id);
+		print_r($extract_collect_data);
+		die();
+	}
 }

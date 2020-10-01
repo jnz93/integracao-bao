@@ -41,9 +41,10 @@ do_action( 'woocommerce_before_cart' ); ?>
 				$_product   = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
 				$product_id = apply_filters( 'woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key );
 
-				// Cta open pop-up
-				$custom_cta	= '<!-- This is a button toggling the modal --><button uk-toggle="target: #modal-'. $product_id .'" type="button"><i class="icon-flight"></i></button>';
-								
+				// Botões coleta/entrega
+				$btn_coleta = '<!-- This is a button toggling the modal --><button style="width:calc(50% - 16px); padding: 10px !important;" uk-toggle="target: #modal-coleta-'. $product_id .'" uk-tooltip="Endereço Coleta" type="button"><i class="icon-address"></i></button>';
+				$btn_entrega = '<!-- This is a button toggling the modal --><button style="width:calc(50% - 16px); padding: 10px !important;" uk-toggle="target: #modal-entrega-'. $product_id .'" uk-tooltip="Endereço Entrega" type="button"><i class="icon-location"></i></button>';
+				
 				if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters( 'woocommerce_cart_item_visible', true, $cart_item, $cart_item_key ) ) {
 					$product_permalink = apply_filters( 'woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink( $cart_item ) : '', $cart_item, $cart_item_key );
 					?>
@@ -88,7 +89,12 @@ do_action( 'woocommerce_before_cart' ); ?>
 						</td>
 
 						<td class="product-delivery-data">
-							<?php echo $custom_cta; ?>
+							<div style="display: block; width: 100%; height: 100%; display: flex; align-content:center;">
+								<?php 
+								echo $btn_coleta; 
+								echo $btn_entrega; 
+								?>
+							</div>
 						</td>
 
 						<td class="product-remove">
