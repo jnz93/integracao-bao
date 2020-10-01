@@ -55,4 +55,4 @@ printf(
 	</ol>
 <?php endif; ?>
 
-<?php Integracao_Bao_Public::bao_view_order($order); ?>
+<?php do_action('new_view_order', $order); ?>

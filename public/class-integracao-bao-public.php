@@ -64,8 +64,12 @@ class Integracao_Bao_Public {
 		add_action('wp_ajax_bao_update_product_freight', array($this, 'bao_update_product_freight'));
 		add_action('wp_ajax_nopriv_bao_update_product_freight', array($this, 'bao_update_product_freight'));
 
+		add_action('wp_ajax_handle_cotacao_form', array($this, 'handle_data_form'));
+		add_action('wp_ajax_nopriv_handle_cotacao_form', array($this, 'handle_data_form'));
+
 		// Popup delivery data		
 		add_action('bao_popups_delivery_data', array($this, 'popups_collect_delivery_data'));
+		add_action('new_view_order', array($this, 'bao_view_order'), 0, 1);
 	}
 
 	/**
