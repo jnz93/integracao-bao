@@ -56,8 +56,8 @@
     </div>
     
     <div class="form-group valor-carga">
-        <label for="valor-carga">Valor da Mercadoria (R$)</label>
-        <input type="text" class="form-control" name="valor-carga" id="valor-carga" required>
+        <label for="valor-carga" style="text-align: center;">Valor da Mercadoria (R$)</label>
+        <input type="text" class="form-control" name="valor-carga" id="valor-carga" required>
     </div>
 
     <div class="form-group">
