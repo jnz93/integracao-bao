@@ -64,9 +64,18 @@ class Integracao_Bao_Admin {
 
 		// add_shortcode('test_all_orders', array($this, 'bao_verify_order_paid'));
 
-		// Ajax Actions
+		// // Ajax Actions
 		add_action('wp_ajax_save_minuta_id_on_product', array($this, 'save_minuta_id_on_product')); //Salvar o id da minuta no produto
 		add_action('wp_ajax_nopriv_save_minuta_id_on_product', array($this, 'save_minuta_id_on_product')); //Salvar o id da minuta no produto
+
+		add_action('wp_ajax_update_data_minuta_on_product', array($this, 'update_data_minuta_on_product')); // Update dos dados da minuta no produto
+		add_action('wp_ajax_nopriv_update_data_minuta_on_product', array($this, 'update_data_minuta_on_product')); // Update dos dados da minuta no produto
+
+		add_action('wp_ajax_save_coleta_data_form', array($this, 'update_coleta')); // Update dos dados da minuta no produto
+		add_action('wp_ajax_nopriv_save_coleta_data_form', array($this, 'update_coleta')); // Update dos dados da minuta no produto
+
+		add_action('wp_ajax_save_entrega_data_form', array($this, 'update_entrega')); // Update dos dados da minuta no produto
+		add_action('wp_ajax_nopriv_save_entrega_data_form', array($this, 'update_entrega')); // Update dos dados da minuta no produto
 	}
 
 	/**
