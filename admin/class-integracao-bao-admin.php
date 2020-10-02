@@ -682,4 +682,54 @@ class Integracao_Bao_Admin {
 		print_r($extract_collect_data);
 		die();
 	}
+
+	/**
+	 * Action: Salvar dados de entrega no produto
+	 * 
+	 * @since 1.0.3
+	 */
+	public function update_entrega()
+	{
+		if(empty($_POST)) :
+			die('Dados inválidos');
+		endif;
+		
+		if(empty($_POST['postId'])) :
+			die('Post id inválido');
+		endif;
+
+		if (empty($_POST['dataForm'])) :
+			die('Os dados do formulário são inválidos');
+		endif;
+		
+		$post_id					= $_POST['postId'];
+		$data_form 					= $_POST['dataForm'];
+		$extract_shipping_data 		= explode('-|-', $data_form);
+
+		$keys_shipping_data = array(
+			'bao_product_shipping_name',
+			'bao_product_shipping_phone',
+			'bao_product_shipping_city',
+			'bao_product_shipping_neighborhood',
+			'bao_product_shipping_address',
+			'bao_product_shipping_zip',
+			'bao_product_shipping_number',
+			'bao_product_shipping_complement'
+		);
+
+		// Updating shipping data
+		if (!empty($extract_shipping_data)) :
+			$count = 0;
+			foreach ($extract_shipping_data as $data) :
+				if (!empty($data)) :
+					update_post_meta($post_id, $keys_shipping_data[$count], trim($data));
+				endif;
+				$count++;
+			endforeach;
+		endif;
+		var_dump($post_id);
+		print_r($extract_shipping_data);
+		die();
+	}
+
 }

@@ -679,8 +679,91 @@ class Integracao_Bao_Public {
 		<?php
 	}
 
-				<button class="btn bnt-primary" onclick="show_form_data(jQuery(this), jQuery(this).siblings('.bao_wrapper_form'))" style="display: none;">Editar informações</button>
+	
+	/**
+	 * Form endereço entrega
+	 * 
+	 * @param $cotacao_id(int) = post_id, product_id..
+	 * 
+	 * @since 1.0.3
+	 */
+	public function form_data_shipping($cotacao_id)
+	{
+		// Current data shipping
+		$shipping_fullname 		= get_post_meta($cotacao_id, 'bao_product_shipping_name', true);
+		$shipping_tel 			= get_post_meta($cotacao_id, 'bao_product_shipping_phone', true);
+		$shipping_city 			= get_post_meta($cotacao_id, 'bao_product_shipping_city', true);
+		$shipping_neighborhood 	= get_post_meta($cotacao_id, 'bao_product_shipping_neighborhood', true);
+		$shipping_address 		= get_post_meta($cotacao_id, 'bao_product_shipping_address', true);
+		$shipping_cep 			= get_post_meta($cotacao_id, 'bao_product_shipping_zip', true);
+		$shipping_number 		= get_post_meta($cotacao_id, 'bao_product_shipping_number', true);
+		$shipping_complement 	= get_post_meta($cotacao_id, 'bao_product_shipping_complement', true);
+		?>
+		<div id="<?php echo 'modal-entrega-'.$cotacao_id; ?>" class="" uk-modal>
+			<div class="uk-modal-dialog uk-modal-body">
+				<h3>Fomulário de entrega</h3>
+				<p>Cotação/Frete: <?php echo get_the_title($cotacao_id); ?></p>
+				<button class="uk-modal-close-default" type="button" uk-close style="background: none !important; color: #666 !important;"></button>
 				
+				<div class="uk-column-1-1">
+					<!-- Form entrega -->
+					<div class="">
+						<div class="uk-column-1-2">
+							<div class="form-group">
+								<label for="bao_shipping_fullname">Nome completo</label>
+								<input type="text" class="form-control" id="bao_shipping_fullname_<?php echo $cotacao_id; ?>" aria-describedby="name_help" value="<?php echo !empty($shipping_fullname) ? $shipping_fullname : '' ?>" required>
+								<small id="name_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_shipping_tel">Telefone/Whatsapp</label>
+								<input type="tel" class="form-control" id="bao_shipping_tel_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($shipping_tel) ? $shipping_tel : '' ?>" required>
+								<small id="tel_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_shipping_city">Cidade</label>
+								<input type="tel" class="form-control" id="bao_shipping_city_<?php echo $cotacao_id; ?>" aria-describedby="city_help" value="<?php echo !empty($shipping_city) ? $shipping_city : '' ?>" required>
+								<small id="city_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_shipping_neighborhood">Bairro</label>
+								<input type="text" class="form-control" id="bao_shipping_neighborhood_<?php echo $cotacao_id; ?>" aria-describedby="neighborhood_help" value="<?php echo !empty($shipping_neighborhood) ? $shipping_neighborhood : '' ?>" required>
+								<small id="neighborhood_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_shipping_address">Endereço</label>
+								<input type="text" class="form-control" id="bao_shipping_address_<?php echo $cotacao_id; ?>" aria-describedby="address_help" value="<?php echo !empty($shipping_address) ? $shipping_address : '' ?>" required>
+								<small id="address_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_shipping_cep">CEP</label>
+								<input type="text" class="form-control" id="bao_shipping_cep_<?php echo $cotacao_id; ?>" aria-describedby="cep_help" value="<?php echo !empty($shipping_cep) ? $shipping_cep : '' ?>" required>
+								<small id="cep_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_shipping_number">Número</label>
+								<input type="number" class="form-control" id="bao_shipping_number_<?php echo $cotacao_id; ?>" aria-describedby="number_help" value="<?php echo !empty($shipping_number) ? $shipping_number : '' ?>" required>
+								<small id="number_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_shipping_complement">Complemento</label>
+								<input type="text" class="form-control" id="bao_shipping_complement_<?php echo $cotacao_id; ?>" aria-describedby="complement_help" value="<?php echo !empty($shipping_complement) ? $shipping_complement : '' ?>">
+								<small id="complement_help" class="form-text text-muted"></small>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Messages -->
+				<div class="form-messages">
+					<div class="uk-alert-warning" uk-alert>
+						<p class="uk-text-italic" style="text-align: center;">ATENÇÃO! Preencha todos os dados corretamente.</p>
+					</div>
+				</div>	
+				<button class="" type="button" onClick="sendShippingFormDataToBackEnd('<?php echo $cotacao_id; ?>', '<?php echo admin_url('admin-ajax.php'); ?>')">Salvar informações</button>
+			</div>
+		</div>
+		<?php
+	}
 
 	/**
 	 * Insert ajax script on pages
