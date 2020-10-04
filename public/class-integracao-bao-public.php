@@ -70,6 +70,9 @@ class Integracao_Bao_Public {
 		// Popup delivery data		
 		add_action('bao_popups_delivery_data', array($this, 'popups_collect_delivery_data'));
 		add_action('new_view_order', array($this, 'bao_view_order'), 0, 1);
+
+		// Popup tabela coleta/entrega
+		add_action('show_table_coleta_entrega', array($this, 'render_table_coleta_entrega'), 0, 1);
 	}
 
 	/**
@@ -1037,7 +1040,7 @@ class Integracao_Bao_Public {
 				</tr>
 			</tfoot>
 		</table>
-		<?php Integracao_Bao_Public::render_table_coleta_entrega($products); ?>
+		<?php do_action('show_table_coleta_entrega', $products); ?>
 
 	<?php }
 
