@@ -80,6 +80,8 @@ class Integracao_Bao_Admin {
 		// Action to insert new colunm and value of minuta id on order edit
 		add_action( 'woocommerce_admin_order_item_headers', array($this, 'bao_admin_order_items_headers'), 10, 1 );
 		add_action( 'woocommerce_admin_order_item_values', array($this, 'bao_admin_order_item_values'), 10, 1 );
+
+		add_action('edit_form_advanced', array($this, 'render_table_coleta_entrega_admin_edit_order'));
 	}
 
 	/**
@@ -102,7 +104,7 @@ class Integracao_Bao_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/integracao-bao-admin.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style( 'uikit', plugin_dir_url( __FILE__ ) . 'css/uikit.min.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -125,6 +127,7 @@ class Integracao_Bao_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/integracao-bao-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( 'uikit', plugin_dir_url( __FILE__ ) . 'js/uikit.min.js', array(), $this->version, false );
 
 	}
 
@@ -254,7 +257,7 @@ class Integracao_Bao_Admin {
 	}
 
 	/**
-	 * Add minuta from brudam api rest
+	 * Registra nova minuta do pedido no sistema brix/brudam e salva o ID da minuta no respectivo produto/post
 	 * 
 	 * @return void
 	 */
@@ -755,11 +758,12 @@ class Integracao_Bao_Admin {
 	public function bao_admin_order_items_headers($order){
 		?>
 		<th class="line_customtitle sortable" data-sort="your-sort-option">Minuta ID</th>
+		<th class="line_customtitle sortable" data-sort="your-sort-option">Coleta & Entrega</th>
 		<?php
 	}
 
 	/**
-	 * Na edição do pedido, na tabela de produtos insere o valor destinado a coluna minuta id
+	 * Na edição do pedido, na tabela de produtos, insere o valor da minuta id na coluna correspondente
 	 * 
 	 * @param $product(arr)
 	 * 
@@ -770,7 +774,29 @@ class Integracao_Bao_Admin {
 		$minuta_id 	= get_post_meta($post_id, 'bao_minuta_id', true)
 		?>
 		<td class="line_customtitle"><?php echo $minuta_id ;?></td>
+		<td class="line_customtitle">
+			<button uk-toggle="target: #product-<?php echo $post_id; ?>" type="button">Ver</button></td>
+		</td>
 		<?php
+	}
+
+	/**
+	 * Na edição do pedido, na tabela de produtos, insere o popup com os dados de coleta/entrega de cada cotação no pedido
+	 * 
+	 * @param $order(obj)
+	 * 
+	 * @since 1.0.3
+	 */
+	public function render_table_coleta_entrega_admin_edit_order($order)
+	{
+		if( get_post_type(get_the_ID()) != 'shop_order') :
+			return;
+		endif;
+
+		$order_obj 	= new WC_Order($order->ID);
+		$products 	= $order_obj->get_items();
+
+		do_action('show_table_coleta_entrega', $products);
 	}
 
 }
