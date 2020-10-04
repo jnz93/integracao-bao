@@ -1037,207 +1037,136 @@ class Integracao_Bao_Public {
 				</tr>
 			</tfoot>
 		</table>
-		
-		<?php
-			foreach($products as $product)
-			{
-				$product_id 			= $product['product_id'];
-			
-				// Get current data of collect
-				$collect_fullname 		= get_post_meta($product_id, 'bao_product_collect_name', true);
-				$collect_tel 			= get_post_meta($product_id, 'bao_product_collect_phone', true);
-				$collect_city 			= get_post_meta($product_id, 'bao_product_collect_city', true);
-				$collect_neighborhood 	= get_post_meta($product_id, 'bao_product_collect_neighborhood', true);
-				$collect_address 		= get_post_meta($product_id, 'bao_product_collect_address', true);
-				$collect_cep 			= get_post_meta($product_id, 'bao_product_collect_zip', true);
-				$collect_number 		= get_post_meta($product_id, 'bao_product_collect_number', true);
-				$collect_complement 	= get_post_meta($product_id, 'bao_product_collect_complement', true);
-			
-				// Get current data of shipping
-				$shipping_fullname 		= get_post_meta($product_id, 'bao_product_shipping_name', true);
-				$shipping_tel 			= get_post_meta($product_id, 'bao_product_shipping_phone', true);
-				$shipping_city 			= get_post_meta($product_id, 'bao_product_shipping_city', true);
-				$shipping_neighborhood 	= get_post_meta($product_id, 'bao_product_shipping_neighborhood', true);
-				$shipping_address 		= get_post_meta($product_id, 'bao_product_shipping_address', true);
-				$shipping_cep 			= get_post_meta($product_id, 'bao_product_shipping_zip', true);
-				$shipping_number 		= get_post_meta($product_id, 'bao_product_shipping_number', true);
-				$shipping_complement 	= get_post_meta($product_id, 'bao_product_shipping_complement', true);
-			
-				$minuta_id 				= get_post_meta($product_id, 'bao_minuta_id', true);
-				?>
+		<?php Integracao_Bao_Public::render_table_coleta_entrega($products); ?>
 
-				<div id="<?php echo 'product-' . $product_id; ?>" class="uk-modal-container" uk-modal>
-					<div class="uk-modal-dialog uk-modal-body">
-						<div class="d-flex" style="display: flex;">
-							<!-- Coleta -->
-							<div class="" style="width:calc(50%-16px);margin:auto;">
-								<p>Dados coleta pacote #<?php echo $product_id; ?></p>
-								<table class="table table-bordered table-sm">
-									<tbody>
-										<tr>
-											<th>Nome</th>
-											<td><?php echo $collect_fullname; ?></td>
-										</tr>
-										<tr>
-											<th>Telefone</th>
-											<td><?php echo $collect_tel; ?></td>
-										</tr>
-										<tr>
-											<th>Cidade</th>
-											<td><?php echo $collect_city; ?></td>
-										</tr>
-										<tr>
-											<th>Bairro</th>
-											<td><?php echo $collect_neighborhood; ?></td>
-										</tr>
-										<tr>
-											<th>Endereço</th>
-											<td><?php echo $collect_address; ?></td>
-										</tr>
-										<tr>
-											<th>CEP</th>
-											<td><?php echo $collect_cep; ?></td>
-										</tr>
-										<tr>
-											<th>Número</th>
-											<td><?php echo $collect_number; ?></td>
-										</tr>
-										<tr>
-											<th>Complemento</th>
-											<td><?php echo $collect_complement; ?></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-					
-							<!-- entrega -->
-							<div class="" style="width:calc(50%-16px);margin:auto;">
-								<p>Dados entrega pacote #<?php echo $product_id; ?></p>
-								<table class="table table-bordered table-sm">
-									<tbody>
-										<tr>
-											<th>Nome</th>
-											<td><?php echo $shipping_fullname; ?></td>
-										</tr>
-										<tr>
-											<th>Telefone</th>
-											<td><?php echo $shipping_tel; ?></td>
-										</tr>
-										<tr>
-											<th>Cidade</th>
-											<td><?php echo $shipping_city; ?></td>
-										</tr>
-										<tr>
-											<th>Bairro</th>
-											<td><?php echo $shipping_neighborhood; ?></td>
-										</tr>
-										<tr>
-											<th>Endereço</th>
-											<td><?php echo $shipping_address; ?></td>
-										</tr>
-										<tr>
-											<th>CEP</th>
-											<td><?php echo $shipping_cep; ?></td>
-										</tr>
-										<tr>
-											<th>Número</th>
-											<td><?php echo $shipping_number; ?></td>
-										</tr>
-										<tr>
-											<th>Complemento</th>
-											<td><?php echo $shipping_complement; ?></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<button class="uk-modal-close" type="button">Fechar</button>
-					</div>
-				</div>
-				<?php
-			}
-			?>
 	<?php }
 
-	
 	/**
-     * Interpreta o código do status e devolte uma descrição
-     * 
-     * @param $post_id(int) = id do produto
-     * 
-     * @since 1.0.3
-     */
-    public function serialize_status_code($post_id)
-    {
-        if (empty($post_id)) :
-            echo 'Id do produto não fornecido ou inválido';
-            return;
-        endif;
-
-        $status_code = get_post_meta($post_id, 'status_env', true);
-
-        $status_desc = '';
-        switch($status_code) :
-            case '404':
-                $status_desc = 'Aguardando Pagamento';
-                break;
-            case '495':
-                $status_desc = 'Aguardando Coleta';
-                break;
-            case '207':
-                $status_desc = 'Entregue/Finalizado';
-                break;
-            case '172':
-                $status_desc = 'Em trânsito';
-                break;
-            case '99':
-                $status_desc = 'Outros - Aguarde Contato';
-                break;
-            case '100':
-                $status_desc = 'Emissão Realizada';
-                break;
-            default:
-                $status_desc = 'Código desconhecido. Contate a transportadora';
-        endswitch;
-
-        return $status_desc;
-    }
-
-	/**
-	 * Rendeniza uma tabela com os dados da minuta
+	 * Renderiza tabelas de coleta e entrega salvos na cotação
 	 * 
-	 * @param $product_id(int) = Id do produto
+	 * @param $obj produtos no pedido
+	 * 
 	 * @since 1.0.3
 	 */
-	public function render_table_of_data_minuta($product_id)
+	public function render_table_coleta_entrega($obj)
 	{
-	   if (empty($product_id)) :
-		   echo 'Id do produto não fornecido ou inválido';
-		   return;
-	   endif;
-
-	   $arr_keys = array(
-		   'cnpj_dest',
-		   'cnpj_rem',
-		   'cte_aut_data',
-		   'cte_num',
-		   'data_env',
-		   'desc',
-		   'nf_num',
-		   'minuta_id',
-		   'obs',
-		   'razao_dest',
-		   'razao_rem',
-		   'servico',
-		   'status_env',
-		   'tipo',
-		   'usuario'
-	   );
-
-	   foreach ($arr_keys as $key):
-		   $value = get_post_meta($product_id, $key, true);
-		   echo $key . ': ' . $value . '</br>';
-	   endforeach;
+		foreach($obj as $product)
+		{
+			$product_id 			= $product['product_id'];
+		
+			// Get current data of collect
+			$collect_fullname 		= get_post_meta($product_id, 'bao_product_collect_name', true);
+			$collect_tel 			= get_post_meta($product_id, 'bao_product_collect_phone', true);
+			$collect_city 			= get_post_meta($product_id, 'bao_product_collect_city', true);
+			$collect_neighborhood 	= get_post_meta($product_id, 'bao_product_collect_neighborhood', true);
+			$collect_address 		= get_post_meta($product_id, 'bao_product_collect_address', true);
+			$collect_cep 			= get_post_meta($product_id, 'bao_product_collect_zip', true);
+			$collect_number 		= get_post_meta($product_id, 'bao_product_collect_number', true);
+			$collect_complement 	= get_post_meta($product_id, 'bao_product_collect_complement', true);
+		
+			// Get current data of shipping
+			$shipping_fullname 		= get_post_meta($product_id, 'bao_product_shipping_name', true);
+			$shipping_tel 			= get_post_meta($product_id, 'bao_product_shipping_phone', true);
+			$shipping_city 			= get_post_meta($product_id, 'bao_product_shipping_city', true);
+			$shipping_neighborhood 	= get_post_meta($product_id, 'bao_product_shipping_neighborhood', true);
+			$shipping_address 		= get_post_meta($product_id, 'bao_product_shipping_address', true);
+			$shipping_cep 			= get_post_meta($product_id, 'bao_product_shipping_zip', true);
+			$shipping_number 		= get_post_meta($product_id, 'bao_product_shipping_number', true);
+			$shipping_complement 	= get_post_meta($product_id, 'bao_product_shipping_complement', true);
+		
+			// $minuta_id 				= get_post_meta($product_id, 'bao_minuta_id', true);
+			// echo 'Minuta ID: ' . $minuta_id;
+			?>
+			
+			<div id="<?php echo 'product-' . $product_id; ?>" class="uk-modal-container" uk-modal>
+				<div class="uk-modal-dialog uk-modal-body">
+					<div class="d-flex" style="display: flex;">
+						<!-- Coleta -->
+						<div class="" style="width:calc(50%-16px);margin:auto;">
+							<h4>Informações de coleta cotação: #<?php echo $product_id; ?></h4>
+							<table class="table table-bordered table-sm">
+								<tbody>
+									<tr>
+										<th>Nome</th>
+										<td><?php echo $collect_fullname; ?></td>
+									</tr>
+									<tr>
+										<th>Telefone</th>
+										<td><?php echo $collect_tel; ?></td>
+									</tr>
+									<tr>
+										<th>Cidade</th>
+										<td><?php echo $collect_city; ?></td>
+									</tr>
+									<tr>
+										<th>Bairro</th>
+										<td><?php echo $collect_neighborhood; ?></td>
+									</tr>
+									<tr>
+										<th>Endereço</th>
+										<td><?php echo $collect_address; ?></td>
+									</tr>
+									<tr>
+										<th>CEP</th>
+										<td><?php echo $collect_cep; ?></td>
+									</tr>
+									<tr>
+										<th>Número</th>
+										<td><?php echo $collect_number; ?></td>
+									</tr>
+									<tr>
+										<th>Complemento</th>
+										<td><?php echo $collect_complement; ?></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+				
+						<!-- entrega -->
+						<div class="" style="width:calc(50%-16px);margin:auto;">
+							<h4>Informações de entrega cotação: #<?php echo $product_id; ?></h4>
+							<table class="table table-bordered table-sm">
+								<tbody>
+									<tr>
+										<th>Nome</th>
+										<td><?php echo $shipping_fullname; ?></td>
+									</tr>
+									<tr>
+										<th>Telefone</th>
+										<td><?php echo $shipping_tel; ?></td>
+									</tr>
+									<tr>
+										<th>Cidade</th>
+										<td><?php echo $shipping_city; ?></td>
+									</tr>
+									<tr>
+										<th>Bairro</th>
+										<td><?php echo $shipping_neighborhood; ?></td>
+									</tr>
+									<tr>
+										<th>Endereço</th>
+										<td><?php echo $shipping_address; ?></td>
+									</tr>
+									<tr>
+										<th>CEP</th>
+										<td><?php echo $shipping_cep; ?></td>
+									</tr>
+									<tr>
+										<th>Número</th>
+										<td><?php echo $shipping_number; ?></td>
+									</tr>
+									<tr>
+										<th>Complemento</th>
+										<td><?php echo $shipping_complement; ?></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<button class="uk-modal-close" type="button">Fechar</button>
+				</div>
+			</div>
+			<?php
+		}
 	}
-	 
 }
