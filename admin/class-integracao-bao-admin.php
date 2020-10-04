@@ -76,6 +76,10 @@ class Integracao_Bao_Admin {
 
 		add_action('wp_ajax_save_entrega_data_form', array($this, 'update_entrega')); // Update dos dados da minuta no produto
 		add_action('wp_ajax_nopriv_save_entrega_data_form', array($this, 'update_entrega')); // Update dos dados da minuta no produto
+
+		// Action to insert new colunm and value of minuta id on order edit
+		add_action( 'woocommerce_admin_order_item_headers', array($this, 'bao_admin_order_items_headers'), 10, 1 );
+		add_action( 'woocommerce_admin_order_item_values', array($this, 'bao_admin_order_item_values'), 10, 1 );
 	}
 
 	/**
@@ -739,6 +743,34 @@ class Integracao_Bao_Admin {
 		var_dump($post_id);
 		print_r($extract_shipping_data);
 		die();
+	}
+
+	/**
+	 * Na edição do pedido, na tabela de produtos insere uma nova coluna destinada ao ID da minuta
+	 * 
+	 * @param $order(obj)
+	 * 
+	 * @since 1.0.3
+	 */
+	public function bao_admin_order_items_headers($order){
+		?>
+		<th class="line_customtitle sortable" data-sort="your-sort-option">Minuta ID</th>
+		<?php
+	}
+
+	/**
+	 * Na edição do pedido, na tabela de produtos insere o valor destinado a coluna minuta id
+	 * 
+	 * @param $product(arr)
+	 * 
+	 * @since 1.0.3
+	 */
+	public function bao_admin_order_item_values( $product ) {
+		$post_id 	= $product->id;
+		$minuta_id 	= get_post_meta($post_id, 'bao_minuta_id', true)
+		?>
+		<td class="line_customtitle"><?php echo $minuta_id ;?></td>
+		<?php
 	}
 
 }
