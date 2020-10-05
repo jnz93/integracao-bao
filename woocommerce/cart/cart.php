@@ -18,8 +18,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
+$ids = '';
+
 do_action( 'woocommerce_before_cart' ); ?>
-<!-- olá mundo -->
+<?php do_action( 'bao_popups_delivery_data' ); ?>
 <form class="woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
 	<?php do_action( 'woocommerce_before_cart_table' ); ?>
 
@@ -48,7 +50,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 				if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters( 'woocommerce_cart_item_visible', true, $cart_item, $cart_item_key ) ) {
 					$product_permalink = apply_filters( 'woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink( $cart_item ) : '', $cart_item, $cart_item_key );
 					?>
-					<tr class="woocommerce-cart-form__cart-item <?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
+					<tr id="<?php echo 'cotacao-'.$product_id; ?>" class="woocommerce-cart-form__cart-item <?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
 
 						<td class="product-thumbnail">
 						<?php
@@ -115,6 +117,10 @@ do_action( 'woocommerce_before_cart' ); ?>
 					</tr>
 					<?php
 				}
+
+				?>
+				<?php
+				$ids .= $product_id . ',';
 			}
 			?>
 
@@ -164,5 +170,8 @@ tr.woocommerce-shipping-totals{
 </style>
 
 <?php do_action( 'woocommerce_after_cart' ); ?>
-<?php do_action( 'bao_popups_delivery_data' ); ?>
 
+<script>
+	var cartProductsIds = '<?php echo $ids; ?>';
+	verifyColetaEntregaForms('<?php echo $ids; ?>');
+</script>

@@ -280,6 +280,11 @@ function sendCollectFormDataToBackEnd(btn, productId, ajaxUrl)
 			{
 				UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Erro ao salvar.</span>", {pos: 'bottom-center', status: 'error'});
 				UIkit.notification("<span class='uk-box-shadow-small uk-padding'>"+ response.error +"</span>", {pos: 'bottom-center', status: 'error'});
+			},
+			complete: function(response)
+			{
+				verifyColetaEntregaForms(cartProductsIds)
+				// console.log(cartProductsIds);
 			}
 		});
 	} else {
@@ -317,14 +322,6 @@ function sendShippingFormDataToBackEnd(productId, ajaxUrl)
 
 	// Teste validaçao dos inputs
 	var arrInputsA = [];
-	arrInputsA.push(jQuery('#bao_collect_fullname_' + productId));
-	arrInputsA.push(jQuery('#bao_collect_tel_' + productId));
-	arrInputsA.push(jQuery('#bao_collect_city_' + productId));
-	arrInputsA.push(jQuery('#bao_collect_neighborhood_' + productId));
-	arrInputsA.push(jQuery('#bao_collect_address_' + productId));
-	arrInputsA.push(jQuery('#bao_collect_cep_' + productId));
-	arrInputsA.push(jQuery('#bao_collect_number_' + productId));
-	arrInputsA.push(jQuery('#bao_collect_complement_' + productId));
 	arrInputsA.push(jQuery('#bao_shipping_fullname_' + productId));
 	arrInputsA.push(jQuery('#bao_shipping_tel_' + productId));
 	arrInputsA.push(jQuery('#bao_shipping_city_' + productId));
@@ -373,10 +370,91 @@ function sendShippingFormDataToBackEnd(productId, ajaxUrl)
 			{
 				UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Erro ao salvar.</span>", {pos: 'bottom-center', status: 'error'});
 				UIkit.notification("<span class='uk-box-shadow-small uk-padding'>"+ response.error +"</span>", {pos: 'bottom-center', status: 'error'});
+			},
+			complete: function(response)
+			{
+				verifyColetaEntregaForms(cartProductsIds)
+				// console.log(cartProductsIds);
 			}
 		});
 	} else {
 		console.log(invalidInputs + " Inválido(s)!");
 		jQuery('#error-message').fadeIn();
 	}
+}
+
+
+/**
+ * Verifica se os formulários de coleta/entrega foram preenchidos e habilita/desabilita o botão "concluir compra" no carrinho
+ * 
+ * @param productIds(str)
+ * 
+ * @since 1.0.3
+ */
+function verifyColetaEntregaForms(productIds)
+{
+	console.log(productIds)
+	var arrIds = productIds.split(',');
+	console.log(arrIds);
+	// Teste validaçao dos inputs
+	var validate = 0;
+	arrIds.forEach(function(id){
+		if(id != '') {
+			var arrInputsA = [];
+			arrInputsA.push(jQuery('#bao_collect_fullname_' + id));
+			arrInputsA.push(jQuery('#bao_collect_tel_' + id));
+			arrInputsA.push(jQuery('#bao_collect_city_' + id));
+			arrInputsA.push(jQuery('#bao_collect_neighborhood_' + id));
+			arrInputsA.push(jQuery('#bao_collect_address_' + id));
+			arrInputsA.push(jQuery('#bao_collect_cep_' + id));
+			arrInputsA.push(jQuery('#bao_collect_number_' + id));
+			arrInputsA.push(jQuery('#bao_collect_complement_' + id));
+			arrInputsA.push(jQuery('#bao_shipping_fullname_' + id));
+			arrInputsA.push(jQuery('#bao_shipping_tel_' + id));
+			arrInputsA.push(jQuery('#bao_shipping_city_' + id));
+			arrInputsA.push(jQuery('#bao_shipping_neighborhood_' + id));
+			arrInputsA.push(jQuery('#bao_shipping_address_' + id));
+			arrInputsA.push(jQuery('#bao_shipping_cep_' + id));
+			arrInputsA.push(jQuery('#bao_shipping_number_' + id));
+			arrInputsA.push(jQuery('#bao_shipping_complement_' + id));
+	
+			arrInputsA.forEach(function(el)
+			{
+				// console.log(el);
+				if (el.val().length < 3)
+				{
+					el.css({'border': '1px solid red'});
+					validate++;
+				}
+			});
+			
+			if (validate != 0)
+			{
+				jQuery('#cotacao-' + id).css({
+					'background': 'red'
+				});
+			}
+			else {
+				jQuery('#cotacao-' + id).css({
+					'background': 'none'
+				});
+			}
+		}
+	});
+	if (validate != 0)
+	{
+		var cautionMessage = '<div class="uk-alert-warning" uk-alert><p>Preencha os dados de coleta e entrega das cotações em destaque.</p></div>',
+			btnConcluirCompra = jQuery('.checkout-button') ;
+		console.log(validate);
+		console.log(jQuery('.checkout-button'));
+		btnConcluirCompra.fadeOut();
+		btnConcluirCompra.after(cautionMessage);
+	} else {
+		var cautionMessage = '<div class="uk-alert-warning" uk-alert><p>Preencha os dados de coleta e entrega das cotações em destaque.</p></div>',
+			btnConcluirCompra = jQuery('.checkout-button');
+
+		btnConcluirCompra.fadeIn();
+		btnConcluirCompra.next().fadeOut();
+	}	
+
 }
