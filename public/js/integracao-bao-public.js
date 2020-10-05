@@ -31,41 +31,6 @@
 
 })( jQuery );
 
-/**
- * Função sendMinutaIdToBackEnd()
- * Envia o id da minuta junto ao post id para o backend
- * @param minutaId(int) = id number
- * @param postId(int) = id do post
- * @param ajaxUrl(str) = url wp admin ajax
- *
- * @since 1.0.2
- */
-function sendMinutaIdToBackEnd(minutaId, postId, ajaxUrl)
-{
-	var minutaId = minutaId, 
-		postId = postId,
-		actionWp = 'save_minuta_id_on_product',
-		ajaxUrl = ajaxUrl;
-
-	jQuery.ajax({
-		url: ajaxUrl,
-		type: 'POST',
-		data: {
-			'action': actionWp,
-			'minuta_id': minutaId,
-			'post_id': postId
-		},
-		success: function(data)
-		{
-			console.log('Dados gravados com sucesso!');
-		},
-		error: function(err)
-		{
-			console.log(err);
-		}
-	});
-}
-
 
 /**
  * Função getMinutaByID(id, token)
@@ -101,6 +66,43 @@ function getMinutaByID(id, postId, token, ajaxUrl)
 			});
 		}
 	})
+}
+
+
+/**
+ * Função sendMinutaIdToBackEnd()
+ * Envia o id da minuta junto ao post id para o backend
+ * @param minutaId(int) = id number
+ * @param postId(int) = id do post
+ * @param ajaxUrl(str) = url wp admin ajax
+ *
+ * @since 1.0.2
+ */
+function sendMinutaIdToBackEnd(minutaId, postId, ajaxUrl)
+{
+	var minutaId = minutaId, 
+		postId = postId,
+		ajaxUrl = ajaxUrl;
+	
+	let actionWp = 'save_minuta_id_on_product';
+
+	jQuery.ajax({
+		url: ajaxUrl,
+		type: 'POST',
+		data: {
+			'action': actionWp,
+			'minuta_id': minutaId,
+			'post_id': postId
+		},
+		success: function(data)
+		{
+			console.log('Dados gravados com sucesso!');
+		},
+		error: function(err)
+		{
+			console.log(err);
+		}
+	});
 }
 
 
