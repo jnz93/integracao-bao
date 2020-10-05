@@ -834,32 +834,19 @@ class Integracao_Bao_Admin {
 		$token = Integracao_Bao_Admin::login_brudam_api();
 		$ajax_url = admin_url('admin-ajax.php');
 		
-		// echo 'Token: ' . $token . '</br>';
-		// echo 'Ajax Url: ' . $ajax_url . '</br>';
 		$args = array(
 			'status' 	=> 'completed',
 			'limit'		=> -1, 
 		);
 		$orders = wc_get_orders( $args );
-		// $products = $orders->get_items();
-		// echo '<pre>';
-		// print_r($orders);
-		// echo '</pre>';
-		$count = 1;
+
 		foreach ($orders as $order)
 		{
 			$items = $order->get_items();
-			// echo '#'. $count .' | Pedido completo: ID-' . $order->id . '</br>';
-			// echo '<pre>';
-			// print_r($items);
-			// echo '</pre>';
-			$count_2 = 1;
 			foreach ($items as $item) :
 				$product_id = $item['product_id'];
 				$minuta_id = get_post_meta($product_id, 'bao_minuta_id', true);
-				if(!empty($minuta_id) && $minuta_id != '207') :
-					// echo '#' . $count_2 . ' | Cotaçao: ID-' . $product_id . ' | Minuta ID: '. $minuta_id .'</br>';
-
+				if(!empty($minuta_id)) :
 					?>
 					<script>
 						id = '<?php echo $minuta_id; ?>';
@@ -871,13 +858,9 @@ class Integracao_Bao_Admin {
 					<?php
 				endif;
 			endforeach;
-			
 
 			$count++;
 		}
-
-
-		// getMinutaByID(id, postId, token, ajaxUrl)
 	}
 
 }
