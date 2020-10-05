@@ -797,6 +797,17 @@ class Integracao_Bao_Admin {
 		$products 	= $order_obj->get_items();
 
 		do_action('show_table_coleta_entrega', $products);
+
+		?>
+		<style>
+			.order_data_column:last-child{
+				display: none;
+			}
+			#order_shipping_line_items{
+				display: none;
+			}
+		</style>
+		<?php
 	}
 
 }
