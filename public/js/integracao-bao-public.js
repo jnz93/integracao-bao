@@ -117,8 +117,9 @@ function sendMinutaDataToUpdate(minuta, postId, ajaxUrl)
 	var minuta = minuta,
 		postId = postId,
 		ajaxUrl = ajaxUrl,
-		dataMinuta = '',
-		actionWp = 'update_data_minuta_on_product';
+		dataMinuta = '';
+
+	let	actionWp = 'update_data_minuta_on_product';
 
 	dataMinuta = 'cnpj_dest_*' + minuta.cnpj_destinatario + '**'
 				+ 'cnpj_rem_*' + minuta.cnpj_remetente + '**'
