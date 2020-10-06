@@ -1172,4 +1172,49 @@ class Integracao_Bao_Public {
 			<?php
 		}
 	}
+
+	
+	/**
+     * Interpreta o código do status e devolte uma descrição
+     * 
+     * @param $post_id(int) = id do produto
+     * 
+     * @since 1.0.3
+     */
+    public function serialize_status_code($post_id)
+    {
+        if (empty($post_id)) :
+            echo 'Id do produto não fornecido ou inválido';
+            return;
+        endif;
+
+        $status_code = get_post_meta($post_id, 'status_env', true);
+
+        $status_desc = '';
+        switch($status_code) :
+            case '404':
+                $status_desc = 'Aguardando Pagamento';
+                break;
+            case '495':
+                $status_desc = 'Aguardando Coleta';
+                break;
+            case '207':
+                $status_desc = 'Entregue/Finalizado';
+                break;
+            case '172':
+                $status_desc = 'Em trânsito';
+                break;
+            case '99':
+                $status_desc = 'Outros - Aguarde Contato';
+                break;
+            case '100':
+                $status_desc = 'Emissão Realizada';
+                break;
+            default:
+                $status_desc = 'Código desconhecido';
+        endswitch;
+
+        return $status_desc;
+	}
+
 }
