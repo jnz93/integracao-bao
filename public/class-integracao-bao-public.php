@@ -55,7 +55,7 @@ class Integracao_Bao_Public {
 
 		// Shortcodes
 		add_shortcode('bao_cotacao', array($this, 'form_bao_cotacao'));
-		add_shortcode('handle_data_form', array($this, 'handle_data_form'));
+		// add_shortcode('handle_data_form', array($this, 'handle_data_form'));
 		
 		// Ajax Actions
 		add_action('wp_ajax_send_cotacao_data', array($this, 'send_cotacao_data'));
@@ -443,7 +443,8 @@ class Integracao_Bao_Public {
 		if ( !empty($curr_cart) ) :
 			foreach ($curr_cart as $product) :
 				$post_id 	= $product['product_id'];
-				Integracao_Bao_Public::tpl_address_form($post_id);
+				Integracao_Bao_Public::form_data_collect($post_id);
+				Integracao_Bao_Public::form_data_shipping($post_id);
 			endforeach;
 		endif;
 		return false;
@@ -477,7 +478,7 @@ class Integracao_Bao_Public {
 		$shipping_complement 	= get_post_meta($product_id, 'bao_product_shipping_complement', true);
 		?>
 		<!-- This is the modal -->
-		<div id="modal-<?php echo $product_id; ?>" class="" uk-modal>
+		<div id="modal-coleta-<?php echo $product_id; ?>" class="" uk-modal>
 			<div class="uk-modal-dialog uk-modal-body">
 				<h3><?php echo "#" . $product_id; ?> - Preencha com dados de coleta e entrega</h3>
 				<div class="uk-column-1-1 bao_wrapper_form">
@@ -983,7 +984,7 @@ class Integracao_Bao_Public {
 		die();
 	}
 
-		/**
+	/**
 	 * Template view-order para mostrar informações de entrega 
 	 * e botão para ver os dados de coleta e entrega
 	 * 
@@ -1011,8 +1012,8 @@ class Integracao_Bao_Public {
 			<!-- Nas linhas deverá ter espaço para o botão dos dados e também uma coluna dedicada ao status -->
 			<?php
 			foreach($products as $product) :
-				$product_id 			= $product['product_id'];
-				$status_env = Integracao_Bao_Public::serialize_status_code($product_id);
+				$product_id 	= $product['product_id'];
+				$status_env 	= Integracao_Bao_Public::serialize_status_code($product_id);
 				$tr = '<tr><td class="product-name">'. $product['name'] .' x'. $product['quantity'] .'</td><td style="text-align:left;">'. $status_env .'</td><td><button uk-toggle="target: #product-'. $product_id .'" type="button">Ver</button></td><td>'. $product['total'] .'</td></tr>';
 
 				echo $tr;
