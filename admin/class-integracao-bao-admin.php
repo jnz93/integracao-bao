@@ -288,7 +288,11 @@ class Integracao_Bao_Admin {
 				$order_items		= $order_obj->get_items();
 
 				if (!is_wp_error($order_items)) :
-
+					?>
+					<script>
+						var product_id = '';
+					</script>
+					<?php
 					foreach ($order_items as $item) :
 						$product_id = $item->get_product_id();
 						$total 		= $item->get_total();
@@ -331,8 +335,8 @@ class Integracao_Bao_Admin {
 						
 						?>
 						<script>
-							var product_id = '<?php echo $product_id; ?>',
-								ajaxAdminUrl = '<?php echo admin_url('admin-ajax.php'); ?>';
+							var	ajaxAdminUrl = '<?php echo admin_url('admin-ajax.php'); ?>';
+							product_id = '<?php echo $product_id; ?>';
 
 							jQuery.ajax({
 								method: "POST",
@@ -520,15 +524,20 @@ class Integracao_Bao_Admin {
 										}
 									]
 								},
-								success: function(data)
+								success: function(response)
 								{
-									var returnData = data.data[0];
-									sendMinutaIdToBackEnd(returnData.id, product_id, ajaxAdminUrl);
+									var respArr = response.data;
+									product_id = '<?php echo $product_id; ?>';
+
+									respArr.forEach(function(index)
+									{
+										sendMinutaIdToBackEnd(index.id, product_id, ajaxAdminUrl);
+									});
 								},
-								error: function(data)
+								error: function(response)
 								{
-									console.log('Erro:')
-									console.log(data);
+									console.log('Erro:');
+									console.log(response);
 								}
 							});
 						</script>
@@ -644,12 +653,10 @@ class Integracao_Bao_Admin {
 
 		foreach ($arr_data as $data) :
 			$result = explode('_*', $data);
-			// print_r($result);
 			
 			$meta_key = trim($result[0]);
 			$meta_value = trim($result[1]);
-			// echo 'Post id: ' . $post_id . '</br>';
-			// echo 'Meta Value: ' . $meta_value . '</br>';
+			
 			update_post_meta($post_id, $meta_key, $meta_value);
 		endforeach;
 		die();

@@ -96,7 +96,7 @@ function sendMinutaIdToBackEnd(minutaId, postId, ajaxUrl)
 		},
 		success: function(data)
 		{
-			console.log('Dados gravados com sucesso!');
+			console.log('ID Minuta #'+ minutaId +' foi salvo na cotação #'+ postId +' com sucesso!');
 		},
 		error: function(err)
 		{
