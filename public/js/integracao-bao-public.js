@@ -461,3 +461,21 @@ function verifyColetaEntregaForms(productIds)
 	}	
 
 }
+
+/**
+ * Rastrear pedido. Recebe o id do pedido com um dos parametros e faz o redirecionamento
+ * 
+ * @param orderId(int)
+ * @param siteUrl(str)
+ * 
+ * @since 1.1.0
+ */
+function redirectToOrder(orderId, siteUrl)
+{
+	if (orderId == '' || siteUrl == '')
+	{
+		return;
+	}
+	var to = siteUrl + '/minha-conta/view-order/' + orderId;
+	window.location.href = to;
+}

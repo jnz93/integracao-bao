@@ -1255,4 +1255,20 @@ class Integracao_Bao_Public {
 			echo $key . ': ' . $value . '</br>';
 		endforeach;
 	}
+
+	/**
+	 * shortcode rastreio
+	 * 
+	 * @since 1.1.0
+	 */
+	function form_tracking_order()
+	{
+		$site_url = site_url();
+		?>
+		<div class="form-group" style="margin-top: 32px;">
+			<input type="number" class="form-control" name="" id="tracking-order">
+			<button class="" style="margin: 0 auto;" onclick="redirectToOrder(jQuery('#tracking-order').val(), '<?php echo $site_url; ?>')">Rastrear</button>
+		</div>
+		<?php
+	}
 }
