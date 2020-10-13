@@ -48,6 +48,22 @@
     <div class="form-group cotacao-volumes">
         <label for="cotacao-volumes">Número de volumes</label>
         <input type="number" class="form-control" name="cotacao-volumes" id="cotacao-volumes" required>
+
+        <a class="" id="" href="#modal-example" uk-toggle onclick="generateInputs(jQuery('#cotacao-volumes').val())">Dimensões</a>
+        <!-- This is the modal -->
+
+        <div id="modal-example" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <h2 class="uk-modal-title">Insira os valores para cada volume(item)</h2>
+                <p>Comprimento x Largura x Altura</p>
+                <div id="inputs-vols"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
     </div>
     
     <div class="form-group cotacao-peso">
@@ -88,14 +104,14 @@
                 <h4 class="uk-card-title uk-text-warning"><i class="icon-attention"></i></h4>
                 <span class="uk-text-warning">As informações prestadas são responsabilidade do usuário e qualquer informação divergente pode alterar o valor do frete</span>
             </div>
-            <button type="button" class="" onClick="sendCotacaoDataToBackEnd(jQuery('#valor-carga').val(), jQuery('#delivery_time').val(), jQuery('#cotacao-cepremetente').val(), jQuery('#cotacao-cepdestinatario').val(), jQuery('#cotacao-volumes').val(), jQuery('#delivery_price').val(), '<?php echo admin_url('admin-ajax.php'); ?>')">Adicionar ao carrinho</button>
+            <button type="button" class="" onClick="sendCotacaoDataToBackEnd(jQuery('#valor-carga').val(), jQuery('#delivery_time').val(), jQuery('#cotacao-cepremetente').val(), jQuery('#cotacao-cepdestinatario').val(), jQuery('#cotacao-volumes').val(), jQuery('#cotacao-peso').val(), jQuery('#delivery_price').val(), '<?php echo admin_url('admin-ajax.php'); ?>')">Adicionar ao carrinho</button>
             <button type="submit" class="">Finalizar frete</button>
         <?php else : ?>
             <div class="uk-text-center">
                 <h4 class="uk-card-title uk-text-warning"><i class="icon-attention"></i></h4>
                 <span class="uk-text-warning">As informações prestadas são responsabilidade do usuário e qualquer informação divergente pode alterar o valor do frete</span>
             </div>
-            <button type="button" class="" onClick="sendCotacaoDataToBackEnd(jQuery('#valor-carga').val(), jQuery('#delivery_time').val(), jQuery('#cotacao-cepremetente').val(), jQuery('#cotacao-cepdestinatario').val(), jQuery('#cotacao-volumes').val(), jQuery('#delivery_price').val(), '<?php echo admin_url('admin-ajax.php'); ?>')">Adicionar ao carrinho</button>
+            <button type="button" class="" onClick="sendCotacaoDataToBackEnd(jQuery('#valor-carga').val(), jQuery('#delivery_time').val(), jQuery('#cotacao-cepremetente').val(), jQuery('#cotacao-cepdestinatario').val(), jQuery('#cotacao-volumes').val(), jQuery('#cotacao-peso').val(), jQuery('#delivery_price').val(), '<?php echo admin_url('admin-ajax.php'); ?>')">Adicionar ao carrinho</button>
             <button>Cadastre-se para continuar</button>
         <?php endif; ?>
     </div>
@@ -193,5 +209,6 @@ jQuery('document').ready(function()
 {
     // Masks
     jQuery('#valor-carga').mask("#.##0,##", {reverse: true});
+    jQuery('.comprimento, .largura, .altura').mask("#.##", {reverse: true});
 })
 </script>

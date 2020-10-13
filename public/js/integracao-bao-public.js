@@ -479,3 +479,121 @@ function redirectToOrder(orderId, siteUrl)
 	var to = siteUrl + '/minha-conta/view-order/' + orderId;
 	window.location.href = to;
 }
+
+
+/**
+ * Recebe o número de volumes e gera os inputs referentes aos volumes
+ * 
+ * @param vols(int) numero de volumes no input cotacao-volumes
+ * 
+ * @since 1.1.0
+ */
+function generateInputs(vols)
+{
+	console.log(vols);
+	var output = '',
+		container = jQuery('#inputs-vols');
+	if (vols < 1)
+	{
+		output = 'Por favor, insira a quantidade de volumes no campo "Número de volumes".';
+		container.append(output);
+		return;
+	}
+	
+	// Comprimento x Largura x Altura
+	for(i = 1; i <= vols; i++)
+	{
+		// console.log(i);
+		output += '<div style="display: flex;">' +
+						'<div style="width: 20%; margin: 0 4px;"><input type="text" class="form-control uk-form-width-small comprimento" name="" required placeholder="Comp."></div> x ' +
+						'<div style="width: 20%; margin: 0 4px;"><input type="text" class="form-control uk-form-width-small largura" name="" required placeholder="Larg."></div> x ' +
+						'<div style="width: 20%; margin: 0 4px;"><input type="text" class="form-control uk-form-width-small altura" name="" required placeholder="Alt."></div>' +
+						'<div style="width: 20%; margin: 0 4px;"><select class="uk-select" onclick="calcPesoCubado(jQuery(this))"><option>Medida</option><option>CM</option><option>M</option></select></div>' +
+						'<div style="width: 15%; margin: 0 4px;"><input type="text" class="form-control uk-form-width-small total" name="" disabled></div>' +
+					'</div>';
+	}
+	
+	container.html(output);
+}
+
+/**
+ * Recebe o elemento clicado e busca os valores comprimento, largura e altura compativeis para fazer o cálculo.
+ * 
+ * @param el(nó) o elemento clicado
+ * 
+ * @since 1.1.0
+ */
+function calcPesoCubado(el)
+{
+	var typeMeasure = el.val(),
+		factor = 0;
+
+	switch(typeMeasure)
+	{
+		case 'CM':
+			factor = 6000;
+			break;
+		case 'M':
+			factor = 300;
+			break;
+		default:
+			return;
+	}
+	
+	var comprimento = parseFloat(el.parent().parent().find('.comprimento').val()),
+		largura = parseFloat(el.parent().parent().find('.largura').val()),
+		altura = parseFloat(el.parent().parent().find('.altura').val()),
+		inputTotal = el.parent().parent().find('.total'),
+		inputsTotals = el.parent().parent().parent().find('.total');
+
+	var total = 0;
+	/**
+	 * Fórmula CM
+	 * C * L * A / 6000
+	 * 
+	 * Fórmula M
+	 * C * L * A * 300
+	 */
+	if (typeMeasure == 'CM') 
+	{
+		total = (comprimento * largura * altura) / factor; 
+	}
+	else 
+	{
+		total = (comprimento * largura * altura) * factor;
+	}
+	inputTotal.val(total.toFixed(2));
+	// console.log(total);
+	// console.log(inputsTotals)
+
+	var totalKg = 0;
+	// console.log(typeof inputsTotals);
+	inputsTotals.each(function(index, el)
+	{
+
+		if (el.value != '') 
+		{
+			totalKg = totalKg + parseFloat(el.value);
+			console.log(el.value)
+		}
+	});
+
+	console.log('TotalKG: ' + totalKg);
+	// totalKg = totalKg.toFixed(2);
+	var inputPeso = jQuery('#cotacao-peso'),
+		currPeso = parseFloat(inputPeso.val());
+
+	console.log('Peso typeof: ' + typeof currPeso);
+	if (currPeso)
+	{
+		console.log('Peso: ' + currPeso);
+		if (totalKg > currPeso)
+		{
+			inputPeso.val(totalKg).prop('disabled', true);
+		}
+	}
+	else
+	{
+		inputPeso.val(totalKg).prop('disabled', true);
+	}
+}
