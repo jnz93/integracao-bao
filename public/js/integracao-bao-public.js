@@ -175,9 +175,9 @@ function sendMinutaDataToUpdate(minuta, postId, ajaxUrl)
  * 
  * @since 1.0.3
  */
-function sendCotacaoDataToBackEnd(price, deliveryDays, zipFrom, zipTo, nVolumes, value, ajaxUrl)
+function sendCotacaoDataToBackEnd(price, deliveryDays, zipFrom, zipTo, nVolumes, weight, value, ajaxUrl)
 {
-	var dataToSend = price + '|' + deliveryDays + '|' + zipFrom + '|' + zipTo + '|' + nVolumes + '|' + '|' + value;
+	var dataToSend = price + '|' + deliveryDays + '|' + zipFrom + '|' + zipTo + '|' + nVolumes + '|' + weight + '|' + value;
 	let actionWp = 'handle_cotacao_form';
 	
 	// console.log(dataToSend);

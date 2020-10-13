@@ -216,8 +216,6 @@ class Integracao_Bao_Public {
 		endif;
 		setlocale(LC_MONETARY, 'pt_BR');
 
-
-
 		$data_form 					= $_POST['dataForm'];
 		$extract_data 				= explode('|', $data_form);
 
@@ -228,14 +226,6 @@ class Integracao_Bao_Public {
 		$n_volumes            	= $extract_data[4];
 		$weight              	= $extract_data[5];
 		$value               	= $extract_data[6];
-
-		echo 'Valor carga: ' .  $price . '</br>';
-		echo 'Tempo de entrega: ' .  $delivery_days . '</br>';
-		echo 'Zip from: ' .  $zip_from . '</br>';
-		echo 'Zip To: ' .  $zip_to . '</br>';
-		echo 'Volumes: ' .  $n_volumes . '</br>';
-		echo 'Peso: ' .  $weight . '</br>';
-		echo 'Valor frete: ' .  $value . '</br>';
 		
 		$list_of_cities = array(
 			'31270-700' => 'Belo Horizonte - MG',
