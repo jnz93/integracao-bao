@@ -55,7 +55,7 @@ class Integracao_Bao_Public {
 
 		// Shortcodes
 		add_shortcode('bao_cotacao', array($this, 'form_bao_cotacao'));
-		// add_shortcode('handle_data_form', array($this, 'handle_data_form'));
+		add_shortcode('tracking_order', array($this, 'form_tracking_order'));
 		
 		// Ajax Actions
 		add_action('wp_ajax_send_cotacao_data', array($this, 'send_cotacao_data'));
