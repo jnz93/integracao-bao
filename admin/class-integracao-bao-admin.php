@@ -333,8 +333,20 @@ class Integracao_Bao_Admin {
 							$shipping_data[end($arr)] = get_post_meta($product_id, $data, true);
 						endforeach;
 						
+						// Dados para minuta
+						$today 			= date('Y-m-d'); //Padrão 2020-09-04
+						$weight 		= get_post_meta($product_id, 'bao_product_weight', true);
+						$volumes 		= get_post_meta($product_id, 'bao_product_volumes', true);
+						$days_delivery 	= get_post_meta($product_id, 'bao_product_delivery_days', true);
+
 						?>
 						<script>
+							var today = '<?php echo $today; ?>',
+								weight = '<?php echo $weight; ?>',
+								volumes = '<?php echo $volumes; ?>',
+								days_delivery = '<?php echo $days_delivery; ?>',
+								total = '<?php echo $total; ?>';
+				
 							var	ajaxAdminUrl = '<?php echo admin_url('admin-ajax.php'); ?>';
 							product_id = '<?php echo $product_id; ?>';
 
@@ -352,7 +364,7 @@ class Integracao_Bao_Admin {
 												"tpCTe" : "0",
 												"toma" : "0",
 												"nDocEmit" : "94001641000104",
-												"dEmi" : "2020-09-04",
+												"dEmi" : today,
 												"rSeg" : 0,
 												"cSeg" : "61383493000180",
 												"nAver" : "06238022000233065000",
@@ -361,15 +373,15 @@ class Integracao_Bao_Admin {
 												"tpEmi" : "1",
 												"cAut" : "999999999999",
 												"carga" : {
-													"pBru" : "14.33",
-													"pCub" : ".03",
-													"qVol" : 1,
-													"vTot" : "000000013300.52"
+													"pBru" : weight,
+													"pCub" : weight,
+													"qVol" : volumes,
+													"vTot" : total
 												}
 											},
 											"compl" : {
-												"entrega" : {
-													"dPrev" : "2020-10-08",
+												"entrega" : { 
+													"dPrev" : "2020-10-08", 
 													"hPrev" : "00:00:00"
 												},
 												"cOrigCalc" : "3536505",
@@ -418,15 +430,15 @@ class Integracao_Bao_Admin {
 												"email" : "joao3@hotmail.com"
 											},
 											"valores" : {
-												"vFrete" : "<?php echo $total; ?>",
+												"vFrete" : total,
 												"comp" : [
 													{
 														"xItem" : "peso",
-														"vItem" : "000000000091.14"
+														"vItem" : weight
 													},
 													{
 														"xItem" : "adv",
-														"vItem" : "000000000013.30"
+														"vItem" : "000000000000.00"
 													},
 													{
 														"xItem" : "entrega",
@@ -438,16 +450,16 @@ class Integracao_Bao_Admin {
 													},
 													{
 														"xItem" : "outros",
-														"vItem" : "000000000008.36"
+														"vItem" : "000000000000.00"
 													}
 												],
 												"imp" : {
 													"ICMS" : {
 														"CST" : "00",
-														"vBC" : "000000000119.45",
+														"vBC" : "000000000000.00",
 														"pRedBC" : "000000000000.00",
-														"pICMS" : "000000000007.00",
-														"vICMS" : "000000000119.45"
+														"pICMS" : "000000000000.00",
+														"vICMS" : "000000000000.00"
 													}
 												}
 											},
@@ -455,67 +467,16 @@ class Integracao_Bao_Admin {
 												{
 													"serie" : "1",
 													"nDoc" : "000122893",
-													"dEmi" : "2020-09-04",
+													"dEmi" : today,
 													"vBC" : "00000",
 													"vICMS" : "00000",
 													"vBCST" : "00000",
 													"vST" : "00000",
-													"vProd" : "000000000112.88",
-													"vNF" : "000000000112.88",
-													"pBru" : "00014.330000",
-													"qVol" : 1,
+													"vProd" : total,
+													"vNF" : total,
+													"pBru" : weight,
+													"qVol" : volumes,
 													"chave" : "35191210918425000308550010001228931001141643",
-													"tpDoc" : "55",
-													"xEsp" : "Diversos",
-													"xNat" : "Diversos"
-												},
-												{
-													"serie" : "1",
-													"nDoc" : "000122894",
-													"dEmi" : "2020-09-04",
-													"vBC" : "00000",
-													"vICMS" : "00000",
-													"vBCST" : "00000",
-													"vST" : "00000",
-													"vProd" : "000000000190.76",
-													"vNF" : "000000000190.76",
-													"pBru" : "00000.000000",
-													"qVol": 1 ,
-													"chave" : "35191210918425000308550010001228941001141659",
-													"tpDoc" : "55",
-													"xEsp" : "Diversos",
-													"xNat" : "Diversos"
-												},
-												{
-													"serie" : "1",
-													"nDoc" : "000122895",
-													"dEmi" : "2020-09-04",
-													"vBC" : "00000",
-													"vICMS" : "00000",
-													"vBCST" : "00000",
-													"vST" : "00000",
-													"vProd" : "000000000113.05",
-													"vNF" : "000000000113.05",
-													"pBru" : "00000.000000",
-													"qVol": 1 ,
-													"chave" : "35191210918425000308550010001228951001141664",
-													"tpDoc" : "55",
-													"xEsp" : "Diversos",
-													"xNat" : "Diversos"
-												},
-												{
-													"serie" : "1",
-													"nDoc" : "000122896",
-													"dEmi" : "2020-09-04",
-													"vBC" : "00000",
-													"vICMS" : "00000",
-													"vBCST" : "00000",
-													"vST" : "00000",
-													"vProd" : "000000012883.83",
-													"vNF" : "000000012883.83",
-													"pBru" : "00000.000000",
-													"qVol": 1 ,
-													"chave" : "35191210918425000308550010001228961001141670",
 													"tpDoc" : "55",
 													"xEsp" : "Diversos",
 													"xNat" : "Diversos"
