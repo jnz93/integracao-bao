@@ -600,6 +600,7 @@ class Integracao_Bao_Public {
 		// Current data collect
 		$collect_fullname 		= get_post_meta($cotacao_id, 'bao_product_collect_name', true);
 		$collect_tel 			= get_post_meta($cotacao_id, 'bao_product_collect_phone', true);
+		$collect_doc 			= get_post_meta($cotacao_id, 'bao_product_collect_doc', true);
 		$collect_city 			= get_post_meta($cotacao_id, 'bao_product_collect_city', true);
 		$collect_neighborhood 	= get_post_meta($cotacao_id, 'bao_product_collect_neighborhood', true);
 		$collect_address 		= get_post_meta($cotacao_id, 'bao_product_collect_address', true);
@@ -626,6 +627,11 @@ class Integracao_Bao_Public {
 								<label for="bao_collect_tel">Telefone/Whatsapp</label>
 								<input type="tel" class="form-control" id="bao_collect_tel_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($collect_tel) ? $collect_tel : '' ?>" required>
 								<small id="tel_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_collect_doc">CPF/CNPJ</label>
+								<input type="text" class="form-control" id="bao_collect_doc_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($collect_doc) ? $collect_doc : '' ?>" required>
+								<small id="doc_help" class="form-text text-muted"></small>
 							</div>
 							<div class="form-group">
 								<label for="bao_collect_city">Cidade</label>
@@ -686,6 +692,7 @@ class Integracao_Bao_Public {
 		// Current data shipping
 		$shipping_fullname 		= get_post_meta($cotacao_id, 'bao_product_shipping_name', true);
 		$shipping_tel 			= get_post_meta($cotacao_id, 'bao_product_shipping_phone', true);
+		$shipping_doc			= get_post_meta($cotacao_id, 'bao_product_shipping_doc', true);
 		$shipping_city 			= get_post_meta($cotacao_id, 'bao_product_shipping_city', true);
 		$shipping_neighborhood 	= get_post_meta($cotacao_id, 'bao_product_shipping_neighborhood', true);
 		$shipping_address 		= get_post_meta($cotacao_id, 'bao_product_shipping_address', true);
@@ -712,6 +719,11 @@ class Integracao_Bao_Public {
 								<label for="bao_shipping_tel">Telefone/Whatsapp</label>
 								<input type="tel" class="form-control" id="bao_shipping_tel_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($shipping_tel) ? $shipping_tel : '' ?>" required>
 								<small id="tel_help" class="form-text text-muted"></small>
+							</div>
+							<div class="form-group">
+								<label for="bao_shipping_doc">CPF/CNPJ</label>
+								<input type="text" class="form-control" id="bao_shipping_doc_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($shipping_doc) ? $shipping_doc : '' ?>" required>
+								<small id="doc_help" class="form-text text-muted"></small>
 							</div>
 							<div class="form-group">
 								<label for="bao_shipping_city">Cidade</label>

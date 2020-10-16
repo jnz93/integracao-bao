@@ -222,6 +222,7 @@ function sendCollectFormDataToBackEnd(btn, productId, ajaxUrl)
 	// Dados form
 	var coll_full_name 	= jQuery('#bao_collect_fullname_' + productId).val(),
 	coll_tel 			= jQuery('#bao_collect_tel_' + productId).val(),
+	coll_doc 			= jQuery('#bao_collect_doc_' + productId).val(),
 	coll_city 			= jQuery('#bao_collect_city_' + productId).val(),
 	coll_neighborhood 	= jQuery('#bao_collect_neighborhood_' + productId).val(),
 	coll_address 		= jQuery('#bao_collect_address_' + productId).val(),
@@ -230,12 +231,13 @@ function sendCollectFormDataToBackEnd(btn, productId, ajaxUrl)
 	coll_complement 	= jQuery('#bao_collect_complement_' + productId).val();
 
 	// Building string for collect data
-	var dataForm = coll_full_name + '-|-' + coll_tel + '-|-' + coll_city + '-|-' + coll_neighborhood + '-|-' + coll_address + '-|-' + coll_cep + '-|-' + coll_number + '-|-' + coll_complement;
+	var dataForm = coll_full_name + '-|-' + coll_tel + '-|-' + coll_doc +  '-|-' + coll_city + '-|-' + coll_neighborhood + '-|-' + coll_address + '-|-' + coll_cep + '-|-' + coll_number + '-|-' + coll_complement;
 	
 	// Teste validaçao dos inputs
 	var arrInputsA = [];
 	arrInputsA.push(jQuery('#bao_collect_fullname_' + productId));
 	arrInputsA.push(jQuery('#bao_collect_tel_' + productId));
+	arrInputsA.push(jQuery('#bao_collect_doc_' + productId));
 	arrInputsA.push(jQuery('#bao_collect_city_' + productId));
 	arrInputsA.push(jQuery('#bao_collect_neighborhood_' + productId));
 	arrInputsA.push(jQuery('#bao_collect_address_' + productId));
@@ -313,6 +315,7 @@ function sendShippingFormDataToBackEnd(productId, ajaxUrl)
 	// Dados entrega
 	var shipping_full_name 	= jQuery('#bao_shipping_fullname_' + productId).val(),
 	shipping_tel 			= jQuery('#bao_shipping_tel_' + productId).val(),
+	shipping_doc 			= jQuery('#bao_shipping_doc_' + productId).val(),
 	shipping_city 			= jQuery('#bao_shipping_city_' + productId).val(),
 	shipping_neighborhood 	= jQuery('#bao_shipping_neighborhood_' + productId).val(),
 	shipping_address 		= jQuery('#bao_shipping_address_' + productId).val(),
@@ -321,12 +324,13 @@ function sendShippingFormDataToBackEnd(productId, ajaxUrl)
 	shipping_complement 	= jQuery('#bao_shipping_complement_' + productId).val();
 
 	// Build string for shipping data
-	var dataForm = shipping_full_name + '-|-' + shipping_tel + '-|-' + shipping_city + '-|-' + shipping_neighborhood + '-|-' + shipping_address + '-|-' + shipping_cep + '-|-' + shipping_number + '-|-' + shipping_complement;
+	var dataForm = shipping_full_name + '-|-' + shipping_tel + '-|-' + shipping_doc + '-|-' + shipping_city + '-|-' + shipping_neighborhood + '-|-' + shipping_address + '-|-' + shipping_cep + '-|-' + shipping_number + '-|-' + shipping_complement;
 
 	// Teste validaçao dos inputs
 	var arrInputsA = [];
 	arrInputsA.push(jQuery('#bao_shipping_fullname_' + productId));
 	arrInputsA.push(jQuery('#bao_shipping_tel_' + productId));
+	arrInputsA.push(jQuery('#bao_shipping_doc_' + productId));
 	arrInputsA.push(jQuery('#bao_shipping_city_' + productId));
 	arrInputsA.push(jQuery('#bao_shipping_neighborhood_' + productId));
 	arrInputsA.push(jQuery('#bao_shipping_address_' + productId));
@@ -406,6 +410,7 @@ function verifyColetaEntregaForms(productIds)
 			var arrInputsA = [];
 			arrInputsA.push(jQuery('#bao_collect_fullname_' + id));
 			arrInputsA.push(jQuery('#bao_collect_tel_' + id));
+			arrInputsA.push(jQuery('#bao_collect_doc_' + id));
 			arrInputsA.push(jQuery('#bao_collect_city_' + id));
 			arrInputsA.push(jQuery('#bao_collect_neighborhood_' + id));
 			arrInputsA.push(jQuery('#bao_collect_address_' + id));
@@ -414,6 +419,7 @@ function verifyColetaEntregaForms(productIds)
 			arrInputsA.push(jQuery('#bao_collect_complement_' + id));
 			arrInputsA.push(jQuery('#bao_shipping_fullname_' + id));
 			arrInputsA.push(jQuery('#bao_shipping_tel_' + id));
+			arrInputsA.push(jQuery('#bao_shipping_doc_' + id));
 			arrInputsA.push(jQuery('#bao_shipping_city_' + id));
 			arrInputsA.push(jQuery('#bao_shipping_neighborhood_' + id));
 			arrInputsA.push(jQuery('#bao_shipping_address_' + id));

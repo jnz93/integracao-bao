@@ -649,6 +649,7 @@ class Integracao_Bao_Admin {
 		$keys_collect_data = array(
 			'bao_product_collect_name',
 			'bao_product_collect_phone',
+			'bao_product_collect_doc',
 			'bao_product_collect_city',
 			'bao_product_collect_neighborhood',
 			'bao_product_collect_address',
@@ -667,8 +668,6 @@ class Integracao_Bao_Admin {
 				$count++;
 			endforeach;
 		endif;
-		var_dump($post_id);
-		print_r($extract_collect_data);
 		die();
 	}
 
@@ -698,6 +697,7 @@ class Integracao_Bao_Admin {
 		$keys_shipping_data = array(
 			'bao_product_shipping_name',
 			'bao_product_shipping_phone',
+			'bao_product_shipping_doc',
 			'bao_product_shipping_city',
 			'bao_product_shipping_neighborhood',
 			'bao_product_shipping_address',
@@ -716,8 +716,6 @@ class Integracao_Bao_Admin {
 				$count++;
 			endforeach;
 		endif;
-		var_dump($post_id);
-		print_r($extract_shipping_data);
 		die();
 	}
 
