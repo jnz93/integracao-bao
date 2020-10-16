@@ -301,6 +301,7 @@ class Integracao_Bao_Admin {
 						$keys_collect = array(
 							'bao_product_collect_name',
 							'bao_product_collect_phone',
+							'bao_product_collect_doc',
 							'bao_product_collect_city',
 							'bao_product_collect_neighborhood',
 							'bao_product_collect_address',
@@ -319,6 +320,7 @@ class Integracao_Bao_Admin {
 						$keys_shipping = array(
 							'bao_product_shipping_name',
 							'bao_product_shipping_phone',
+							'bao_product_shipping_doc',
 							'bao_product_shipping_city',
 							'bao_product_shipping_neighborhood',
 							'bao_product_shipping_address',
@@ -333,12 +335,10 @@ class Integracao_Bao_Admin {
 							$shipping_data[end($arr)] = get_post_meta($product_id, $data, true);
 						endforeach;
 						
-						// Dados para minuta
-						$today 			= date('Y-m-d'); //Padrão 2020-09-04
-						$weight 		= get_post_meta($product_id, 'bao_product_weight', true);
-						$volumes 		= get_post_meta($product_id, 'bao_product_volumes', true);
-						$days_delivery 	= get_post_meta($product_id, 'bao_product_delivery_days', true);
-
+						$today 					= date('Y-m-d'); //Padrão 2020-09-04
+						$weight 				= get_post_meta($product_id, 'bao_product_weight', true);
+						$volumes 				= get_post_meta($product_id, 'bao_product_volumes', true);
+						$days_delivery 			= get_post_meta($product_id, 'bao_product_delivery_days', true);
 						?>
 						<script>
 							var today = '<?php echo $today; ?>',
@@ -346,7 +346,37 @@ class Integracao_Bao_Admin {
 								volumes = '<?php echo $volumes; ?>',
 								days_delivery = '<?php echo $days_delivery; ?>',
 								total = '<?php echo $total; ?>';
-				
+
+							// Dados BAO
+							var tomName 	= 'BAO Serviços',
+								tomFant 	= 'BAO',
+								tomLgr 		= 'Avenida Cruzeiro',
+								tomNro 		= '300',
+								tomBairro 	= 'Distrito Industrial',
+								tomCodMun 	= '4303103',
+								tomCEP 		= '94930-615',
+								tomCpl		= 'Sala 02';
+
+							// dados remetente
+							var remDoc 		= '<?php echo $collect_data['doc'] ?>',
+								remName 	= '<?php echo $collect_data['name']; ?>',
+								remFant 	= '<?php echo $collect_data['name']; ?>',
+								remLgr 		= '<?php echo $collect_data['address']; ?>',
+								remNro 		= '<?php echo $collect_data['number']; ?>',
+								remBairro 	= '<?php echo $collect_data['neighborhood']; ?>',
+								remCpl 		= '<?php echo $collect_data['complement']; ?>',
+								remCEP 		= '<?php echo $collect_data['zip']; ?>';
+
+							// dados destinatario
+							var destDoc 	= '<?php echo $shipping_data['doc']; ?>',
+								destName 	= '<?php echo $shipping_data['name']; ?>',
+								destFant 	= '<?php echo $shipping_data['name']; ?>',
+								destLgr 	= '<?php echo $shipping_data['address']; ?>',
+								destNro 	= '<?php echo $shipping_data['number']; ?>',
+								destBairro 	= '<?php echo $shipping_data['neighborhood']; ?>',
+								destCpl 	= '<?php echo $shipping_data['complement']; ?>',
+								destCEP 	= '<?php echo $shipping_data['zip']; ?>';
+
 							var	ajaxAdminUrl = '<?php echo admin_url('admin-ajax.php'); ?>';
 							product_id = '<?php echo $product_id; ?>';
 
@@ -362,7 +392,7 @@ class Integracao_Bao_Admin {
 											"minuta" : {
 												"CFOP" : "6353",
 												"tpCTe" : "0",
-												"toma" : "0",
+												"toma" : "4",
 												"nDocEmit" : "94001641000104",
 												"dEmi" : today,
 												"rSeg" : 0,
@@ -381,7 +411,7 @@ class Integracao_Bao_Admin {
 											},
 											"compl" : {
 												"entrega" : { 
-													"dPrev" : "2020-10-08", 
+													"dPrev" : today,
 													"hPrev" : "00:00:00"
 												},
 												"cOrigCalc" : "3536505",
@@ -389,45 +419,45 @@ class Integracao_Bao_Admin {
 												"xObs" : "n/"
 											},
 											"toma" : {
-												"nDoc" : "10918425000308",
+												"nDoc" : "08565151913",
 												"IE" : "513048395113",
-												"xNome" : "<?php echo $collect_data['name']; ?>",
-												"xFant" : "<?php echo $collect_data['name']; ?>",
-												"xLgr" : "<?php echo $collect_data['address']; ?>",
-												"nro" : "<?php echo $collect_data['number']; ?>",
-												"xCpl" : "<?php echo $collect_data['complement']; ?>",
-												"xBairro" : "<?php echo $collect_data['neighborhood']; ?>",
-												"cMun" : "3536505",
-												"CEP" : "<?php echo $collect_data['zip']; ?>",
+												"xNome" : tomName,
+												"xFant" : tomFant,
+												"xLgr" : tomLgr,
+												"nro" : tomNro,
+												"xCpl" : tomCpl,
+												"xBairro" : tomBairro,
+												"cMun" : tomCodMun,
+												"CEP" : tomCEP,
 												"cPais" : "1058",
-												"email" : "joanez@hotmail.com"
+												"email" : "email@bao.com.br"
 											},
 											"rem" : {
-												"nDoc" : "10918425000308",
+												"nDoc" : remDoc,
 												"IE" : "513048395113",
-												"xNome" : "<?php echo $collect_data['name']; ?>",
-												"xFant" : "<?php echo $collect_data['name']; ?>",
-												"xLgr" : "<?php echo $collect_data['address']; ?>",
-												"nro" : "<?php echo $collect_data['number']; ?>",
-												"xBairro" : "<?php echo $collect_data['neighborhood']; ?>",
-												"xCpl" : "<?php echo $collect_data['complement']; ?>",
+												"xNome" : remName,
+												"xFant" : remFant,
+												"xLgr" : remLgr,
+												"nro" : remNro,
+												"xBairro" : remBairro,
+												"xCpl" : remCpl,
 												"cMun" : "3536505",
-												"CEP" : "<?php echo $collect_data['zip']; ?>",
+												"CEP" : remCEP,
 												"cPais" : "1058",
-												"email" : "joanez@hotmail.com"
+												"email" : "email_rem@domain.com"
 											},
 											"dest" : {
-												"nDoc" : "18592005000116",
+												"nDoc" : destDoc,
 												"IE" : "20353243",
-												"xNome" : "<?php echo $shipping_data['name']; ?>",
-												"xFant" : "<?php echo $shipping_data['name']; ?>",
-												"xLgr" : "<?php echo $shipping_data['address']; ?>",
-												"nro" : "<?php echo $shipping_data['number']; ?>",
-												"xBairro" : "<?php echo $shipping_data['neighborhood']; ?>",
+												"xNome" : destName,
+												"xFant" : destFant,
+												"xLgr" : destLgr,
+												"nro" : destNro,
+												"xBairro" : destBairro,
 												"cMun" : "4306767",
-												"CEP" : "<?php echo $shipping_data['zip']; ?>",
+												"CEP" : destCEP,
 												"cPais" : "1058",
-												"email" : "joao3@hotmail.com"
+												"email" : "email_dest@domain.com"
 											},
 											"valores" : {
 												"vFrete" : total,
