@@ -335,6 +335,39 @@ class Integracao_Bao_Admin {
 							$shipping_data[end($arr)] = get_post_meta($product_id, $data, true);
 						endforeach;
 						
+						// São Paulo 		| 04348070 | 3550308
+						// Porto Alegre 	| 91350240 | 4314902
+						// Belo Horizonte 	| 31270700 | 3106200
+						// Brasília 		| 71608900 | 5300108
+						// Campinas 		| 13051154 | 3509502
+						// Curitiba 		| 83040540 | 4106902
+						// Florianópolis 	| 88015902 | 4205407
+						// Goiânia 			| 75133320 | 5208707
+						// Manaus 			| 69028140 | 1302603
+						// Rio de Janeiro 	| 21020190 | 3304557
+
+						$ibge_codes = array(
+							'04348-070'	=> '3550308', #São Paulo
+							'91350-240'	=> '4314902', #Porto Alegre
+							'31270-700'	=> '3106200', #Belo Horizonte
+							'71608-900'	=> '5300108', #Brasília
+							'13051-154'	=> '3509502', #Campinas
+							'83040-540'	=> '4106902', #Curitiba
+							'88015-902'	=> '4205407', #Florianópolis
+							'75133-320'	=> '5208707', #Goiânia
+							'69028-140'	=> '1302603', #Manaus
+							'21020-190'	=> '3304557'  #Rio De Janeiro
+						);
+
+						foreach($ibge_codes as $zip => $code) :
+							if ($zip == trim($collect_data['zip'])) :
+								$code_origin = $code;
+							endif;
+							if ($zip == trim($shipping_data['zip'])) :
+								$code_destiny = $code;
+							endif;
+						endforeach;
+
 						$today 					= date('Y-m-d'); //Padrão 2020-09-04
 						$weight 				= get_post_meta($product_id, 'bao_product_weight', true);
 						$volumes 				= get_post_meta($product_id, 'bao_product_volumes', true);
@@ -365,7 +398,8 @@ class Integracao_Bao_Admin {
 								remNro 		= '<?php echo $collect_data['number']; ?>',
 								remBairro 	= '<?php echo $collect_data['neighborhood']; ?>',
 								remCpl 		= '<?php echo $collect_data['complement']; ?>',
-								remCEP 		= '<?php echo $collect_data['zip']; ?>';
+								remCEP 		= '<?php echo $collect_data['zip']; ?>',
+								remCodCity 	= '<?php echo $code_origin; ?>';
 
 							// dados destinatario
 							var destDoc 	= '<?php echo $shipping_data['doc']; ?>',
@@ -375,7 +409,8 @@ class Integracao_Bao_Admin {
 								destNro 	= '<?php echo $shipping_data['number']; ?>',
 								destBairro 	= '<?php echo $shipping_data['neighborhood']; ?>',
 								destCpl 	= '<?php echo $shipping_data['complement']; ?>',
-								destCEP 	= '<?php echo $shipping_data['zip']; ?>';
+								destCEP 	= '<?php echo $shipping_data['zip']; ?>',
+								destCodCity = '<?php echo $code_destiny; ?>';
 
 							var	ajaxAdminUrl = '<?php echo admin_url('admin-ajax.php'); ?>';
 							product_id = '<?php echo $product_id; ?>';
@@ -441,7 +476,7 @@ class Integracao_Bao_Admin {
 												"nro" : remNro,
 												"xBairro" : remBairro,
 												"xCpl" : remCpl,
-												"cMun" : "3536505",
+												"cMun" : remCodCity,
 												"CEP" : remCEP,
 												"cPais" : "1058",
 												"email" : "email_rem@domain.com"
@@ -454,7 +489,7 @@ class Integracao_Bao_Admin {
 												"xLgr" : destLgr,
 												"nro" : destNro,
 												"xBairro" : destBairro,
-												"cMun" : "4306767",
+												"cMun" : destCodCity,
 												"CEP" : destCEP,
 												"cPais" : "1058",
 												"email" : "email_dest@domain.com"
