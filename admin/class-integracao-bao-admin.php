@@ -386,6 +386,8 @@ class Integracao_Bao_Admin {
 							// Dados BAO
 							var tomName 	= 'BAO Serviços',
 								tomFant 	= 'BAO',
+								tomDoc 		= '11255202000109',
+								tomDocIE	= '513048395113',
 								tomLgr 		= 'Avenida Cruzeiro',
 								tomNro 		= '300',
 								tomBairro 	= 'Distrito Industrial',
@@ -459,8 +461,8 @@ class Integracao_Bao_Admin {
 												"xObs" : "n/"
 											},
 											"toma" : {
-												"nDoc" : "08565151913",
-												"IE" : "513048395113",
+												"nDoc" : tomDoc,
+												"IE" : tomDocIE,
 												"xNome" : tomName,
 												"xFant" : tomFant,
 												"xLgr" : tomLgr,
@@ -574,7 +576,6 @@ class Integracao_Bao_Admin {
 						</script>
 						<?php
 						$str_orders_id = $str_orders_id . ',' . $order_id;
-
 					endforeach;
 				endif;
 			endforeach;
