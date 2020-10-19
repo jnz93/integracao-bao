@@ -334,37 +334,40 @@ class Integracao_Bao_Admin {
 							$arr = explode('_', $data);
 							$shipping_data[end($arr)] = get_post_meta($product_id, $data, true);
 						endforeach;
-						
-						// São Paulo 		| 04348070 | 3550308
-						// Porto Alegre 	| 91350240 | 4314902
-						// Belo Horizonte 	| 31270700 | 3106200
-						// Brasília 		| 71608900 | 5300108
-						// Campinas 		| 13051154 | 3509502
-						// Curitiba 		| 83040540 | 4106902
-						// Florianópolis 	| 88015902 | 4205407
-						// Goiânia 			| 75133320 | 5208707
-						// Manaus 			| 69028140 | 1302603
-						// Rio de Janeiro 	| 21020190 | 3304557
 
-						$ibge_codes = array(
-							'04348-070'	=> '3550308', #São Paulo
-							'91350-240'	=> '4314902', #Porto Alegre
-							'31270-700'	=> '3106200', #Belo Horizonte
-							'71608-900'	=> '5300108', #Brasília
-							'13051-154'	=> '3509502', #Campinas
-							'83040-540'	=> '4106902', #Curitiba
-							'88015-902'	=> '4205407', #Florianópolis
-							'75133-320'	=> '5208707', #Goiânia
-							'69028-140'	=> '1302603', #Manaus
-							'21020-190'	=> '3304557'  #Rio De Janeiro
+						// CIDADE 			| CEP/ZIP 	|Cod. IBGE	| Cod. ICAO
+						// São Paulo 		| 04348070 	| 3550308 	| SBSP
+						// Porto Alegre 	| 91350240 	| 4314902 	| SBPA
+						// Belo Horizonte 	| 31270700 	| 3106200 	| SBCF
+						// Brasília 		| 71608900 	| 5300108 	| SBBR
+						// Campinas 		| 13051154 	| 3509502 	| SBKP
+						// Curitiba 		| 83040540 	| 4106902 	| SBCT
+						// Florianópolis 	| 88015902 	| 4205407 	| SBFL
+						// Goiânia 			| 75133320 	| 5208707 	| SBGO
+						// Manaus 			| 69028140 	| 1302603 	| SBEG
+						// Rio de Janeiro 	| 21020190 	| 3304557 	| SBGL
+
+						$zip_configs = array(
+							'04348-070'	=> ['3550308', 'SBSP'], #São Paulo
+							'91350-240'	=> ['4314902', 'SBPA'], #Porto Alegre
+							'31270-700'	=> ['3106200', 'SBCF'], #Belo Horizonte
+							'71608-900'	=> ['5300108', 'SBBR'], #Brasília
+							'13051-154'	=> ['3509502', 'SBKP'], #Campinas
+							'83040-540'	=> ['4106902', 'SBCT'], #Curitiba
+							'88015-902'	=> ['4205407', 'SBFL'], #Florianópolis
+							'75133-320'	=> ['5208707', 'SBGO'], #Goiânia
+							'69028-140'	=> ['1302603', 'SBEG'], #Manaus
+							'21020-190'	=> ['3304557', 'SBGL']  #Rio De Janeiro
 						);
 
-						foreach($ibge_codes as $zip => $code) :
+						foreach($zip_configs as $zip => $data) :
 							if ($zip == trim($collect_data['zip'])) :
-								$code_origin = $code;
+								$ibge_orig = $data[0];
+								$icao_orig = $data[1];
 							endif;
 							if ($zip == trim($shipping_data['zip'])) :
-								$code_destiny = $code;
+								$ibge_dest = $data[0];
+								$icao_dest = $data[1];
 							endif;
 						endforeach;
 
@@ -374,11 +377,11 @@ class Integracao_Bao_Admin {
 						$days_delivery 			= get_post_meta($product_id, 'bao_product_delivery_days', true);
 						?>
 						<script>
-							var today = '<?php echo $today; ?>',
-								weight = '<?php echo $weight; ?>',
-								volumes = '<?php echo $volumes; ?>',
-								days_delivery = '<?php echo $days_delivery; ?>',
-								total = '<?php echo $total; ?>';
+							var today 			= '<?php echo $today; ?>',
+								weight 			= '<?php echo $weight; ?>',
+								volumes 		= '<?php echo $volumes; ?>',
+								days_delivery 	= '<?php echo $days_delivery; ?>',
+								total 			= '<?php echo $total; ?>';
 
 							// Dados BAO
 							var tomName 	= 'BAO Serviços',
@@ -399,7 +402,8 @@ class Integracao_Bao_Admin {
 								remBairro 	= '<?php echo $collect_data['neighborhood']; ?>',
 								remCpl 		= '<?php echo $collect_data['complement']; ?>',
 								remCEP 		= '<?php echo $collect_data['zip']; ?>',
-								remCodCity 	= '<?php echo $code_origin; ?>';
+								remCodIBGE 	= '<?php echo $ibge_orig; ?>',
+								remCodICAO 	= '<?php echo $icao_orig; ?>';
 
 							// dados destinatario
 							var destDoc 	= '<?php echo $shipping_data['doc']; ?>',
@@ -410,7 +414,8 @@ class Integracao_Bao_Admin {
 								destBairro 	= '<?php echo $shipping_data['neighborhood']; ?>',
 								destCpl 	= '<?php echo $shipping_data['complement']; ?>',
 								destCEP 	= '<?php echo $shipping_data['zip']; ?>',
-								destCodCity = '<?php echo $code_destiny; ?>';
+								destCodIBGE = '<?php echo $ibge_dest; ?>',
+								destCodICAO = '<?php echo $icao_dest; ?>';
 
 							var	ajaxAdminUrl = '<?php echo admin_url('admin-ajax.php'); ?>';
 							product_id = '<?php echo $product_id; ?>';
@@ -449,8 +454,8 @@ class Integracao_Bao_Admin {
 													"dPrev" : today,
 													"hPrev" : "00:00:00"
 												},
-												"cOrigCalc" : "3536505",
-												"cDestCalc" : "2611606",
+												"cOrigCalc" : remCodICAO, // Cod Aeroporto
+												"cDestCalc" : destCodICAO, // Cod Aeroporto
 												"xObs" : "n/"
 											},
 											"toma" : {
@@ -476,7 +481,7 @@ class Integracao_Bao_Admin {
 												"nro" : remNro,
 												"xBairro" : remBairro,
 												"xCpl" : remCpl,
-												"cMun" : remCodCity,
+												"cMun" : remCodIBGE,
 												"CEP" : remCEP,
 												"cPais" : "1058",
 												"email" : "email_rem@domain.com"
@@ -489,7 +494,7 @@ class Integracao_Bao_Admin {
 												"xLgr" : destLgr,
 												"nro" : destNro,
 												"xBairro" : destBairro,
-												"cMun" : destCodCity,
+												"cMun" : destCodIBGE,
 												"CEP" : destCEP,
 												"cPais" : "1058",
 												"email" : "email_dest@domain.com"
