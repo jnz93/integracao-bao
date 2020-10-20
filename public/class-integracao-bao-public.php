@@ -304,6 +304,8 @@ class Integracao_Bao_Public {
 			update_post_meta($post_id, 'bao_product_weight', $weight);
 			update_post_meta($post_id, 'bao_product_value', $value);
 			update_post_meta($post_id, 'bao_product_delivery_days', $delivery_days);
+			update_post_meta($post_id, 'bao_product_city_origin', $city_origin);
+			update_post_meta($post_id, 'bao_product_city_destiny', $city_destiny);
 
 			// Prevent duplicated item on cart
 			$curr_cart = WC()->cart->get_cart();
@@ -601,10 +603,10 @@ class Integracao_Bao_Public {
 		$collect_fullname 		= get_post_meta($cotacao_id, 'bao_product_collect_name', true);
 		$collect_tel 			= get_post_meta($cotacao_id, 'bao_product_collect_phone', true);
 		$collect_doc 			= get_post_meta($cotacao_id, 'bao_product_collect_doc', true);
-		$collect_city 			= get_post_meta($cotacao_id, 'bao_product_collect_city', true);
+		$collect_city 			= get_post_meta($cotacao_id, 'bao_product_city_origin', true);
 		$collect_neighborhood 	= get_post_meta($cotacao_id, 'bao_product_collect_neighborhood', true);
 		$collect_address 		= get_post_meta($cotacao_id, 'bao_product_collect_address', true);
-		$collect_cep 			= get_post_meta($cotacao_id, 'bao_product_collect_zip', true);
+		$collect_cep 			= get_post_meta($cotacao_id, 'bao_product_zip_origin', true);
 		$collect_number 		= get_post_meta($cotacao_id, 'bao_product_collect_number', true);
 		$collect_complement 	= get_post_meta($cotacao_id, 'bao_product_collect_complement', true);
 		?>
@@ -635,7 +637,7 @@ class Integracao_Bao_Public {
 							</div>
 							<div class="form-group">
 								<label for="bao_collect_city">Cidade</label>
-								<input type="tel" class="form-control" id="bao_collect_city_<?php echo $cotacao_id; ?>" aria-describedby="city_help" value="<?php echo !empty($collect_city) ? $collect_city : '' ?>" required>
+								<input type="tel" class="form-control" id="bao_collect_city_<?php echo $cotacao_id; ?>" aria-describedby="city_help" value="<?php echo !empty($collect_city) ? $collect_city : '' ?>" required disabled>
 								<small id="city_help" class="form-text text-muted"></small>
 							</div>
 							<div class="form-group">
@@ -650,7 +652,7 @@ class Integracao_Bao_Public {
 							</div>
 							<div class="form-group">
 								<label for="bao_collect_cep">CEP</label>
-								<input type="text" class="form-control" id="bao_collect_cep_<?php echo $cotacao_id; ?>" aria-describedby="cep_help" value="<?php echo !empty($collect_cep) ? $collect_cep : '' ?>" required>
+								<input type="text" class="form-control" id="bao_collect_cep_<?php echo $cotacao_id; ?>" aria-describedby="cep_help" value="<?php echo !empty($collect_cep) ? $collect_cep : '' ?>" required disabled>
 								<small id="cep_help" class="form-text text-muted"></small>
 							</div>
 							<div class="form-group">
@@ -693,10 +695,10 @@ class Integracao_Bao_Public {
 		$shipping_fullname 		= get_post_meta($cotacao_id, 'bao_product_shipping_name', true);
 		$shipping_tel 			= get_post_meta($cotacao_id, 'bao_product_shipping_phone', true);
 		$shipping_doc			= get_post_meta($cotacao_id, 'bao_product_shipping_doc', true);
-		$shipping_city 			= get_post_meta($cotacao_id, 'bao_product_shipping_city', true);
+		$shipping_city 			= get_post_meta($cotacao_id, 'bao_product_city_destiny', true);
 		$shipping_neighborhood 	= get_post_meta($cotacao_id, 'bao_product_shipping_neighborhood', true);
 		$shipping_address 		= get_post_meta($cotacao_id, 'bao_product_shipping_address', true);
-		$shipping_cep 			= get_post_meta($cotacao_id, 'bao_product_shipping_zip', true);
+		$shipping_cep 			= get_post_meta($cotacao_id, 'bao_product_zip_destiny', true);
 		$shipping_number 		= get_post_meta($cotacao_id, 'bao_product_shipping_number', true);
 		$shipping_complement 	= get_post_meta($cotacao_id, 'bao_product_shipping_complement', true);
 		?>
@@ -727,7 +729,7 @@ class Integracao_Bao_Public {
 							</div>
 							<div class="form-group">
 								<label for="bao_shipping_city">Cidade</label>
-								<input type="tel" class="form-control" id="bao_shipping_city_<?php echo $cotacao_id; ?>" aria-describedby="city_help" value="<?php echo !empty($shipping_city) ? $shipping_city : '' ?>" required>
+								<input type="tel" class="form-control" id="bao_shipping_city_<?php echo $cotacao_id; ?>" aria-describedby="city_help" value="<?php echo !empty($shipping_city) ? $shipping_city : '' ?>" required disabled>
 								<small id="city_help" class="form-text text-muted"></small>
 							</div>
 							<div class="form-group">
@@ -742,7 +744,7 @@ class Integracao_Bao_Public {
 							</div>
 							<div class="form-group">
 								<label for="bao_shipping_cep">CEP</label>
-								<input type="text" class="form-control" id="bao_shipping_cep_<?php echo $cotacao_id; ?>" aria-describedby="cep_help" value="<?php echo !empty($shipping_cep) ? $shipping_cep : '' ?>" required>
+								<input type="text" class="form-control" id="bao_shipping_cep_<?php echo $cotacao_id; ?>" aria-describedby="cep_help" value="<?php echo !empty($shipping_cep) ? $shipping_cep : '' ?>" required disabled>
 								<small id="cep_help" class="form-text text-muted"></small>
 							</div>
 							<div class="form-group">
