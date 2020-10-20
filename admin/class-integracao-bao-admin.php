@@ -370,14 +370,21 @@ class Integracao_Bao_Admin {
 								$icao_dest = $data[1];
 							endif;
 						endforeach;
-
-						$today 					= date('Y-m-d'); //Padrão 2020-09-04
+						
 						$weight 				= get_post_meta($product_id, 'bao_product_weight', true);
 						$volumes 				= get_post_meta($product_id, 'bao_product_volumes', true);
 						$days_delivery 			= get_post_meta($product_id, 'bao_product_delivery_days', true);
+
+						$now 					= date('Y-m-d H:i:s'); //Padrão 2020-09-04 23:00:00
+						$date					= new DateTime($now);
+						$date->modify('+'. $days_delivery .' day');
+						$expected_day 			= $date->format( 'Y-m-d' );
+						$expected_time 			= $date->format( 'H:i:s' );
 						?>
 						<script>
-							var today 			= '<?php echo $today; ?>',
+							var today 			= '<?php echo $now; ?>',
+								expectedDay 	= '<?php echo $expected_day; ?>',
+								expectedTime 	= '<?php echo $expected_time; ?>',
 								weight 			= '<?php echo $weight; ?>',
 								volumes 		= '<?php echo $volumes; ?>',
 								days_delivery 	= '<?php echo $days_delivery; ?>',
@@ -397,8 +404,9 @@ class Integracao_Bao_Admin {
 
 							// dados remetente
 							var remDoc 		= '<?php echo $collect_data['doc'] ?>',
-								remName 	= '<?php echo $collect_data['name']; ?>',
-								remFant 	= '<?php echo $collect_data['name']; ?>',
+								remName 	= '<?php echo toUp$collect_data['name']; ?>',
+								remFant 	= '<?php echo toUp$collect_data['name']; ?>',
+								remPhone	= '<?php echo $collect_data['phone']; ?>',
 								remLgr 		= '<?php echo $collect_data['address']; ?>',
 								remNro 		= '<?php echo $collect_data['number']; ?>',
 								remBairro 	= '<?php echo $collect_data['neighborhood']; ?>',
@@ -411,6 +419,7 @@ class Integracao_Bao_Admin {
 							var destDoc 	= '<?php echo $shipping_data['doc']; ?>',
 								destName 	= '<?php echo $shipping_data['name']; ?>',
 								destFant 	= '<?php echo $shipping_data['name']; ?>',
+								destPhone	= '<?php echo $shipping_data['phone']; ?>',
 								destLgr 	= '<?php echo $shipping_data['address']; ?>',
 								destNro 	= '<?php echo $shipping_data['number']; ?>',
 								destBairro 	= '<?php echo $shipping_data['neighborhood']; ?>',
@@ -421,7 +430,7 @@ class Integracao_Bao_Admin {
 
 							var	ajaxAdminUrl = '<?php echo admin_url('admin-ajax.php'); ?>';
 							product_id = '<?php echo $product_id; ?>';
-
+							// if (false) {
 							jQuery.ajax({
 								method: "POST",
 								headers: {
@@ -453,8 +462,8 @@ class Integracao_Bao_Admin {
 											},
 											"compl" : {
 												"entrega" : { 
-													"dPrev" : today,
-													"hPrev" : "00:00:00"
+													"dPrev" : expectedDay,
+													"hPrev" : expectedTime
 												},
 												"cOrigCalc" : remCodICAO, // Cod Aeroporto
 												"cDestCalc" : destCodICAO, // Cod Aeroporto
@@ -479,6 +488,7 @@ class Integracao_Bao_Admin {
 												"IE" : "513048395113",
 												"xNome" : remName,
 												"xFant" : remFant,
+												"nFone" : remPhone,
 												"xLgr" : remLgr,
 												"nro" : remNro,
 												"xBairro" : remBairro,
@@ -493,6 +503,7 @@ class Integracao_Bao_Admin {
 												"IE" : "20353243",
 												"xNome" : destName,
 												"xFant" : destFant,
+												"nFone" : destPhone,
 												"xLgr" : destLgr,
 												"nro" : destNro,
 												"xBairro" : destBairro,
@@ -573,6 +584,7 @@ class Integracao_Bao_Admin {
 									console.log(response);
 								}
 							});
+							// }
 						</script>
 						<?php
 						$str_orders_id = $str_orders_id . ',' . $order_id;
