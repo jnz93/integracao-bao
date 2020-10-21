@@ -191,7 +191,7 @@ function sendCotacaoDataToBackEnd(price, deliveryDays, zipFrom, zipTo, nVolumes,
 		{
 			console.log('Cotação adicionada ao carrinho com sucesso!');
 			UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Cotação adicionada ao carrinho!</span>", {pos: 'bottom-center', status: 'success'});
-			
+			jQuery('#formCotacao')[0].reset();
 		},
 		error: function(err)
 		{
