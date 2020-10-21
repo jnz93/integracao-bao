@@ -180,8 +180,6 @@ function sendCotacaoDataToBackEnd(price, deliveryDays, zipFrom, zipTo, nVolumes,
 	var dataToSend = price + '|' + deliveryDays + '|' + zipFrom + '|' + zipTo + '|' + nVolumes + '|' + weight + '|' + value;
 	let actionWp = 'handle_cotacao_form';
 	
-	// console.log(dataToSend);
-	// console.log(ajaxUrl);
 	jQuery.ajax({
 		url: ajaxUrl,
 		type: 'POST',
@@ -192,17 +190,12 @@ function sendCotacaoDataToBackEnd(price, deliveryDays, zipFrom, zipTo, nVolumes,
 		success: function(response)
 		{
 			console.log('Cotação adicionada ao carrinho com sucesso!');
-			// console.log(response);
-			jQuery('#messages-cart').children('.uk-alert-success').fadeIn();
+			UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Cotação adicionada ao carrinho!</span>", {pos: 'bottom-center', status: 'success'});
+			
 		},
 		error: function(err)
 		{
-			console.log(err);
-		},
-		complete: function(response)
-		{
-			jQuery(this).next('.uk-alert-success').fadeOut();
-			// add reset form
+			UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Erro ao salvar: "+ response.error +"</span>", {pos: 'bottom-center', status: 'error'});
 		}
 	});
 }
