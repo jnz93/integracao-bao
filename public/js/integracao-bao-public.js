@@ -192,6 +192,7 @@ function sendCotacaoDataToBackEnd(price, deliveryDays, zipFrom, zipTo, nVolumes,
 			console.log('Cotação adicionada ao carrinho com sucesso!');
 			UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Cotação adicionada ao carrinho!</span>", {pos: 'bottom-center', status: 'success'});
 			jQuery('#formCotacao')[0].reset();
+			sumAndUpdateCartItems();
 		},
 		error: function(err)
 		{
@@ -595,4 +596,17 @@ function calcPesoCubado(el)
 	{
 		inputPeso.val(totalKg).prop('disabled', true);
 	}
+}
+
+/**
+ * Soma e altera o número de cotações no carrinho feitas pelo form de cotação na homepage
+ * 
+ * @since 1.1.2
+ */
+function sumAndUpdateCartItems()
+{
+	var currItems = parseInt(jQuery('#header_cart').children('span').text());
+	currItems++;
+
+	jQuery('#header_cart').children('span').text(currItems);
 }
