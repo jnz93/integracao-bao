@@ -394,11 +394,10 @@ function sendShippingFormDataToBackEnd(productId, ajaxUrl)
  */
 function verifyColetaEntregaForms(productIds)
 {
-	console.log(productIds)
 	var arrIds = productIds.split(',');
-	console.log(arrIds);
-	// Teste validaçao dos inputs
 	var validate = 0;
+
+	// Teste validaçao dos inputs
 	arrIds.forEach(function(id){
 		if(id != '') {
 			var arrInputsA = [];
@@ -444,21 +443,21 @@ function verifyColetaEntregaForms(productIds)
 			}
 		}
 	});
+	
+	var cautionMessage = '<div class="uk-alert-warning" uk-alert><p>Preencha os dados de coleta e entrega das cotações em destaque.</p></div>',
+		btnConcluirCompra = jQuery('.checkout-button');
+
 	if (validate != 0)
 	{
-		var cautionMessage = '<div class="uk-alert-warning" uk-alert><p>Preencha os dados de coleta e entrega das cotações em destaque.</p></div>',
-			btnConcluirCompra = jQuery('.checkout-button') ;
-		console.log(validate);
-		console.log(jQuery('.checkout-button'));
+		jQuery('.wc-proceed-to-checkout').children('div.uk-alert-warning').remove();
 		btnConcluirCompra.fadeOut();
 		btnConcluirCompra.after(cautionMessage);
-	} else {
-		var cautionMessage = '<div class="uk-alert-warning" uk-alert><p>Preencha os dados de coleta e entrega das cotações em destaque.</p></div>',
-			btnConcluirCompra = jQuery('.checkout-button');
-
+	}
+	else 
+	{
 		btnConcluirCompra.fadeIn();
 		btnConcluirCompra.next().fadeOut();
-	}	
+	}
 
 }
 
