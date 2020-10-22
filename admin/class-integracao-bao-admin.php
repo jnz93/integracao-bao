@@ -374,6 +374,7 @@ class Integracao_Bao_Admin {
 						$weight 				= get_post_meta($product_id, 'bao_product_weight', true);
 						$volumes 				= get_post_meta($product_id, 'bao_product_volumes', true);
 						$days_delivery 			= get_post_meta($product_id, 'bao_product_delivery_days', true);
+						$obs_merchandise 		= get_post_meta($product_id, 'bao_product_merchandise', true);
 
 						$now 					= date('Y-m-d H:i:s'); //Padrão 2020-09-04 23:00:00
 						$date					= new DateTime($now);
@@ -388,6 +389,7 @@ class Integracao_Bao_Admin {
 								weight 			= '<?php echo $weight; ?>',
 								volumes 		= '<?php echo $volumes; ?>',
 								days_delivery 	= '<?php echo $days_delivery; ?>',
+								obsMerchandise 	= '<?php echo $obs_merchandise; ?>',
 								total 			= '<?php echo $total; ?>';
 
 							// Dados BAO
@@ -404,8 +406,8 @@ class Integracao_Bao_Admin {
 
 							// dados remetente
 							var remDoc 		= '<?php echo $collect_data['doc'] ?>',
-								remName 	= '<?php echo toUp$collect_data['name']; ?>',
-								remFant 	= '<?php echo toUp$collect_data['name']; ?>',
+								remName 	= '<?php echo $collect_data['name']; ?>',
+								remFant 	= '<?php echo $collect_data['name']; ?>',
 								remPhone	= '<?php echo $collect_data['phone']; ?>',
 								remLgr 		= '<?php echo $collect_data['address']; ?>',
 								remNro 		= '<?php echo $collect_data['number']; ?>',
@@ -467,7 +469,7 @@ class Integracao_Bao_Admin {
 												},
 												"cOrigCalc" : remCodICAO, // Cod Aeroporto
 												"cDestCalc" : destCodICAO, // Cod Aeroporto
-												"xObs" : "n/"
+												"xObs" : obsMerchandise
 											},
 											"toma" : {
 												"nDoc" : tomDoc,
