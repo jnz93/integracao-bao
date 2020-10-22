@@ -433,12 +433,12 @@ function verifyColetaEntregaForms(productIds)
 			
 			if (validate != 0)
 			{
-				jQuery('#cotacao-' + id).css({
-					'background': 'red'
+				jQuery('#cotacao-' + id).children('td.product-delivery-data').css({
+					'background': '#F04F4F'
 				});
 			}
 			else {
-				jQuery('#cotacao-' + id).css({
+				jQuery('#cotacao-' + id).children('td.product-delivery-data').css({
 					'background': 'none'
 				});
 			}
