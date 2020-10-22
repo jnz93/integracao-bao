@@ -610,3 +610,40 @@ function sumAndUpdateCartItems()
 
 	jQuery('#header_cart').children('span').text(currItems);
 }
+
+/**
+ * Envia o valor do campo mercado para o backend
+ * 
+ * @since 1.1.2
+ */
+function sendMerchandiseToBackEnd(el, productId, ajaxUrl)
+{
+	var merchandise = el.val();
+	if(merchandise.length > 3){
+		jQuery.ajax({
+			url: ajaxUrl,
+			type: 'POST',
+			data: {
+				action: 'save_merchandise',
+				cotacao_id: productId,
+				value: merchandise,
+			},
+			success: function(data)
+			{
+				UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Salvo com sucesso!</span>", {pos: 'bottom-center', status: 'success'});
+				el.attr('disabled', true);
+				el.css({
+					'border': '1px solid green',
+					'background': 'rgba(255, 255, 255, .5)'
+				});
+			},
+			error: function(e)
+			{
+				UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Erro. Tente novamente!</span>", {pos: 'bottom-center', status: 'error'});
+				el.css({
+					'border': '1px solid red'
+				});
+			}
+		});
+	}
+}

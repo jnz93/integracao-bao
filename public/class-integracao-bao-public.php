@@ -73,6 +73,10 @@ class Integracao_Bao_Public {
 
 		// Popup tabela coleta/entrega
 		add_action('show_table_coleta_entrega', array($this, 'render_table_coleta_entrega'), 0, 1);
+
+		// Salvar campo mercadoria
+		add_action('wp_ajax_save_merchandise', array($this, 'save_merchandise'));
+		add_action('wp_ajax_nopriv_save_merchandise', array($this, 'save_merchandise'));
 	}
 
 	/**
@@ -1274,5 +1278,22 @@ class Integracao_Bao_Public {
 			<button class="" style="margin: 0 auto;" onclick="redirectToOrder(jQuery('#tracking-order').val(), '<?php echo $site_url; ?>')">Rastrear</button>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Salva o campo mercadoria no backend
+	 * 
+	 * @since 1.1.2
+	 */
+	function save_merchandise()
+	{
+		if(!empty($_POST)) :
+			$value = trim($_POST['value']);
+			$cotacao_id = trim($_POST['cotacao_id']);
+
+			update_post_meta($cotacao_id, 'bao_product_merchandise', $value);
+		endif;
+
+		die();
 	}
 }

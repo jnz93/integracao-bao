@@ -31,6 +31,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 				<th class="product-thumbnail">&nbsp;</th>
 				<th class="product-name"><?php esc_html_e( 'Product', 'woocommerce' ); ?></th>
 				<th class="product-price"><?php esc_html_e( 'Price', 'woocommerce' ); ?></th>
+				<th class="product-price"><?php esc_html_e( 'Mercadoria(s)', 'woocommerce' ); ?></th>
 				<th class="product-collect-delivery"><?php esc_html_e( 'Coleta & Entrega', 'woocommerce' ); ?></th>
 				<th class="product-remove">&nbsp;</th>
 			</tr>
@@ -81,6 +82,9 @@ do_action( 'woocommerce_before_cart' ); ?>
 						if ( $_product->backorders_require_notification() && $_product->is_on_backorder( $cart_item['quantity'] ) ) {
 							echo wp_kses_post( apply_filters( 'woocommerce_cart_item_backorder_notification', '<p class="backorder_notification">' . esc_html__( 'Available on backorder', 'woocommerce' ) . '</p>', $product_id ) );
 						}
+
+						// Mercadoria atual
+						$curr_merchandise = get_post_meta( $product_id, 'bao_product_merchandise', true );
 						?>
 						</td>
 
@@ -88,6 +92,12 @@ do_action( 'woocommerce_before_cart' ); ?>
 							<?php
 								echo apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key ); // PHPCS: XSS ok.
 							?>
+						</td>
+
+						<td class="product-merchandise">
+							<div style="display: block; width: 100%; height: 100%; display: flex; align-content:center;">
+								<input class="uk-input" type="text" onfocusout="sendMerchandiseToBackEnd(jQuery(this), '<?php echo $product_id; ?>', '<?php echo admin_url('admin-ajax.php'); ?>')" value="<?php echo !empty($curr_merchandise) ? $curr_merchandise : ''; ?>">
+							</div>
 						</td>
 
 						<td class="product-delivery-data">
