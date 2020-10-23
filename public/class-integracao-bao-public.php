@@ -623,48 +623,48 @@ class Integracao_Bao_Public {
 				<div class="uk-column-1-1 bao_wrapper_form">
 					<!-- Form coleta -->
 					<div class="">
-						<div class="uk-column-1-2">
-							<div class="form-group">
+						<div class="uk-grid-small" uk-grid>
+							<div class="uk-width-1-2">
 								<label for="bao_collect_fullname">Nome completo</label>
 								<input type="text" class="form-control" id="bao_collect_fullname_<?php echo $cotacao_id; ?>" aria-describedby="name_help" value="<?php echo !empty($collect_fullname) ? $collect_fullname : '' ?>" required>
 								<small id="name_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_collect_tel">Telefone/Whatsapp</label>
 								<input type="tel" class="form-control" id="bao_collect_tel_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($collect_tel) ? $collect_tel : '' ?>" required>
 								<small id="tel_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_collect_doc">CPF/CNPJ</label>
 								<input type="text" class="form-control" id="bao_collect_doc_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($collect_doc) ? $collect_doc : '' ?>" required>
 								<small id="doc_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_collect_city">Cidade</label>
 								<input type="tel" class="form-control" id="bao_collect_city_<?php echo $cotacao_id; ?>" aria-describedby="city_help" value="<?php echo !empty($collect_city) ? $collect_city : '' ?>" required disabled>
 								<small id="city_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_collect_neighborhood">Bairro</label>
 								<input type="text" class="form-control" id="bao_collect_neighborhood_<?php echo $cotacao_id; ?>" aria-describedby="neighborhood_help" value="<?php echo !empty($collect_neighborhood) ? $collect_neighborhood : '' ?>" required>
 								<small id="neighborhood_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_collect_address">Endereço</label>
 								<input type="text" class="form-control" id="bao_collect_address_<?php echo $cotacao_id; ?>" aria-describedby="address_help" value="<?php echo !empty($collect_address) ? $collect_address : '' ?>" required>
 								<small id="address_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_collect_cep">CEP</label>
 								<input type="text" class="form-control" id="bao_collect_cep_<?php echo $cotacao_id; ?>" aria-describedby="cep_help" value="<?php echo !empty($collect_cep) ? $collect_cep : '' ?>" required disabled>
 								<small id="cep_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_collect_number">Número</label>
 								<input type="number" class="form-control" id="bao_collect_number_<?php echo $cotacao_id; ?>" aria-describedby="number_help" value="<?php echo !empty($collect_number) ? $collect_number : '' ?>" required>
 								<small id="number_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-1">
 								<label for="bao_collect_complement">Complemento</label>
 								<input type="text" class="form-control" id="bao_collect_complement_<?php echo $cotacao_id; ?>" aria-describedby="complement_help" value="<?php echo !empty($collect_complement) ? $collect_complement : '' ?>">
 								<small id="complement_help" class="form-text text-muted"></small>
@@ -715,48 +715,48 @@ class Integracao_Bao_Public {
 				<div class="uk-column-1-1">
 					<!-- Form entrega -->
 					<div class="">
-						<div class="uk-column-1-2">
-							<div class="form-group">
+						<div class="uk-grid-small" uk-grid>
+							<div class="uk-width-1-2">
 								<label for="bao_shipping_fullname">Nome completo</label>
 								<input type="text" class="form-control" id="bao_shipping_fullname_<?php echo $cotacao_id; ?>" aria-describedby="name_help" value="<?php echo !empty($shipping_fullname) ? $shipping_fullname : '' ?>" required>
 								<small id="name_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_shipping_tel">Telefone/Whatsapp</label>
 								<input type="tel" class="form-control" id="bao_shipping_tel_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($shipping_tel) ? $shipping_tel : '' ?>" required>
 								<small id="tel_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_shipping_doc">CPF/CNPJ</label>
 								<input type="text" class="form-control" id="bao_shipping_doc_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($shipping_doc) ? $shipping_doc : '' ?>" required>
 								<small id="doc_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_shipping_city">Cidade</label>
 								<input type="tel" class="form-control" id="bao_shipping_city_<?php echo $cotacao_id; ?>" aria-describedby="city_help" value="<?php echo !empty($shipping_city) ? $shipping_city : '' ?>" required disabled>
 								<small id="city_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_shipping_neighborhood">Bairro</label>
 								<input type="text" class="form-control" id="bao_shipping_neighborhood_<?php echo $cotacao_id; ?>" aria-describedby="neighborhood_help" value="<?php echo !empty($shipping_neighborhood) ? $shipping_neighborhood : '' ?>" required>
 								<small id="neighborhood_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_shipping_address">Endereço</label>
 								<input type="text" class="form-control" id="bao_shipping_address_<?php echo $cotacao_id; ?>" aria-describedby="address_help" value="<?php echo !empty($shipping_address) ? $shipping_address : '' ?>" required>
 								<small id="address_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_shipping_cep">CEP</label>
 								<input type="text" class="form-control" id="bao_shipping_cep_<?php echo $cotacao_id; ?>" aria-describedby="cep_help" value="<?php echo !empty($shipping_cep) ? $shipping_cep : '' ?>" required disabled>
 								<small id="cep_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-2">
 								<label for="bao_shipping_number">Número</label>
 								<input type="number" class="form-control" id="bao_shipping_number_<?php echo $cotacao_id; ?>" aria-describedby="number_help" value="<?php echo !empty($shipping_number) ? $shipping_number : '' ?>" required>
 								<small id="number_help" class="form-text text-muted"></small>
 							</div>
-							<div class="form-group">
+							<div class="uk-width-1-1">
 								<label for="bao_shipping_complement">Complemento</label>
 								<input type="text" class="form-control" id="bao_shipping_complement_<?php echo $cotacao_id; ?>" aria-describedby="complement_help" value="<?php echo !empty($shipping_complement) ? $shipping_complement : '' ?>">
 								<small id="complement_help" class="form-text text-muted"></small>
