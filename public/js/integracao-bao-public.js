@@ -245,7 +245,7 @@ function sendCollectFormDataToBackEnd(btn, productId, ajaxUrl)
 	var invalidInputs = 0;
 	arrInputsA.forEach(function(el)
 	{
-		if (el.val().length < 3)
+		if (el.val().length < 2)
 		{
 			el.css({'border': '1px solid red'});
 			invalidInputs++;
@@ -337,7 +337,7 @@ function sendShippingFormDataToBackEnd(productId, ajaxUrl)
 	var invalidInputs = 0;
 	arrInputsA.forEach(function(el)
 	{
-		if (el.val().length < 3)
+		if (el.val().length < 2)
 		{
 			el.css({'border': '1px solid red'});
 			invalidInputs++;
@@ -425,7 +425,7 @@ function verifyColetaEntregaForms(productIds)
 			arrInputsA.forEach(function(el)
 			{
 				// console.log(el);
-				if (el.val().length < 3)
+				if (el.val().length < 2)
 				{
 					el.css({'border': '1px solid red'});
 					validate++;

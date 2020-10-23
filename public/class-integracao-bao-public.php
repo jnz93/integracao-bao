@@ -844,7 +844,7 @@ class Integracao_Bao_Public {
 				var invalidInputs = 0;
 				arrInputsA.forEach(function(el)
 				{
-					if (el.val().length < 3)
+					if (el.val().length < 2)
 					{
 						el.css({'border': '1px solid red'});
 						invalidInputs++;
@@ -874,7 +874,7 @@ class Integracao_Bao_Public {
 						},
 						success: function(data)
 						{
-							self.siblings('h3').fadeOut();4
+							self.siblings('h3').fadeOut();
 							self.siblings('.bao_wrapper_form').fadeOut();
 							self.siblings('button').fadeIn();
 							self.siblings('.form-messages').find('#success-message').fadeIn();
@@ -883,7 +883,7 @@ class Integracao_Bao_Public {
 						error: function(data)
 						{
 							console.log('Erro! ' + data.erro);
-							self.siblings('h3').fadeOut();4
+							self.siblings('h3').fadeOut();
 							self.siblings('.bao_wrapper_form').fadeOut();
 							self.siblings('button').fadeIn();
 							self.siblings('.form-messages').find('#error-message').fadeIn();
