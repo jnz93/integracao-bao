@@ -1,41 +1,38 @@
-=== Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: unitycode.tech
-Tags: comments, spam
+=== Integração Bao ===
+Contributors: @joanezandrades
+Tags: #INTEGRACAOCRMxWP, #WOOCOMMERCE, #APIRESTFULL, #BAO, #COTACAOCARGA, #FRETEONLINE, #LOGISTICA, #NACIONAL
 Requires at least: 3.0.1
 Tested up to: 3.4
 Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+O plugin conecta o TMS Brudam(Sistema de gerenciamento de transporte) ao Woocommerce
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+Conecta o TMS Brudam(Sistema de gerenciamento de transporte) ao Woocommerce, de forma segura e consistente, para permitir que a BAO, empresa de logística e entregas, facilite a vida de consumidores com cotações de cargas e acompanhamento de entregas online. 
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+_Todas as API's citadas abaixo estão linkadas nas dependências_
+Webservice SOAP(Protocolo de troca de informações estruturados) da BRUDAM para fazer as cotações.
+API RESTFULL Woocommerce para criar as cotações, adição no carrinho, criação do pedido e acompanhamento da coleta e entrega.
+AJAX/JSON para coletar e salvar dados de origem e destino de forma segura, eficaz e ágil.
+API RESTFULL BRUDAM para registrar minutas e salvar dados no banco de dados do TMS os pedidos com informações de origem, entrega e confirmação do pagamento.
 
-A few notes about the sections above:
+BAO uma empresa de Logistíca, que tem filiais pelo Brasil inteiro, tem acesso a um painel administrativo onde acompanha os novos pedidos, analisa o processamento cotações feitas e acompanha tudo acontecer automaticamente desde a criação da Minuta no CRM BRIX, os dados dos pedidos são enviados via API RESTFULL do sistema(LINK), até a atualização do estatus das cargas. Tudo por tarefas automatizadas no servidor.
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+O Sistema foi separado em alguns módulos:
+- Cotação no site(front-end)
+-- Coleta de dados: Origem, Destino, Volumes/Cargas(coleta das dimensões e cálculo do peso cubado), Peso, Valor da Carga - API RESTFULL
+- Criação do pedido no woocommerce
+- Criação da Minuta no Sistema BRIX
+- Atualização do status da entrega
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+DOCUMENTAÇÕES E AJUDA
+DOCS API BRIX: https://brix.ws.brudam.com.br/docs/integracao
+DOSC API SOAP: https://brix.ws.brudam.com.br/docs/soap
+WOOCOMERCE REST API: https://woocommerce.github.io/woocommerce-rest-api-docs/?shell#product-properties
+Resolução item 2: https://rudrastyh.com/woocommerce/rest-api-create-update-remove-products.html
 
 == Installation ==
 
