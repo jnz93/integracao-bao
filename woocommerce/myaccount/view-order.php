@@ -21,6 +21,7 @@ defined( 'ABSPATH' ) || exit;
 
 $notes = $order->get_customer_order_notes();
 $products = $order->get_items();
+$order_id = $order->get_id();
 ?>
 
 <p>
