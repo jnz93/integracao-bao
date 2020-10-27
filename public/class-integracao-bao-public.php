@@ -654,7 +654,7 @@ class Integracao_Bao_Public {
 								<input type="text" class="form-control" id="bao_collect_address_<?php echo $cotacao_id; ?>" aria-describedby="address_help" value="<?php echo !empty($collect_address) ? $collect_address : '' ?>" required>
 								<small id="address_help" class="form-text text-muted"></small>
 							</div>
-							<div class="uk-width-1-2">
+							<div class="uk-width-1-2" style="display: none;">
 								<label for="bao_collect_cep">CEP</label>
 								<input type="text" class="form-control" id="bao_collect_cep_<?php echo $cotacao_id; ?>" aria-describedby="cep_help" value="<?php echo !empty($collect_cep) ? $collect_cep : '' ?>" required disabled>
 								<small id="cep_help" class="form-text text-muted"></small>
@@ -664,7 +664,7 @@ class Integracao_Bao_Public {
 								<input type="number" class="form-control" id="bao_collect_number_<?php echo $cotacao_id; ?>" aria-describedby="number_help" value="<?php echo !empty($collect_number) ? $collect_number : '' ?>" required>
 								<small id="number_help" class="form-text text-muted"></small>
 							</div>
-							<div class="uk-width-1-1">
+							<div class="uk-width-1-2">
 								<label for="bao_collect_complement">Complemento</label>
 								<input type="text" class="form-control" id="bao_collect_complement_<?php echo $cotacao_id; ?>" aria-describedby="complement_help" value="<?php echo !empty($collect_complement) ? $collect_complement : '' ?>">
 								<small id="complement_help" class="form-text text-muted"></small>
@@ -746,7 +746,7 @@ class Integracao_Bao_Public {
 								<input type="text" class="form-control" id="bao_shipping_address_<?php echo $cotacao_id; ?>" aria-describedby="address_help" value="<?php echo !empty($shipping_address) ? $shipping_address : '' ?>" required>
 								<small id="address_help" class="form-text text-muted"></small>
 							</div>
-							<div class="uk-width-1-2">
+							<div class="uk-width-1-2" style="display: none;">
 								<label for="bao_shipping_cep">CEP</label>
 								<input type="text" class="form-control" id="bao_shipping_cep_<?php echo $cotacao_id; ?>" aria-describedby="cep_help" value="<?php echo !empty($shipping_cep) ? $shipping_cep : '' ?>" required disabled>
 								<small id="cep_help" class="form-text text-muted"></small>
@@ -756,7 +756,7 @@ class Integracao_Bao_Public {
 								<input type="number" class="form-control" id="bao_shipping_number_<?php echo $cotacao_id; ?>" aria-describedby="number_help" value="<?php echo !empty($shipping_number) ? $shipping_number : '' ?>" required>
 								<small id="number_help" class="form-text text-muted"></small>
 							</div>
-							<div class="uk-width-1-1">
+							<div class="uk-width-1-2">
 								<label for="bao_shipping_complement">Complemento</label>
 								<input type="text" class="form-control" id="bao_shipping_complement_<?php echo $cotacao_id; ?>" aria-describedby="complement_help" value="<?php echo !empty($shipping_complement) ? $shipping_complement : '' ?>">
 								<small id="complement_help" class="form-text text-muted"></small>
