@@ -56,5 +56,5 @@ printf(
 <?php endif; ?>
 
 <?php do_action('new_view_order', $order); ?>
-<?php Integracao_Bao_Admin::update_minutas(); ?>
+<?php Integracao_Bao_Admin::update_minutas($order_id); ?>
 <?php #echo get_post_meta(393, 'status_env', true); ?>

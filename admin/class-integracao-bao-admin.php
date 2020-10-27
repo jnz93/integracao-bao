@@ -872,16 +872,8 @@ class Integracao_Bao_Admin {
 	 * 
 	 * @since 1.0.3
 	 */
-	public function update_minutas()
+	public function update_minutas($order_id)
 	{
-		?>
-		<script>
-			var id = '',
-				postId = '',
-				token = '',
-				ajaxUrl = '';
-		</script>
-		<?php
 		$token = Integracao_Bao_Admin::login_brudam_api();
 		$ajax_url = admin_url('admin-ajax.php');
 		
@@ -893,24 +885,27 @@ class Integracao_Bao_Admin {
 
 		foreach ($orders as $order)
 		{
-			$items = $order->get_items();
-			foreach ($items as $item) :
-				$product_id = $item['product_id'];
-				$minuta_id = get_post_meta($product_id, 'bao_minuta_id', true);
-				if(!empty($minuta_id)) :
-					?>
-					<script>
-						id = '<?php echo $minuta_id; ?>';
-						postId = '<?php echo $product_id; ?>';
-						token = '<?php echo $token; ?>';
-						ajaxUrl = '<?php echo $ajax_url; ?>';
-						getMinutaByID(id, postId, token, ajaxUrl);
-					</script>
-					<?php
-				endif;
-			endforeach;
+			if ($order->get_id() == $order_id) :
+				$items = $order->get_items();
+				foreach ($items as $item) :
+					$product_id = $item['product_id'];
+					$minuta_id = get_post_meta($product_id, 'bao_minuta_id', true);
+					if(!empty($minuta_id)) :
+						?>
+						<script>
+							var minutaId 	= '<?php echo $minuta_id; ?>',
+								postId 		= '<?php echo $product_id; ?>',
+								token 		= '<?php echo $token; ?>',
+								ajaxUrl 	= '<?php echo $ajax_url; ?>';
 
-			$count++;
+							getMinutaByID(minutaId, postId, token, ajaxUrl);
+						</script>
+						<?php
+					endif;
+				endforeach;
+
+				$count++;
+			endif;
 		}
 	}
 

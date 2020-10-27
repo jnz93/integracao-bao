@@ -148,10 +148,15 @@ function sendMinutaDataToUpdate(minuta, postId, ajaxUrl)
 			'post_id': postId,
 			'data_minuta': dataMinuta
 		},
+		beforeSend: function(data)
+		{
+			UIkit.notification("<span class='uk-box-shadow'>Atualizando Status...</span>", {pos: 'bottom-center', status: 'primary'});
+			
+		},
 		success: function(data)
 		{
-			console.log('Dados enviados com sucesso!');
-			console.log(data);
+			UIkit.notification.closeAll()
+			UIkit.notification("<span class='uk-box-shadow'>Status atualizado com sucesso!</span>", {pos: 'bottom-center', status: 'success'});
 		},
 		error: function(err)
 		{
