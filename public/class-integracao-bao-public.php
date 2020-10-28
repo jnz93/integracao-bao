@@ -1130,6 +1130,10 @@ class Integracao_Bao_Public {
 										<th>Complemento</th>
 										<td><?php echo $collect_complement; ?></td>
 									</tr>
+									<tr>
+										<th>Mercadorias</th>
+										<td><?php echo get_post_meta($product_id, 'bao_product_merchandise', true); ?></td>
+									</tr>
 								</tbody>
 							</table>
 						</div>
