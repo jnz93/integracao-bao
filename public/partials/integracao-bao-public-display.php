@@ -179,7 +179,7 @@ function request_cotacao()
         },
     	success: function (response) {
     		if(response.status == 1){
-    			inputPrice.text(response.servicos.item.valorFrete).mask("#.##0,##", {reverse: true});
+    			inputPrice.text(response.servicos.item.valorFrete).mask("#.##0,00", {reverse: true});
     			inputDeliveryTime.text(response.servicos.item.prazoEntrega);
 
     			inputDeliveryPrice.val(response.servicos.item.valorFrete);
