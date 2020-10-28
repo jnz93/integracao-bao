@@ -105,6 +105,40 @@ function sendMinutaIdToBackEnd(minutaId, postId, ajaxUrl)
 	});
 }
 
+/**
+ * Salva o erro na cotação quando a minuta não pode ser criada
+ * 
+ * @param {*} postId 
+ * @param {*} ajaxUrl
+ * 
+ * @since 1.1.4
+ */
+function sendMinutaErrorToBackEnd(postId, ajaxUrl)
+{
+	var postId = postId,
+		ajaxUrl = ajaxUrl;
+	
+	let actionWp = 'save_minuta_error';
+
+	jQuery.ajax({
+		url: ajaxUrl,
+		type: 'POST',
+		data: {
+			'action': actionWp,
+			'post_id': postId,
+			'err': 'Erro: Verifique todos os dados do pedido.'
+		},
+		success: function(data)
+		{
+			console.log('Erro salvo na cotação: #' + postId);
+		},
+		error: function(err)
+		{
+			console.log(err);
+		}
+	});
+}
+
 
 /**
  * Função sendMinutaDataToUpdate()

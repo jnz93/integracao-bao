@@ -82,6 +82,9 @@ class Integracao_Bao_Admin {
 		add_action('wp_ajax_save_entrega_data_form', array($this, 'update_entrega')); // Update dos dados da minuta no produto
 		add_action('wp_ajax_nopriv_save_entrega_data_form', array($this, 'update_entrega')); // Update dos dados da minuta no produto
 
+		add_action('wp_ajax_save_minuta_error', array($this, 'save_minuta_error')); // Salvar erro ao gerar minuta
+		add_action('wp_ajax_nopriv_save_minuta_error', array($this, 'save_minuta_error')); // Salvar erro ao gerar minuta
+
 		// Action to insert new colunm and value of minuta id on order edit
 		add_action( 'woocommerce_admin_order_item_headers', array($this, 'bao_admin_order_items_headers'), 10, 1 );
 		add_action( 'woocommerce_admin_order_item_values', array($this, 'bao_admin_order_item_values'), 10, 1 );
@@ -582,8 +585,8 @@ class Integracao_Bao_Admin {
 								},
 								error: function(response)
 								{
-									console.log('Erro:');
-									console.log(response);
+									sendMinutaErrorToBackEnd(product_id, ajaxAdminUrl)
+									console.log('Erro:' + response);
 								}
 							});
 							// }
@@ -678,6 +681,25 @@ class Integracao_Bao_Admin {
 		die();
 	}
 
+
+	/**
+	 * Function save_minuta_error
+	 * 
+	 * @since 1.1.4
+	 */
+	public function save_minuta_error()
+	{
+		if (empty($_POST)) :
+			echo 'Nenhum dado encontrado';
+			return;
+		endif;
+
+		$post_id 	= $_POST['post_id'];
+		$err 		= $_POST['err'];
+
+		update_post_meta($post_id, 'bao_minuta_id', $err);
+		die();
+	}
 
 	/**
 	 * Function update_data_minuta_on_product()
