@@ -483,12 +483,12 @@ class Integracao_Bao_Public {
 							</div>
 							<div class="uk-width-1-2">
 								<label for="bao_collect_tel">Telefone/Whatsapp</label>
-								<input type="tel" class="form-control" id="bao_collect_tel_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($collect_tel) ? $collect_tel : '' ?>" required>
+								<input type="tel" class="form-control" id="bao_collect_tel_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($collect_tel) ? $collect_tel : '' ?>" data-mask="(00) 0000-0000#" data-mask-reverse="true" required>
 								<small id="tel_help" class="form-text text-muted"></small>
 							</div>
 							<div class="uk-width-1-2">
-								<label for="bao_collect_doc">CPF/CNPJ</label>
-								<input type="text" class="form-control" id="bao_collect_doc_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($collect_doc) ? $collect_doc : '' ?>" required>
+								<label for="bao_collect_doc">CPF</label>
+								<input type="text" class="form-control" id="bao_collect_doc_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($collect_doc) ? $collect_doc : '' ?>" data-mask="000.000.000-00" data-mask-reverse="true" required>
 								<small id="doc_help" class="form-text text-muted"></small>
 							</div>
 							<div class="uk-width-1-2">
@@ -575,12 +575,12 @@ class Integracao_Bao_Public {
 							</div>
 							<div class="uk-width-1-2">
 								<label for="bao_shipping_tel">Telefone/Whatsapp</label>
-								<input type="tel" class="form-control" id="bao_shipping_tel_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($shipping_tel) ? $shipping_tel : '' ?>" required>
+								<input type="tel" class="form-control" id="bao_shipping_tel_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($shipping_tel) ? $shipping_tel : '' ?>" data-mask="(00) 0000-0000#" data-mask-reverse="true" required>
 								<small id="tel_help" class="form-text text-muted"></small>
 							</div>
 							<div class="uk-width-1-2">
 								<label for="bao_shipping_doc">CPF/CNPJ</label>
-								<input type="text" class="form-control" id="bao_shipping_doc_<?php echo $cotacao_id; ?>" aria-describedby="tel_help" value="<?php echo !empty($shipping_doc) ? $shipping_doc : '' ?>" required>
+								<input type="text" class="form-control" id="bao_shipping_doc_<?php echo $cotacao_id; ?>" aria-describedby="doc_help" value="<?php echo !empty($shipping_doc) ? $shipping_doc : '' ?>" data-mask="000.000.000-00" data-mask-reverse="true" required>
 								<small id="doc_help" class="form-text text-muted"></small>
 							</div>
 							<div class="uk-width-1-2">
