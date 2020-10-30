@@ -57,18 +57,6 @@ class Integracao_Bao_Admin {
 		// add_action('update_option', array($this, 'save_plugin_options'));
 		add_action('admin_init', array($this, 'register_options_settings'));
 
-		// Rotina de registro da minuta e salvar o ID na cotação
-		if ( ! wp_next_scheduled( 'task_register_minuta' ) ) {
-			wp_schedule_event( time(), 'hourly', 'task_register_minuta' );
-		}
-		add_action( 'task_register_minuta', array($this, 'send_alert_virified_orders'));
-
-		// Rotina de update das minutas
-		if ( !wp_next_scheduled( 'task_update_status_delivery' ) ) :
-			wp_schedule_event(time(), 'twicedaily', 'task_update_status_delivery');
-		endif;
-		add_action('task_update_status_delivery', array($this, 'update_minutas'));
-
 		// Ajax Actions
 		add_action('wp_ajax_save_minuta_id_on_product', array($this, 'save_minuta_id_on_product')); //Salvar o id da minuta no produto
 		add_action('wp_ajax_nopriv_save_minuta_id_on_product', array($this, 'save_minuta_id_on_product')); //Salvar o id da minuta no produto
