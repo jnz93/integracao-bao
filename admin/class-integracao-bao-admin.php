@@ -56,6 +56,7 @@ class Integracao_Bao_Admin {
 		add_action('admin_menu', array($this, 'create_settings_menu'));
 		// add_action('update_option', array($this, 'save_plugin_options'));
 		add_action('admin_init', array($this, 'register_options_settings'));
+		add_action('admin_post_create_minutas', array($this, 'send_minutas_tms_ajax'));
 
 		// Ajax Actions
 		add_action('wp_ajax_save_minuta_id_on_product', array($this, 'save_minuta_id_on_product')); //Salvar o id da minuta no produto
@@ -72,6 +73,8 @@ class Integracao_Bao_Admin {
 
 		add_action('wp_ajax_save_minuta_error', array($this, 'save_minuta_error')); // Salvar erro ao gerar minuta
 		add_action('wp_ajax_nopriv_save_minuta_error', array($this, 'save_minuta_error')); // Salvar erro ao gerar minuta
+		
+		add_action('wp_ajax_create_minutas_ajax', array($this, 'send_minutas_tms_ajax')); // Gerar minutas via ajax
 
 		// Action to insert new colunm and value of minuta id on order edit
 		add_action( 'woocommerce_admin_order_item_headers', array($this, 'bao_admin_order_items_headers'), 10, 1 );
@@ -259,6 +262,39 @@ class Integracao_Bao_Admin {
 	 */
 	public function send_order_to_brix_brudam()
 	{
+		?>
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+		<link rel="stylesheet" href="<?php echo plugin_dir_url( __FILE__ ) . 'css/uikit.min.css'; ?>">
+		<script type="text/javascript">
+		function sendMinutaIdToBackEnd(minutaId, postId, ajaxUrl)
+		{
+			var minutaId = minutaId, 
+				postId = postId,
+				ajaxUrl = ajaxUrl;
+			
+			let actionWp = 'save_minuta_id_on_product';
+
+			jQuery.ajax({
+				url: ajaxUrl,
+				type: 'POST',
+				data: {
+					'action': actionWp,
+					'minuta_id': minutaId,
+					'post_id': postId
+				},
+				success: function(data)
+				{
+					console.log('ID Minuta #'+ minutaId +' foi salvo na cotação #'+ postId +' com sucesso!');
+					console.log(data);
+				},
+				error: function(err)
+				{
+					console.log(err);
+				}
+			});
+		}
+		</script>
+		<?php
 		$access_token 	= Integracao_Bao_Admin::login_brudam_api();
 		$orders_to_send = Integracao_Bao_Admin::bao_verify_order_paid();
 		$brudam_api_url = 'https://brix.brudam.com.br/api/v1/operacional/emissao/cte';
@@ -373,7 +409,7 @@ class Integracao_Bao_Admin {
 						$expected_day 			= $date->format( 'Y-m-d' );
 						$expected_time 			= $date->format( 'H:i:s' );
 						?>
-						<script>
+						<script type="text/javascript">
 							var today 			= '<?php echo $now; ?>',
 								expectedDay 	= '<?php echo $expected_day; ?>',
 								expectedTime 	= '<?php echo $expected_time; ?>',
@@ -423,7 +459,6 @@ class Integracao_Bao_Admin {
 
 							var	ajaxAdminUrl = '<?php echo admin_url('admin-ajax.php'); ?>';
 							product_id = '<?php echo $product_id; ?>';
-							// if (false) {
 							jQuery.ajax({
 								method: "POST",
 								headers: {
@@ -561,6 +596,10 @@ class Integracao_Bao_Admin {
 										}
 									]
 								},
+								beforeSend: function(data)
+								{
+									jQuery('#result-content table tbody').append('<div uk-spinner></div>');
+								},
 								success: function(response)
 								{
 									var respArr = response.data;
@@ -569,6 +608,7 @@ class Integracao_Bao_Admin {
 									respArr.forEach(function(index)
 									{
 										sendMinutaIdToBackEnd(index.id, product_id, ajaxAdminUrl);
+										jQuery('#result-content table tbody').append('<tr><td>'+product_id+'</td><td>'+index.id+'</td></tr>');
 									});
 								},
 								error: function(response)
@@ -577,7 +617,6 @@ class Integracao_Bao_Admin {
 									console.log('Erro:' + response);
 								}
 							});
-							// }
 						</script>
 						<?php
 						$str_orders_id = $str_orders_id . ',' . $order_id;
@@ -589,17 +628,10 @@ class Integracao_Bao_Admin {
 			$orders_already = $orders_already . '' . $str_orders_id;
 			update_option('_bao_orders_already_sent_to_brix', $orders_already);
 
-			$message = '<h3>Pedidos enviados:</h3></br>
-						<p>'. $str_orders_id .'</p></br>';
-
+			return true;
 		else :
-			$message = '<h3>Todos os pedidos já foram enviados!</h3></br>';
+			return false;
 		endif;
-
-		// Send mail with data
-		$to = 'logs@unitycode.tech';
-		$subject = 'Rotina - Envio Pedidos bao/brix - ' . time();
-		wp_mail($to, $subject, $message);
 	}
 
 	/**
@@ -612,6 +644,37 @@ class Integracao_Bao_Admin {
 	public function send_alert_virified_orders()
 	{
 		Integracao_Bao_Admin::send_order_to_brix_brudam();
+	}
+
+	/**
+	 * Function send_minutas_tms_ajax
+	 * 
+	 * @since 1.2.0
+	 */
+	public function send_minutas_tms_ajax()
+	{
+		$result = Integracao_Bao_Admin::send_order_to_brix_brudam();
+		$table_result = '<div id="result-content">
+							<p></p>
+							<table class="uk-table uk-table-divider">
+								<thead>
+									<tr>
+										<th>Pedido(s)</th>
+										<th>Minuta(s)</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>';
+
+		$message = '<p class="uk-text-normal uk-text-large uk-text-success uk-text-center">Todos os pedidos já foram exportados!</p>';
+
+		if ($result == 1) :
+			echo $table_result;
+		else :
+			echo $message;
+		endif;
 	}
 
 	/**
@@ -665,7 +728,12 @@ class Integracao_Bao_Admin {
 		$minuta_id 	= $_POST['minuta_id'];
 		$post_id 	= $_POST['post_id'];
 
+		$old_minutas = get_post_meta( $post_id, 'old_minutas_ids', true );
+		$new_list = $old_minutas . ',' . $minuta_id;
+		update_post_meta( $post_id, 'old_minutas_ids', $new_list );
 		update_post_meta($post_id, 'bao_minuta_id', $minuta_id);
+
+		echo 'Minutas Gravadas: ' . get_post_meta( $post_id, 'old_minutas_ids', true );
 		die();
 	}
 

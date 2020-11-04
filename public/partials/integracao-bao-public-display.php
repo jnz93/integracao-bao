@@ -135,7 +135,7 @@
         <span style="position: absolute; top: -25px;">Calculando...</span>
     </div>
 </form>
-<?php Integracao_Bao_Admin::send_order_to_brix_brudam(); ?>
+<?php #Integracao_Bao_Admin::send_order_to_brix_brudam(); ?>
 <script type="text/javascript">
 function request_cotacao()
 {

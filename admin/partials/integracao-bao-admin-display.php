@@ -12,14 +12,23 @@
  * @subpackage Integracao_Bao/admin/partials
  */  
 ?>
+<script>
+function open_iframe(action)
+{
+  var table = '<div id="result-content"><table class="uk-table uk-table-divider"><thead><tr><th># Pedido</th><th># Minuta Id</th></tr></thead><tbody></tbody></table></div>';
+  UIkit.modal.dialog('<div class="uk-modal-header"><h3>Resultado</h3></div><div class="uk-modal-body"><iframe id="iframe-results" style="width:100%;" src="'+action+'" title="Resultado"></iframe></div><div class="uk-modal-footer uk-text-right"><button class="uk-button uk-modal-close uk-button-primary" type="button">Fechar</button></div>');
+}
 
+</script>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="uk-container uk-container-expand uk-margin-small-top" uk-grid>
 
     <!-- Card Gerar Minutas -->
     <div class="uk-width-1-1">
       <div class="uk-card uk-card-default uk-card-body">
-        <button>Gerar Minuta(s)</button>
+        <p>Clique para exportar os pedidos e gerar as minutas no sistema</p>
+        <button class="uk-button uk-button-default" onclick="open_iframe('<?php echo esc_url(admin_url('admin-post.php') . '?action=create_minutas'); ?>')">Exportar Pedidos</button>
+        <!-- Problema que ta retornando uma string com toda a tag script da requisição ajax. Possível solução: Criar a requisição inteira com JS e passar todos os dados por parametros -->
       </div>
     </div>
 
