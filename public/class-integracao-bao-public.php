@@ -874,7 +874,7 @@ class Integracao_Bao_Public {
 			foreach($products as $product) :
 				$product_id 	= $product['product_id'];
 				$status_env 	= Integracao_Bao_Public::serialize_status_code($product_id);
-				$tr = '<tr id="trp-'. $product_id .'"><td class="product-name">'. $product['name'] .' x'. $product['quantity'] .'</td><td class="product-status" style="text-align:left;">'. $status_env .'</td><td><button uk-toggle="target: #product-'. $product_id .'" type="button">Ver</button></td><td>'. $product['total'] .'</td></tr>';
+				$tr = '<tr id="trp-'. $product_id .'"><td class="product-name">'. $product['name'] .' x'. $product['quantity'] .'</td><td class="product-status" style="text-align:left;">'. $status_env .'</td><td><button uk-toggle="target: #product-'. $product_id .'" type="button">Ver</button></td><td data-mask="#.##0,##" data-mask-reverse="true">'. $product['total'] .'</td></tr>';
 
 				echo $tr;
 			endforeach;
@@ -885,7 +885,7 @@ class Integracao_Bao_Public {
 					<th scope="row">Subtotal:</th>
 					<td></td>
 					<td></td>
-					<td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">R$</span><?php echo $order->total; ?></span></td>
+					<td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">R$</span><span data-mask="#.##0,##" data-mask-reverse="true"><?php echo $order->total; ?></span></td>
 				</tr>
 				<tr>
 					<th scope="row">Método de pagamento:</th>
@@ -897,7 +897,7 @@ class Integracao_Bao_Public {
 					<th scope="row">Total:</th>
 					<td></td>
 					<td></td>
-					<td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">R$</span><?php echo $order->total; ?></span></td>
+					<td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">R$</span><span data-mask="#.##0,##" data-mask-reverse="true"><?php echo $order->total; ?></span></span></td>
 				</tr>
 			</tfoot>
 		</table>
