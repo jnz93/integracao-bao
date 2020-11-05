@@ -874,7 +874,7 @@ class Integracao_Bao_Public {
 			foreach($products as $product) :
 				$product_id 	= $product['product_id'];
 				$status_env 	= Integracao_Bao_Public::serialize_status_code($product_id);
-				$tr = '<tr><td class="product-name">'. $product['name'] .' x'. $product['quantity'] .'</td><td style="text-align:left;">'. $status_env .'</td><td><button uk-toggle="target: #product-'. $product_id .'" type="button">Ver</button></td><td>'. $product['total'] .'</td></tr>';
+				$tr = '<tr id="trp-'. $product_id .'"><td class="product-name">'. $product['name'] .' x'. $product['quantity'] .'</td><td class="product-status" style="text-align:left;">'. $status_env .'</td><td><button uk-toggle="target: #product-'. $product_id .'" type="button">Ver</button></td><td>'. $product['total'] .'</td></tr>';
 
 				echo $tr;
 			endforeach;

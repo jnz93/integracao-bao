@@ -783,7 +783,10 @@ class Integracao_Bao_Admin {
 			
 			update_post_meta($post_id, $meta_key, $meta_value);
 		endforeach;
-		die();
+		$str_status = explode('_*', $arr_data[5]);
+		$status = $str_status[1];
+		$result = $post_id . ':' . $status;
+		die($result);
 	}
 
 	/**

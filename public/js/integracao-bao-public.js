@@ -189,6 +189,12 @@ function sendMinutaDataToUpdate(minuta, postId, ajaxUrl)
 		},
 		success: function(data)
 		{
+			var newData = data.split(':'),
+				postId = newData[0],
+				newStatus = newData[1]
+				el = jQuery('#trp-' + postId).children('.product-status');
+
+			el.text(newStatus);
 			UIkit.notification.closeAll()
 			UIkit.notification("<span class='uk-box-shadow'>Status atualizado com sucesso!</span>", {pos: 'bottom-center', status: 'success'});
 		},
