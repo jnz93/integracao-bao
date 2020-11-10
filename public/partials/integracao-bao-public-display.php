@@ -82,10 +82,9 @@
         </div>
 
         <div class="form-group col-md-12">
-            <button type="button" id="buttonCotacao" onclick="request_cotacao()">Faça sua carga</button>
+            <button type="button" id="buttonCotacao" onclick="request_cotacao(jQuery(this).parents('form'))">Faça sua carga</button>
         </div>
     </div>
-
     
 	<div id="bao-cotacao-result" style="display: none; margin-top: 25px;">
         <table class="table">
@@ -110,14 +109,14 @@
                 <h4 class="uk-card-title uk-text-warning"><i class="icon-attention"></i></h4>
                 <span class="uk-text-warning">As informações prestadas são responsabilidade do usuário e qualquer informação divergente pode alterar o valor do frete</span>
             </div>
-            <button type="button" class="" onClick="sendCotacaoDataToBackEnd(jQuery('#valor-carga').val(), jQuery('#delivery_time').val(), jQuery('#cotacao-cepremetente').val(), jQuery('#cotacao-cepdestinatario').val(), jQuery('#cotacao-volumes').val(), jQuery('#cotacao-peso').val(), jQuery('#delivery_price').val(), '<?php echo admin_url('admin-ajax.php'); ?>')">Adicionar ao carrinho</button>
+            <button type="button" class="" onClick="addToCart(jQuery(this).parents('form'), '<?php echo admin_url('admin-ajax.php'); ?>')">Adicionar ao carrinho</button>
             <button type="button" class=""><a href="<?php echo wc_get_cart_url(); ?>">Finalizar frete</a></button>
         <?php else : ?>
             <div class="uk-text-center">
                 <h4 class="uk-card-title uk-text-warning"><i class="icon-attention"></i></h4>
                 <span class="uk-text-warning">As informações prestadas são responsabilidade do usuário e qualquer informação divergente pode alterar o valor do frete</span>
             </div>
-            <button type="button" class="" onClick="sendCotacaoDataToBackEnd(jQuery('#valor-carga').val(), jQuery('#delivery_time').val(), jQuery('#cotacao-cepremetente').val(), jQuery('#cotacao-cepdestinatario').val(), jQuery('#cotacao-volumes').val(), jQuery('#cotacao-peso').val(), jQuery('#delivery_price').val(), '<?php echo admin_url('admin-ajax.php'); ?>')">Adicionar ao carrinho</button>
+            <button type="button" class="" onClick="addToCart(jQuery(this).parents('form'), '<?php echo admin_url('admin-ajax.php'); ?>')">Adicionar ao carrinho</button>
             <button>Cadastre-se para continuar</button>
         <?php endif; ?>
     </div>
@@ -137,28 +136,27 @@
 </form>
 <?php #Integracao_Bao_Admin::send_order_to_brix_brudam(); ?>
 <script type="text/javascript">
-function request_cotacao()
+function request_cotacao(parent)
 {
-    jQuery('#bao-cotacao-result').hide();
-    jQuery('#error-message').hide();
+    parent.find('#bao-cotacao-result').hide();
+    parent.find('#error-message').hide();
 
-    // DATA
-    var cepOrigem = jQuery('#cotacao-cepremetente').val(),
-        cepDestino = jQuery('#cotacao-cepdestinatario').val(),
-        volumes = jQuery('#cotacao-volumes').val(),
-        peso = jQuery('#cotacao-peso').val(),
-        valor = jQuery('#valor-carga').val(),
-        action_wp = 'send_cotacao_data';
+    var cepOrigem   = parent.find('#cotacao-cepremetente').val(),
+        cepDestino  = parent.find('#cotacao-cepdestinatario').val(),
+        volumes     = parent.find('#cotacao-volumes').val(),
+        peso        = parent.find('#cotacao-peso').val(),
+        valor       = parent.find('#valor-carga').val(),
+        action_wp   = 'send_cotacao_data';
 
     // Elements
-    var inputPrice = jQuery('#price'),
-        inputDeliveryTime = jQuery('#deliveryTime'),
-        inputDeliveryPrice = jQuery('#delivery_price'),
-        inputDeliveryTime2 = jQuery('#delivery_time'),
-        inputZipCode = jQuery('#zip_code'),
-        elBaoResult = jQuery('#bao-cotacao-result'),
-        elMessage = jQuery('#error-message'),
-        loader = jQuery('#bao-loader');
+    var inputPrice = parent.find('#price'),
+        inputDeliveryTime = parent.find('#deliveryTime'),
+        inputDeliveryPrice = parent.find('#delivery_price'),
+        inputDeliveryTime2 = parent.find('#delivery_time'),
+        inputZipCode = parent.find('#zip_code'),
+        elBaoResult = parent.find('#bao-cotacao-result'),
+        elMessage = parent.find('#error-message'),
+        loader = parent.find('#bao-loader');
 
     // Request
     jQuery.ajax({
@@ -210,7 +208,7 @@ function showNotice(el)
 jQuery('document').ready(function()
 {
     // Masks
-    jQuery('#valor-carga').mask("#.##0,##", {reverse: true});
+    jQuery('.valor-carga').children('input').mask("#.##0,##", {reverse: true});
     jQuery('.comprimento, .largura, .altura').mask("#.##", {reverse: true});
 })
 </script>

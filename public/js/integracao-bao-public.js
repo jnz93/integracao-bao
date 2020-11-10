@@ -220,11 +220,19 @@ function sendMinutaDataToUpdate(minuta, postId, ajaxUrl)
  * 
  * @since 1.0.3
  */
-function sendCotacaoDataToBackEnd(price, deliveryDays, zipFrom, zipTo, nVolumes, weight, value, ajaxUrl)
+function addToCart(form, ajaxUrl)
 {
+	var price			= form.find('#valor-carga').val(), 
+		deliveryDays	= form.find('#delivery_time').val(), 
+		zipFrom			= form.find('#cotacao-cepremetente').val(), 
+		zipTo			= form.find('#cotacao-cepdestinatario').val(), 
+		nVolumes		= form.find('#cotacao-volumes').val(), 
+		weight			= form.find('#cotacao-peso').val(), 
+		value 			= form.find('#delivery_price').val();
+	
 	var dataToSend = price + '|' + deliveryDays + '|' + zipFrom + '|' + zipTo + '|' + nVolumes + '|' + weight + '|' + value;
 	let actionWp = 'handle_cotacao_form';
-	
+	console.log(dataToSend);
 	jQuery.ajax({
 		url: ajaxUrl,
 		type: 'POST',
@@ -234,11 +242,12 @@ function sendCotacaoDataToBackEnd(price, deliveryDays, zipFrom, zipTo, nVolumes,
 		},
 		success: function(response)
 		{
+			console.log(response);
 			console.log('Cotação adicionada ao carrinho com sucesso!');
 			UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Cotação adicionada ao carrinho!</span>", {pos: 'bottom-center', status: 'success'});
-			jQuery('#bao-cotacao-result').fadeOut();
-			jQuery('#cotacao-peso').attr('disabled', false);
-			jQuery('#formCotacao')[0].reset();
+			form.find('#bao-cotacao-result').fadeOut();
+			form.find('#cotacao-peso').attr('disabled', false);
+			form[0].reset();
 			sumAndUpdateCartItems();
 		},
 		error: function(err)

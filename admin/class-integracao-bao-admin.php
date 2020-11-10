@@ -701,6 +701,7 @@ class Integracao_Bao_Admin {
 		$orders = array();
 		if(!is_wp_error($orders_data)) :
 			foreach ($orders_data as $order) :
+				// if (get_post_meta( $post_id:integer, $key:string, $single:boolean ))
 				$orders[] = array(
 					'ID' 			=> $order->id,
 					'date_created' 	=> $order->date_created,
