@@ -266,11 +266,8 @@ class Integracao_Bao_Public {
 	public function bao_create_order_from_form($price, $delivery_days, $city_origin, $city_destiny, $zip_from, $zip_to, $n_volumes, $weight, $value)
 	{
 
-		// $wc_public_key 	= get_option('brix-woocomerce-public-key');
-		// $wc_secret_key 	= get_option('brix-woocomerce-secret-key');
-		
-		$wc_public_key 	= 'ck_9fb5a8f1e1643f764dc8068b1f8c643a38434a9d';
-		$wc_secret_key 	= 'cs_3d38eb415627a1357cfd834d11a7c34c7557a6c9';
+		$wc_public_key 	= get_option('bao_wc_public_key');
+		$wc_secret_key 	= get_option('bao_wc_secret_key');
 		
 		if (empty($wc_public_key) || empty($wc_secret_key)) :
 			echo 'Erro ao conectar com a API rest do Woocomerce. Por favor, configure as chaves publica e privada no plugin BRIX.';
