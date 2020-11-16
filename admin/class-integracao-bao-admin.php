@@ -54,8 +54,6 @@ class Integracao_Bao_Admin {
 
 		// Actions
 		add_action('admin_menu', array($this, 'create_settings_menu'));
-		// add_action('update_option', array($this, 'save_plugin_options'));
-		add_action('admin_init', array($this, 'register_options_settings'));
 		add_action('admin_post_create_minutas', array($this, 'send_minutas_tms_ajax'));
 
 		// Ajax Actions
@@ -158,67 +156,6 @@ class Integracao_Bao_Admin {
 	public function page_settings_plugin()
 	{
 		require( plugin_dir_path(__FILE__) . 'partials/integracao-bao-admin-display.php');
-	}
-
-
-	public function register_options_settings()
-	{
-		$option_group = 'bao_settings_plugin';
-		$option_name = 'bao_settings';
-
-		register_setting($option_group, $option_name);
-
-		// add_option('_bao_orders_already_sent_to_brix', '');
-	}
-	/**
-	 * Function save_plugin_options
-	 * 
-	 * Fires function when action update_uption has called
-	 * 
-	 * @since 1.0.0
-	 */
-	public function save_plugin_options()
-	{
-		if(isset($_POST['brix_token'])){
-			if(get_option('brix_token')){
-				update_option('brix_token', trim($_POST['brix_token']));
-			}else{
-				add_option('brix_token', trim($_POST['brix_token']));
-			}      
-		}
-		
-		  
-		if(isset($_POST['brix-cotacao-servico'])){
-			if(get_option('brix_cotacao_servico')){
-				update_option('brix_cotacao_servico', trim($_POST['brix-cotacao-servico']));
-			}else{
-				add_option('brix_cotacao_servico', trim($_POST['brix-cotacao-servico']));
-			}  
-		}
-	
-		if(isset($_POST['brix_cliente'])){
-			if(get_option('brix_cliente')){
-				update_option('brix_cliente', trim($_POST['brix_cliente']));
-			}else{
-				add_option('brix_cliente', trim($_POST['brix_cliente']));
-			}    
-		}
-		// update_option('brix-woocomerce-public-key', '34342423');
-		// if(!empty($_POST['brix-woocomerce-public-key'])){
-		// 	if(get_option('brix-woocomerce-public-key')){
-		// 		update_option('brix-woocomerce-public-key', trim($_POST['brix-woocomerce-public-key']));
-		// 	}else{
-		// 		add_option('brix-woocomerce-public-key', trim($_POST['brix-woocomerce-public-key']));
-		// 	}    
-		// }
-		  
-		// if(isset($_POST['brix-woocomerce-secret-key'])){
-		// 	if(get_option('brix-woocomerce-secret-key')){
-		// 		update_option('brix-woocomerce-secret-key', $_POST['brix-woocomerce-secret-key']);
-		// 	}else{
-		// 		add_option('brix-woocomerce-secret-key', $_POST['brix-woocomerce-secret-key']);
-		// 	}    
-		// }
 	}
 
 	/**
