@@ -54,7 +54,7 @@
             <label for="cotacao-volumes">Número de volumes</label>
             <input type="number" class="form-control" name="cotacao-volumes" id="cotacao-volumes" required>
 
-            <a class="" id="" href="#modal-example" uk-toggle onclick="generateInputs(jQuery('#cotacao-volumes').val())">Dimensões</a>
+            <a class="" id="" href="#modal-example" uk-toggle onclick="generateInputs(jQuery(this).siblings('.form-control').val())">Dimensões</a>
             <!-- This is the modal -->
 
             <div id="modal-example" uk-modal>
