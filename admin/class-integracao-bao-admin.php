@@ -61,7 +61,7 @@ class Integracao_Bao_Admin {
 		// Ajax Actions
 		add_action('wp_ajax_save_minuta_id_on_product', array($this, 'save_minuta_id_on_product')); //Salvar o id da minuta no produto
 		add_action('wp_ajax_nopriv_save_minuta_id_on_product', array($this, 'save_minuta_id_on_product')); //Salvar o id da minuta no produto
-
+		
 		add_action('wp_ajax_update_data_minuta_on_product', array($this, 'update_data_minuta_on_product')); // Update dos dados da minuta no produto
 		add_action('wp_ajax_nopriv_update_data_minuta_on_product', array($this, 'update_data_minuta_on_product')); // Update dos dados da minuta no produto
 
@@ -75,6 +75,8 @@ class Integracao_Bao_Admin {
 		add_action('wp_ajax_nopriv_save_minuta_error', array($this, 'save_minuta_error')); // Salvar erro ao gerar minuta
 		
 		add_action('wp_ajax_create_minutas_ajax', array($this, 'send_minutas_tms_ajax')); // Gerar minutas via ajax
+
+		add_action('wp_ajax_bao_save_settings', array($this, 'bao_save_settings')); //Salvar o id da minuta no produto
 
 		// Action to insert new colunm and value of minuta id on order edit
 		add_action( 'woocommerce_admin_order_item_headers', array($this, 'bao_admin_order_items_headers'), 10, 1 );
@@ -217,6 +219,26 @@ class Integracao_Bao_Admin {
 		// 		add_option('brix-woocomerce-secret-key', $_POST['brix-woocomerce-secret-key']);
 		// 	}    
 		// }
+	}
+
+	/**
+	 * Function bao_save_settings
+	 * Recebe os valores a serem salvos via ajax e executa ações de update option
+	 * 
+	 * @since 1.2.1
+	 */
+	public function bao_save_settings()
+	{
+		$data 	= $_POST['data'];
+		$arr 	= explode('|', $data);
+
+		foreach($arr as $item) :
+			$item 	= explode(':', $item);
+			$key 	= $item[0];
+			$value 	= $item[1];
+
+			update_option( $key, $value );
+		endforeach;
 	}
 
 	/**

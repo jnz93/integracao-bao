@@ -67,48 +67,81 @@ function open_iframe(action)
     <!-- Formulário de configurações -->
     <div class="uk-width-1-2">
       <div class="uk-card uk-card-default uk-card-body">
-        <h3>Form. Integração TMS x Woocommerce</h3>
+        <h3>Integração TMS x Woocommerce</h3>
         <form class="uk-form-horizontal uk-margin-small" method="post">
-          <?php settings_fields('bao_settings_plugin'); ?>
-          <?php do_settings_sections('bao_settings_plugin'); ?>
           <div class="uk-margin">
-              <label class="uk-form-label" for="brix_token">Token TMS(Brix)</label>
+              <label class="uk-form-label" for="bao_brudam_token">Token TMS(Brix)</label>
               <div class="uk-form-controls">
-                <input name="brix_token" type="text" id="brix_token" value="<?=strval(get_option('brix_token'))?>" class="uk-input uk-form-small" required>
+                <input name="bao_brudam_token" type="text" id="bao_brudam_token" value="<?=strval(get_option('bao_brudam_token'))?>" class="uk-input uk-form-small" required>
               </div>
           </div>
 
           <div class="uk-margin">
-              <label class="uk-form-label" for="brix_cliente">Cód. Cliente Brix</label>
+              <label class="uk-form-label" for="bao_brudam_client">Cód. Cliente Brix</label>
               <div class="uk-form-controls">
-                <input name="brix_cliente" type="text" id="brix_cliente" value="<?=strval(get_option('brix_cliente'))?>" class="uk-input uk-form-small">
+                <input name="bao_brudam_client" type="text" id="bao_brudam_client" value="<?=strval(get_option('bao_brudam_client'))?>" class="uk-input uk-form-small">
               </div>
           </div>
 
           <div class="uk-margin">
-              <label class="uk-form-label" for="brix-cotacao-servico">Cód. Serviço Cotação</label>
+              <label class="uk-form-label" for="bao_brudam_servico">Cód. Serviço Cotação</label>
               <div class="uk-form-controls">
-                <input name="brix-cotacao-servico" type="text" id="brix-cotacao-servico" value="<?=strval(get_option('brix_cotacao_servico'))?>" class="uk-input uk-form-small">
+                <input name="bao_brudam_servico" type="text" id="bao_brudam_servico" value="<?=strval(get_option('bao_brudam_servico'))?>" class="uk-input uk-form-small">
               </div>
           </div>
 
           <div class="uk-margin">
-              <label class="uk-form-label" for="brix-woocomerce-public-key">Woocomerce public API key</label>
+              <label class="uk-form-label" for="bao_wc_public_key">Woocomerce public API key</label>
               <div class="uk-form-controls">
-                <input name="brix-woocomerce-public-key" type="text" id="brix-woocomerce-public-key" value="<?=strval(get_option('brix-woocomerce-public-key'))?>" class="uk-input uk-form-small">
+                <input name="bao_wc_public_key" type="text" id="bao_wc_public_key" value="<?=strval(get_option('bao_wc_public_key'))?>" class="uk-input uk-form-small">
               </div>
           </div>
 
           <div class="uk-margin">
-              <label class="uk-form-label" for="brix-woocomerce-secret-key">Woocomerce secret API key</label>
+              <label class="uk-form-label" for="bao_wc_secret_key">Woocomerce secret API key</label>
               <div class="uk-form-controls">
-                <input name="brix-woocomerce-secret-key" type="password" id="brix-woocomerce-secret-key" value="<?=strval(get_option('brix-woocomerce-secret-key'))?>" class="uk-input uk-form-small">
+                <input name="bao_wc_secret_key" type="password" id="bao_wc_secret_key" value="<?=strval(get_option('bao_wc_secret_key'))?>" class="uk-input uk-form-small">
               </div>
           </div>
 
-          <button type="submit" class="btn btn-success button button-primary">Salvar</button>
         </form>
+        <button type="button" class="btn btn-success button button-primary" onclick="save_bao_options(jQuery(this), '<?php echo admin_url('admin-ajax.php'); ?>')">Salvar</button>
       </div>
     </div>
 
 </div>
+
+<script>
+function save_bao_options(el, ajaxUrl)
+{
+  var inputs = el.siblings('form').find('input');
+
+  var data = '';
+  inputs.each(function(i)
+  {
+    var currEl = jQuery(this),
+        name = currEl.attr('name'),
+        value = currEl.val();
+
+    data += name + ':' + value + '|';
+  });
+
+  jQuery.ajax({
+			url: ajaxUrl,
+			type: 'POST',
+			data: {
+				action: 'bao_save_settings',
+				data: data,
+			},
+			success: function(data)
+			{
+        UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Salvo com sucesso!</span>", {pos: 'bottom-center', status: 'success'});
+        console.log(data);
+			},
+			error: function(e)
+			{
+				UIkit.notification("<span class='uk-box-shadow-small uk-padding'>Erro. Tente novamente!</span>", {pos: 'bottom-center', status: 'error'});
+			}
+		});
+}
+</script>
