@@ -16,10 +16,12 @@ O plugin conecta o [TMS Brudam(Transportation Management System)](https://www.br
 * Exportação dos pedidos para criação de minutas no TMS Brudam via API Restful
 * Atualização do status de entrega do pedido via API Restful
 
-## Instalação
-1. Upload `integracao-bao Plugin` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+## Instalação e configuração
+1) Faça o upload no diretório ou instale o plugin de forma comum pelo painel do wordpress
+2) Configure forneça o token de acesso, código do cliente e código de serviço do TMS Brudam.
+3) Gere as chaves publica e privada do woocommerce e salve na página do plugin
+4) Utilize o shortcode "[bao_cotacao]" para mostrar o formulário de cotação na página desejada
+5) Adicione a pasta "woocommerce" na raiz do seu tema para susbstituir os templates: Carrinho, checkout e view-order no painel do usuári.
 
 -----------
 
